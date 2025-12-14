@@ -3,8 +3,9 @@
 import Link from 'next/link';
 import { Briefcase, Users } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
+import { Suspense } from 'react';
 
-export default function OrgSetupPage() {
+function OrgSetupContent() {
     const searchParams = useSearchParams();
     const plan = searchParams.get('plan');
     const planQuery = plan ? `?plan=${plan}` : '';
@@ -79,5 +80,13 @@ export default function OrgSetupPage() {
                 </p>
             </div>
         </div>
+    );
+}
+
+export default function OrgSetupPage() {
+    return (
+        <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
+            <OrgSetupContent />
+        </Suspense>
     );
 }
