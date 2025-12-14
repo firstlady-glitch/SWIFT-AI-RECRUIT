@@ -5,6 +5,7 @@ import { Check, ArrowRight, Briefcase, Search, FileText, UserCheck, Calendar, Ba
 import Link from 'next/link';
 import Navigation from '@/components/Navigation';
 import Image from 'next/image';
+import Footer from '@/components/Footer';
 
 export default function FeaturesPage() {
     const [activeTab, setActiveTab] = useState<'applicant' | 'employer'>('applicant');
@@ -58,6 +59,8 @@ export default function FeaturesPage() {
             <div className="max-w-7xl mx-auto px-6 py-16">
                 {activeTab === 'applicant' ? <ApplicantContent /> : <EmployerContent />}
             </div>
+
+            <Footer />
         </div>
     );
 }
