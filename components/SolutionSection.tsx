@@ -2,7 +2,7 @@ import { Target } from 'lucide-react';
 
 export default function SolutionSection() {
     return (
-        <section className="solution-section py-20">
+        <section className="section py-20">
             <div className="max-w-4xl">
                 <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-[var(--primary-blue)] mb-6">
                     <Target className="w-8 h-8 text-white" />

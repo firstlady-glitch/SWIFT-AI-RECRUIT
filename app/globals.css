@@ -262,6 +262,8 @@ p {
   border: none;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  text-align: center;
   gap: 0.5rem;
   text-decoration: none;
 }
@@ -357,20 +359,6 @@ p {
 /* Section spacing */
 .section {
   padding: var(--spacing-2xl) var(--spacing-md);
-  /* max-width: 1280px; */
-  /* margin: 0 auto; */
-}
-.accepted-section {
-  padding: var(--spacing-2xl) var(--spacing-4xl);
-}
-.problem-section {
-  padding: var(--spacing-2xl) var(--spacing-4xl);
-}
-.solution-section {
-  padding: var(--spacing-2xl) var(--spacing-4xl);
-}
-.hero-section {
-  padding: var(--spacing-2xl) var(--spacing-md);
   max-width: 1280px;
   margin: 0 auto;
 }
@@ -379,18 +367,6 @@ p {
   .section {
     padding: 4rem var(--spacing-xl);
   }
-  .hero-section {
-    padding: 4rem var(--spacing-xl);
-  }
-  /* .accepted-section {
-    padding: 4rem var(--spacing-xl);
-  }
-  .problem-section {
-    padding: 4rem var(--spacing-xl);
-  }
-  .solution-section {
-    padding: 4rem var(--spacing-xl);
-  } */
 }
 
 /* Text gradients for emphasis (AI elements) */

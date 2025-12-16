@@ -13,7 +13,7 @@ export default function ApplicantPage() {
             const { data: { user } } = await supabase.auth.getUser();
 
             if (user) {
-                router.replace(`/app/app/applicant/${user.id}`);
+                router.replace(`/app/applicant/${user.id}`);
             } else {
                 router.push('/auth/login');
             }

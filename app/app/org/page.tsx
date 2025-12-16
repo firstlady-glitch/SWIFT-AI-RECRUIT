@@ -1,18 +1,29 @@
 'use client';
 
 import Link from 'next/link';
-import { Briefcase, Users } from 'lucide-react';
+import { Briefcase, Users, Check, X, Lock } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
-import { Suspense } from 'react';
+import { Suspense, useState } from 'react';
 
 function OrgSetupContent() {
     const searchParams = useSearchParams();
-    const plan = searchParams.get('plan');
-    const planQuery = plan ? `?plan=${plan}` : '';
+    const urlPlan = searchParams.get('plan');
+    const [selectedPlan, setSelectedPlan] = useState(urlPlan || 'free');
+
+    // Construct the query string properly
+    const getLink = (basePath: string) => {
+        const params = new URLSearchParams();
+        if (selectedPlan) params.set('plan', selectedPlan);
+
+        const redirectTarget = searchParams.get('redirectTarget');
+        if (redirectTarget) params.set('redirectTarget', redirectTarget);
+
+        return `${basePath}?${params.toString()}`;
+    };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-[var(--background)]">
-            <div className="w-full max-w-4xl px-6">
+        <div className="min-h-screen bg-[var(--background)] pb-20">
+            <div className="w-full max-w-6xl mx-auto px-6 py-12">
                 <div className="text-center mb-12">
                     <h1 className="text-4xl font-bold mb-4">Welcome to SwiftAI Recruit</h1>
                     <p className="text-xl text-[var(--foreground-secondary)]">
@@ -20,10 +31,11 @@ function OrgSetupContent() {
                     </p>
                 </div>
 
-                <div className="grid md:grid-cols-2 gap-8">
+                {/* Role Selection */}
+                <div className="grid md:grid-cols-2 gap-8 mb-20 max-w-4xl mx-auto">
                     {/* Recruiter Option */}
-                    <Link href={`/app/app/org/recruiter/setup${planQuery}`} className="card hover:border-[var(--primary-blue)] transition-all p-8 block">
-                        <div className="w-16 h-16 rounded-2xl bg-[var(--accent-orange)] flex items-center justify-center mb-6">
+                    <Link href={getLink('/app/org/recruiter/setup')} className="card hover:border-[var(--primary-blue)] transition-all p-8 block group">
+                        <div className="w-16 h-16 rounded-2xl bg-[var(--accent-orange)] flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                             <Users className="w-8 h-8 text-white" />
                         </div>
                         <h2 className="text-2xl font-bold mb-3">I'm a Recruiter</h2>
@@ -47,8 +59,8 @@ function OrgSetupContent() {
                     </Link>
 
                     {/* Employer Option */}
-                    <Link href={`/app/app/org/employer/setup${planQuery}`} className="card hover:border-[var(--primary-blue)] transition-all p-8 block">
-                        <div className="w-16 h-16 rounded-2xl bg-[var(--primary-blue)] flex items-center justify-center mb-6">
+                    <Link href={getLink('/app/org/employer/setup')} className="card hover:border-[var(--primary-blue)] transition-all p-8 block group">
+                        <div className="w-16 h-16 rounded-2xl bg-[var(--primary-blue)] flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                             <Briefcase className="w-8 h-8 text-white" />
                         </div>
                         <h2 className="text-2xl font-bold mb-3">I'm an Employer</h2>
@@ -72,12 +84,92 @@ function OrgSetupContent() {
                     </Link>
                 </div>
 
-                <p className="text-center text-sm text-[var(--foreground-secondary)] mt-8">
-                    Looking for a job?{' '}
-                    <Link href={`/app/app/applicant/setup${planQuery}`} className="text-[var(--primary-blue)] hover:underline">
-                        Go to Applicant Setup
-                    </Link>
-                </p>
+                {/* Plan Selection */}
+                <div className="text-center mb-12">
+                    <h2 className="text-3xl font-bold mb-4">Select a Plan</h2>
+                    <p className="text-[var(--foreground-secondary)]">
+                        Choose the plan that fits your needs
+                    </p>
+                </div>
+
+                <div className="grid md:grid-cols-4 gap-6">
+                    {/* Free Plan */}
+                    <div
+                        onClick={() => setSelectedPlan('free')}
+                        className={`card p-6 border cursor-pointer transition-all ${selectedPlan === 'free' ? 'border-[var(--primary-blue)] ring-2 ring-[var(--primary-blue)]/20' : 'border-[var(--border)] hover:border-[var(--primary-blue)]'}`}
+                    >
+                        <h3 className="text-xl font-bold mb-2">Free</h3>
+                        <p className="text-[var(--foreground-secondary)] text-sm mb-4">Get started for free</p>
+                        <div className="text-3xl font-bold mb-6">$0<span className="text-base text-[var(--foreground-secondary)] font-normal">/mo</span></div>
+
+                        <ul className="space-y-3 text-left text-sm">
+                            <li className="flex gap-2"><Check className="w-4 h-4 text-[var(--success)]" /> 1 Active Job Post</li>
+                            <li className="flex gap-2"><Check className="w-4 h-4 text-[var(--success)]" /> Basic AI Matching</li>
+                            <li className="flex gap-2 text-gray-400"><X className="w-4 h-4" /> Team Collaboration</li>
+                        </ul>
+                    </div>
+
+                    {/* Starter - Coming Soon */}
+                    <div
+                        // onClick={() => setSelectedPlan('starter')} 
+                        className={`card p-6 border relative overflow-hidden opacity-75 cursor-not-allowed group border-[var(--border)]`}
+                    >
+                        <div className="absolute inset-0 bg-black/60 z-10 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm">
+                            <Lock className="w-8 h-8 text-white mb-2" />
+                            <span className="text-white font-bold text-sm">Coming Soon</span>
+                        </div>
+                        <h3 className="text-xl font-bold mb-2">Starter</h3>
+                        <p className="text-[var(--foreground-secondary)] text-sm mb-4">For growing starts</p>
+                        <div className="text-3xl font-bold mb-6">$15<span className="text-base text-[var(--foreground-secondary)] font-normal">/mo</span></div>
+
+                        <ul className="space-y-3 text-left text-sm">
+                            <li className="flex gap-2"><Check className="w-4 h-4 text-[var(--success)]" /> 5 Active Job Posts</li>
+                            <li className="flex gap-2"><Check className="w-4 h-4 text-[var(--success)]" /> 50 AI Resume Screens</li>
+                            <li className="flex gap-2 text-gray-400"><X className="w-4 h-4" /> Team Collaboration</li>
+                        </ul>
+                    </div>
+
+                    {/* Professional - Coming Soon */}
+                    <div
+                        // onClick={() => setSelectedPlan('pro')}
+                        className={`card p-6 border-2 relative overflow-hidden opacity-75 cursor-not-allowed group border-[var(--primary-blue)]/30`}
+                    >
+                        <div className="absolute top-0 right-0 left-0 bg-[var(--primary-blue)]/50 text-white text-xs font-bold py-1 rounded-t-lg text-center">MOST POPULAR</div>
+                        <div className="absolute inset-0 bg-black/60 z-10 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm">
+                            <Lock className="w-8 h-8 text-white mb-2" />
+                            <span className="text-white font-bold text-sm">Coming Soon</span>
+                        </div>
+                        <h3 className="text-xl font-bold mb-2 mt-2">Professional</h3>
+                        <p className="text-[var(--foreground-secondary)] text-sm mb-4">For active hiring</p>
+                        <div className="text-3xl font-bold mb-6">$30<span className="text-base text-[var(--foreground-secondary)] font-normal">/mo</span></div>
+
+                        <ul className="space-y-3 text-left text-sm">
+                            <li className="flex gap-2"><Check className="w-4 h-4 text-[var(--success)]" /> 15 Active Job Posts</li>
+                            <li className="flex gap-2"><Check className="w-4 h-4 text-[var(--success)]" /> Unlimited AI Screens</li>
+                            <li className="flex gap-2"><Check className="w-4 h-4 text-[var(--success)]" /> Priority Support</li>
+                        </ul>
+                    </div>
+
+                    {/* Team - Coming Soon */}
+                    <div
+                        // onClick={() => setSelectedPlan('team')}
+                        className={`card p-6 border relative overflow-hidden opacity-75 cursor-not-allowed group border-[var(--border)]`}
+                    >
+                        <div className="absolute inset-0 bg-black/60 z-10 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm">
+                            <Lock className="w-8 h-8 text-white mb-2" />
+                            <span className="text-white font-bold text-sm">Coming Soon</span>
+                        </div>
+                        <h3 className="text-xl font-bold mb-2">Team</h3>
+                        <p className="text-[var(--foreground-secondary)] text-sm mb-4">For agencies</p>
+                        <div className="text-3xl font-bold mb-6">$60<span className="text-base text-[var(--foreground-secondary)] font-normal">/mo</span></div>
+
+                        <ul className="space-y-3 text-left text-sm">
+                            <li className="flex gap-2"><Check className="w-4 h-4 text-[var(--success)]" /> 50 Active Job Posts</li>
+                            <li className="flex gap-2"><Check className="w-4 h-4 text-[var(--success)]" /> 5 Team Members</li>
+                            <li className="flex gap-2"><Check className="w-4 h-4 text-[var(--success)]" /> Dedicated Support</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
     );

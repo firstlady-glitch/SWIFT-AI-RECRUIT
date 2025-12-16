@@ -1,11 +1,12 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { Suspense, useEffect } from 'react';
 import { createClient } from '@/lib/supabase/client';
 
-export default function EmployerPage() {
+function EmployerPageContent() {
     const router = useRouter();
+    const searchParams = useSearchParams();
 
     useEffect(() => {
         const checkAuth = async () => {
@@ -13,18 +14,28 @@ export default function EmployerPage() {
             const { data: { user } } = await supabase.auth.getUser();
 
             if (user) {
-                router.replace(`/app/app/org/employer/${user.id}`);
+                const redirectTarget = searchParams.get('redirectTarget');
+                const redirectQuery = redirectTarget ? `?redirectTarget=${redirectTarget}` : '';
+                router.replace(`/app/org/employer/${user.id}${redirectQuery}`);
             } else {
                 router.push('/auth/login');
             }
         };
 
         checkAuth();
-    }, [router]);
+    }, [router, searchParams]);
 
     return (
         <div className="min-h-screen flex items-center justify-center">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[var(--primary-blue)]"></div>
         </div>
+    );
+}
+
+export default function EmployerPage() {
+    return (
+        <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
+            <EmployerPageContent />
+        </Suspense>
     );
 }

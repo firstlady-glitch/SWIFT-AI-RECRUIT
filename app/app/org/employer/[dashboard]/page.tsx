@@ -1,9 +1,19 @@
 'use client';
 
-import { useParams } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
+import { Suspense, useEffect } from 'react';
 
-export default function EmployerDashboard() {
+function EmployerDashboardContent() {
     const params = useParams();
+    const router = useRouter();
+    const searchParams = useSearchParams();
+
+    useEffect(() => {
+        const redirectTarget = searchParams.get('redirectTarget');
+        if (redirectTarget === 'tools') {
+            router.push(`/app/org/employer/${params.dashboard}/tools`);
+        }
+    }, [searchParams, params.dashboard, router]);
 
     return (
         <div className="min-h-screen bg-[var(--background)]">
@@ -41,5 +51,13 @@ export default function EmployerDashboard() {
                 </div>
             </div>
         </div>
+    );
+}
+
+export default function EmployerDashboard() {
+    return (
+        <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
+            <EmployerDashboardContent />
+        </Suspense>
     );
 }

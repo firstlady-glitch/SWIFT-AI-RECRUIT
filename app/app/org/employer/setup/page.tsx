@@ -1,12 +1,15 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useState, Suspense } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import { Upload } from 'lucide-react';
 
-export default function EmployerSetupPage() {
+function EmployerSetupContent() {
     const router = useRouter();
+    const searchParams = useSearchParams();
+    const selectedPlan = searchParams.get('plan') || 'free';
+
     const [isLoading, setIsLoading] = useState(false);
     const [formData, setFormData] = useState({
         companyName: '',
@@ -85,7 +88,9 @@ export default function EmployerSetupPage() {
 
             if (profileError) throw profileError;
 
-            router.push(`/app/app/org/employer/${user.id}`);
+            const redirectTarget = searchParams.get('redirectTarget');
+            const redirectQuery = redirectTarget ? `?redirectTarget=${redirectTarget}` : '';
+            router.push(`/app/org/employer/${user.id}${redirectQuery}`);
         } catch (error: any) {
             alert(error.message);
             setIsLoading(false);
@@ -97,7 +102,7 @@ export default function EmployerSetupPage() {
             <div className="max-w-2xl mx-auto px-6">
                 <h1 className="text-4xl font-bold mb-4">Setup Your Company Profile</h1>
                 <p className="text-xl text-[var(--foreground-secondary)] mb-8">
-                    Complete your company profile to start hiring
+                    Complete your company profile to start hiring {selectedPlan !== 'free' && <span className="ml-2 inline-block px-2 py-0.5 bg-[var(--primary-blue)] text-white text-xs rounded-full uppercase font-bold tracking-wide align-middle">{selectedPlan} Plan</span>}
                 </p>
 
                 <form onSubmit={handleSubmit} className="card p-8 space-y-6">
@@ -261,5 +266,13 @@ export default function EmployerSetupPage() {
                 </form>
             </div>
         </div>
+    );
+}
+
+export default function EmployerSetupPage() {
+    return (
+        <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-[var(--background)]">Loading...</div>}>
+            <EmployerSetupContent />
+        </Suspense>
     );
 }

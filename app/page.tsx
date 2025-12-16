@@ -15,7 +15,6 @@ export default function Home() {
     <div className="min-h-screen">
       <Navigation />
       <Hero />
-      <div className="flex flex-col w-full">
       <ProblemSection />
       <SolutionSection />
       <AcceptedSection />
@@ -24,7 +23,6 @@ export default function Home() {
       <HowItWorks />
       <UserTypes />
       <FinalCTA />
-      </div>
       <Footer />
     </div>
   );

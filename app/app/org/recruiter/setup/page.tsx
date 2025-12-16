@@ -1,12 +1,15 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useState, Suspense } from 'react';
 import { createClient } from '@/lib/supabase/client';
-import { Upload } from 'lucide-react'; // Assuming lucide-react for the Upload icon
+import { Upload } from 'lucide-react';
 
-export default function RecruiterSetupPage() {
+function RecruiterSetupContent() {
     const router = useRouter();
+    const searchParams = useSearchParams();
+    const selectedPlan = searchParams.get('plan') || 'free';
+
     const [isLoading, setIsLoading] = useState(false);
     const [formData, setFormData] = useState({
         companyName: '',
@@ -85,7 +88,9 @@ export default function RecruiterSetupPage() {
 
             if (profileError) throw profileError;
 
-            router.push(`/app/app/org/recruiter/${user.id}`);
+            const redirectTarget = searchParams.get('redirectTarget');
+            const redirectQuery = redirectTarget ? `?redirectTarget=${redirectTarget}` : '';
+            router.push(`/app/org/recruiter/${user.id}${redirectQuery}`);
         } catch (error: any) {
             alert(error.message);
             setIsLoading(false);
@@ -97,7 +102,7 @@ export default function RecruiterSetupPage() {
             <div className="max-w-2xl mx-auto px-6">
                 <h1 className="text-4xl font-bold mb-4">Setup Your Recruitment Agency</h1>
                 <p className="text-xl text-[var(--foreground-secondary)] mb-8">
-                    Complete your agency profile to start sourcing talent
+                    Complete your agency profile to start sourcing talent {selectedPlan !== 'free' && <span className="ml-2 inline-block px-2 py-0.5 bg-[var(--primary-blue)] text-white text-xs rounded-full uppercase font-bold tracking-wide align-middle">{selectedPlan} Plan</span>}
                 </p>
 
                 <form onSubmit={handleSubmit} className="card p-8 space-y-6">
@@ -262,5 +267,13 @@ export default function RecruiterSetupPage() {
                 </form>
             </div>
         </div>
+    );
+}
+
+export default function RecruiterSetupPage() {
+    return (
+        <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-[var(--background)]">Loading...</div>}>
+            <RecruiterSetupContent />
+        </Suspense>
     );
 }

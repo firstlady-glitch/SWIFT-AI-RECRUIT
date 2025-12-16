@@ -1,29 +1,38 @@
 import { redirect } from 'next/navigation';
 
-export default function AuthPage({ searchParams }: { searchParams: { [key: string]: string | string[] | undefined } }) {
-    const role = searchParams.role;
-    const plan = searchParams.plan;
-    const view = searchParams.view;
+export default async function AuthPage({
+    searchParams
+}: {
+    searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}) {
+    const params = await searchParams;
+    const role = params?.role;
+    const plan = params?.plan;
+    const view = params?.view;
 
     // Construct query string from all existing searchParams
-    const params = new URLSearchParams();
-    Object.keys(searchParams).forEach(key => {
-        const value = searchParams[key];
-        if (value) {
-            if (Array.isArray(value)) {
-                value.forEach(v => params.append(key, v));
-            } else {
-                params.append(key, value);
-            }
-        }
-    });
+    const searchStringParams = new URLSearchParams();
 
-    // Determine target path
-    // If role is present, or if a plan is selected (implying intent to sign up), go to register
-    if (role || plan || view === 'register') {
-        redirect(`/auth/register?${params.toString()}`);
+    if (params) {
+        Object.keys(params).forEach(key => {
+            const value = params[key];
+            if (value) {
+                if (Array.isArray(value)) {
+                    value.forEach(v => searchStringParams.append(key, v));
+                } else {
+                    searchStringParams.append(key, value);
+                }
+            }
+        });
     }
 
-    // Default redirect if nothing specified
-    redirect(`/auth/login?${params.toString()}`);
+    // Determine target path
+    if (role || plan || view === 'register') {
+        redirect(`/auth/register?${searchStringParams.toString()}`);
+    }
+
+    if (!role && !plan && !view) {
+        redirect(`/auth/login?${searchStringParams.toString()}`);
+    }
 }
+

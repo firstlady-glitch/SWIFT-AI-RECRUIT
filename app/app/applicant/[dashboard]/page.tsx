@@ -1,9 +1,19 @@
 'use client';
 
-import { useParams } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
+import { Suspense, useEffect } from 'react';
 
-export default function ApplicantDashboard() {
+function ApplicantDashboardContent() {
     const params = useParams();
+    const searchParams = useSearchParams();
+    const router = useRouter();
+
+    useEffect(() => {
+        const redirectTarget = searchParams.get('redirectTarget');
+        if (redirectTarget === 'tools') {
+            router.push(`/app/applicant/${params.dashboard}/tools`);
+        }
+    }, [searchParams, params.dashboard, router]);
 
     return (
         <div className="min-h-screen bg-[var(--background)]">
@@ -41,5 +51,13 @@ export default function ApplicantDashboard() {
                 </div>
             </div>
         </div>
+    );
+}
+
+export default function ApplicantDashboard() {
+    return (
+        <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
+            <ApplicantDashboardContent />
+        </Suspense>
     );
 }

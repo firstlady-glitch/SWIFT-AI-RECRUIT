@@ -34,8 +34,8 @@ export default function Navigation() {
                     <Link href="/#how-it-works" className="text-[var(--foreground-secondary)] hover:text-[var(--primary-blue)] transition-colors">
                         How It Works
                     </Link>
-                    <Link href="/careers" className="text-[var(--foreground-secondary)] hover:text-[var(--primary-blue)] transition-colors">
-                        Careers
+                    <Link href="/resources" className="text-[var(--foreground-secondary)] hover:text-[var(--primary-blue)] transition-colors">
+                        Resources
                     </Link>
                     <Link href="/jobs" className="text-[var(--foreground-secondary)] hover:text-[var(--primary-blue)] transition-colors">
                         Jobs
@@ -76,11 +76,11 @@ export default function Navigation() {
                             How It Works
                         </Link>
                         <Link
-                            href="/careers"
+                            href="/resources"
                             className="text-lg font-medium text-[var(--foreground-secondary)] hover:text-[var(--primary-blue)] transition-colors py-2 border-b border-gray-100/5"
                             onClick={() => setIsMobileMenuOpen(false)}
                         >
-                            Careers
+                            Resources
                         </Link>
                         <Link
                             href="/jobs"

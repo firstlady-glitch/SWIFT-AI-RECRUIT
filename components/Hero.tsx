@@ -3,7 +3,7 @@ import { Trophy, ArrowRight } from 'lucide-react';
 
 export default function Hero() {
     return (
-        <section className="hero-section py-20 md:py-32">
+        <section className="section py-20 md:py-32">
             <div className="max-w-4xl">
                 {/* Badge */}
                 <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--accent-orange)]/10 border border-[var(--accent-orange)]/20 mb-6 animate-slide-down">
