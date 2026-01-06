@@ -1,36 +1,132 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
-import { ArrowLeft, Sparkles, Send, Copy, Check, Mail } from 'lucide-react';
+import { ArrowLeft, Send, Copy, Check, Mail, User, Briefcase } from 'lucide-react';
 import Link from 'next/link';
+import { ErrorState } from '@/components/ui/ErrorState';
+import { createClient } from '@/lib/supabase/client';
+
+interface Profile {
+    id: string;
+    full_name: string | null;
+    email: string | null;
+    job_title: string | null;
+    skills: string[] | null;
+    experience_years: number | null;
+}
+
+interface Job {
+    id: string;
+    title: string;
+    organization: {
+        name: string;
+    };
+}
 
 export default function OutreachEmailTool() {
     const params = useParams();
-    const [candidateName, setCandidateName] = useState('');
-    const [jobLink, setJobLink] = useState('');
+    const [profiles, setProfiles] = useState<Profile[]>([]);
+    const [jobs, setJobs] = useState<Job[]>([]);
+    const [selectedProfile, setSelectedProfile] = useState<Profile | null>(null);
+    const [selectedJob, setSelectedJob] = useState<Job | null>(null);
     const [hook, setHook] = useState('');
     const [generatedContent, setGeneratedContent] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [isLoadingData, setIsLoadingData] = useState(true);
     const [isCopied, setIsCopied] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+
+    // Fetch profiles and jobs
+    useEffect(() => {
+        const fetchData = async () => {
+            const supabase = createClient();
+
+            try {
+                // Fetch candidate profiles
+                const { data: profilesData } = await supabase
+                    .from('profiles')
+                    .select('id, full_name, email, job_title, skills, experience_years')
+                    .eq('role', 'applicant')
+                    .limit(100);
+
+                setProfiles(profilesData || []);
+
+                // Fetch published jobs
+                const { data: jobsData } = await supabase
+                    .from('jobs')
+                    .select(`
+                        id,
+                        title,
+                        organization:organizations(name)
+                    `)
+                    .eq('status', 'published')
+                    .limit(50);
+
+                const transformed = (jobsData || []).map(job => ({
+                    ...job,
+                    organization: Array.isArray(job.organization) ? job.organization[0] : job.organization
+                }));
+
+                setJobs(transformed);
+                console.log('[OutreachEmail] Loaded profiles:', profilesData?.length, 'jobs:', transformed.length);
+            } catch (err) {
+                console.error('[OutreachEmail] Error:', err);
+                setError('Failed to load data.');
+            } finally {
+                setIsLoadingData(false);
+            }
+        };
+
+        fetchData();
+    }, []);
 
     const handleGenerate = async () => {
-        if (!candidateName) return;
+        if (!selectedProfile) {
+            setError('Please select a candidate.');
+            return;
+        }
 
         setIsLoading(true);
+        setError(null);
         setGeneratedContent('');
 
+        const candidateInfo = `
+            Name: ${selectedProfile.full_name || 'Unknown'}
+            Current Role: ${selectedProfile.job_title || 'Not specified'}
+            Skills: ${selectedProfile.skills?.join(', ') || 'Not specified'}
+            Experience: ${selectedProfile.experience_years || 'Unknown'} years
+        `;
+
+        const jobInfo = selectedJob
+            ? `Role: ${selectedJob.title} at ${selectedJob.organization?.name || 'our company'}`
+            : 'General opportunity inquiry';
+
         const prompt = `
-            Write a hyper-personalized recruiting outreach email to ${candidateName}.
+            You are an expert recruiter writing a cold outreach email.
             
-            Context about candidate/hook: "${hook}"
-            Job Link/Role: ${jobLink}
+            CANDIDATE INFO:
+            ${candidateInfo}
             
-            Goal: Get them to book a call.
-            Tone: Professional but friendly, brief, and not spammy.
+            TARGET OPPORTUNITY:
+            ${jobInfo}
+            
+            PERSONAL HOOK/CONTEXT:
+            ${hook || 'No specific hook provided'}
+            
+            Write a hyper-personalized outreach email that:
+            1. Opens with something specific about THEM (use their skills or background)
+            2. Briefly mentions the opportunity without being salesy
+            3. Ends with a clear, low-friction CTA (quick call, reply, etc.)
+            4. Is under 150 words
+            5. Sounds human, not templated
+            
+            Include a subject line at the top.
         `;
 
         try {
+            console.log('[OutreachEmail] Generating email for:', selectedProfile.full_name);
+
             const res = await fetch('/api/ai/generate', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -41,9 +137,10 @@ export default function OutreachEmailTool() {
 
             const data = await res.json();
             setGeneratedContent(data.result);
-        } catch (error) {
-            console.error(error);
-            alert('Failed to generate email.');
+            console.log('[OutreachEmail] Email generated');
+        } catch (err: any) {
+            console.error('[OutreachEmail] Error:', err);
+            setError(err.message || 'Failed to generate email.');
         } finally {
             setIsLoading(false);
         }
@@ -57,12 +154,13 @@ export default function OutreachEmailTool() {
 
     return (
         <div className="min-h-screen bg-[var(--background)] p-8">
-            <div className="max-w-4xl mx-auto">
+            <div className="max-w-5xl mx-auto">
                 <Link
                     href={`/app/org/recruiter/${params.dashboard}/tools`}
-                    className="inline-flex items-center text-gray-400 hover:text-white mb-6"
+                    className="inline-flex items-center text-gray-400 hover:text-white mb-6 transition-colors"
                 >
-                    <ArrowLeft className="w-4 h-4 mr-2" /> Back to Tools
+                    <ArrowLeft className="w-4 h-4 mr-2" />
+                    Back to Tools
                 </Link>
 
                 <div className="flex items-center gap-4 mb-8">
@@ -70,58 +168,130 @@ export default function OutreachEmailTool() {
                         <Mail className="w-8 h-8" />
                     </div>
                     <div>
-                        <h1 className="text-3xl font-bold mb-1">Cold Outreach Generator</h1>
-                        <p className="text-gray-400">Write emails that get replies.</p>
+                        <h1 className="text-3xl font-bold mb-1">Outreach Email Generator</h1>
+                        <p className="text-gray-400">Create personalized emails using candidate profile data.</p>
                     </div>
                 </div>
 
+                {error && (
+                    <div className="mb-6">
+                        <ErrorState message={error} onRetry={() => setError(null)} />
+                    </div>
+                )}
+
                 <div className="grid lg:grid-cols-2 gap-8">
+                    {/* Input Section */}
                     <div className="space-y-6">
+                        {/* Candidate Selection */}
                         <div className="card p-6 border border-gray-800 bg-[#15171e]">
-                            <label className="block text-sm font-medium mb-2 text-gray-300">Candidate Name</label>
-                            <input
-                                type="text"
-                                value={candidateName}
-                                onChange={(e) => setCandidateName(e.target.value)}
-                                className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm focus:border-[var(--primary-blue)] focus:outline-none"
-                                placeholder="Alex Smith"
-                            />
+                            <label className="block text-sm font-medium mb-2 text-gray-300">
+                                Select Candidate
+                            </label>
+                            {isLoadingData ? (
+                                <div className="flex items-center justify-center py-4">
+                                    <div className="animate-spin rounded-full h-5 w-5 border-2 border-[var(--primary-blue)] border-t-transparent" />
+                                </div>
+                            ) : (
+                                <div className="space-y-2 max-h-48 overflow-y-auto">
+                                    {profiles.length === 0 ? (
+                                        <p className="text-gray-500 text-sm">No candidates found.</p>
+                                    ) : (
+                                        profiles.map((profile) => (
+                                            <button
+                                                key={profile.id}
+                                                onClick={() => setSelectedProfile(profile)}
+                                                className={`w-full text-left p-3 rounded-lg border transition-all ${selectedProfile?.id === profile.id
+                                                        ? 'border-[var(--primary-blue)] bg-[var(--primary-blue)]/10'
+                                                        : 'border-gray-800 bg-[#0b0c0f] hover:border-gray-700'
+                                                    }`}
+                                            >
+                                                <div className="flex items-center gap-2">
+                                                    <User className="w-4 h-4 text-gray-500" />
+                                                    <div>
+                                                        <p className="font-medium text-white text-sm">{profile.full_name || 'Unknown'}</p>
+                                                        <p className="text-xs text-gray-400">{profile.job_title || 'No title'}</p>
+                                                    </div>
+                                                </div>
+                                            </button>
+                                        ))
+                                    )}
+                                </div>
+                            )}
                         </div>
 
+                        {/* Selected Candidate Info */}
+                        {selectedProfile && (
+                            <div className="p-4 bg-[#0b0c0f] border border-gray-800 rounded-lg">
+                                <p className="text-sm text-gray-400 mb-2">Selected Candidate</p>
+                                <p className="font-medium text-white">{selectedProfile.full_name}</p>
+                                <p className="text-sm text-gray-400">{selectedProfile.job_title} • {selectedProfile.experience_years} yrs</p>
+                                {selectedProfile.skills && selectedProfile.skills.length > 0 && (
+                                    <div className="flex flex-wrap gap-1 mt-2">
+                                        {selectedProfile.skills.slice(0, 5).map((skill, i) => (
+                                            <span key={i} className="px-2 py-0.5 bg-gray-800 text-gray-400 rounded text-xs">
+                                                {skill}
+                                            </span>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        )}
+
+                        {/* Job Selection */}
                         <div className="card p-6 border border-gray-800 bg-[#15171e]">
-                            <label className="block text-sm font-medium mb-2 text-gray-300">Personal Hook / Observation</label>
+                            <label className="block text-sm font-medium mb-2 text-gray-300">
+                                Target Job (Optional)
+                            </label>
+                            <select
+                                value={selectedJob?.id || ''}
+                                onChange={(e) => {
+                                    const job = jobs.find(j => j.id === e.target.value);
+                                    setSelectedJob(job || null);
+                                }}
+                                className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm focus:border-[var(--primary-blue)] focus:outline-none"
+                            >
+                                <option value="">-- Select a job --</option>
+                                {jobs.map((job) => (
+                                    <option key={job.id} value={job.id}>
+                                        {job.title} at {job.organization?.name || 'Unknown'}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+
+                        {/* Personal Hook */}
+                        <div className="card p-6 border border-gray-800 bg-[#15171e]">
+                            <label className="block text-sm font-medium mb-2 text-gray-300">
+                                Personal Hook / Context
+                            </label>
                             <textarea
                                 value={hook}
                                 onChange={(e) => setHook(e.target.value)}
-                                className="w-full h-32 bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm focus:border-[var(--primary-blue)] focus:outline-none resize-none"
-                                placeholder="e.g. Saw their GitHub repo on LLMs, or they worked at Google previously."
-                            />
-                        </div>
-
-                        <div className="card p-6 border border-gray-800 bg-[#15171e]">
-                            <label className="block text-sm font-medium mb-2 text-gray-300">Job Role / Link</label>
-                            <input
-                                type="text"
-                                value={jobLink}
-                                onChange={(e) => setJobLink(e.target.value)}
-                                className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm focus:border-[var(--primary-blue)] focus:outline-none"
-                                placeholder="Senior Engineer at Startup X"
+                                className="w-full h-24 bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm focus:border-[var(--primary-blue)] focus:outline-none resize-none"
+                                placeholder="e.g., Saw their talk at ReactConf, their open-source project..."
                             />
                         </div>
 
                         <button
                             onClick={handleGenerate}
-                            disabled={isLoading || !candidateName}
+                            disabled={isLoading || !selectedProfile}
                             className="w-full btn btn-primary py-4 flex items-center justify-center gap-2 disabled:opacity-50"
                         >
                             {isLoading ? (
-                                <>Generatiing... <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent" /></>
+                                <>
+                                    Generating...
+                                    <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent" />
+                                </>
                             ) : (
-                                <>Generate Email <Send className="w-4 h-4" /></>
+                                <>
+                                    Generate Email
+                                    <Send className="w-4 h-4" />
+                                </>
                             )}
                         </button>
                     </div>
 
+                    {/* Output Section */}
                     <div className="relative">
                         <div className="h-full min-h-[500px] bg-[#15171e] border border-gray-800 rounded-xl p-8 relative">
                             {generatedContent ? (
@@ -131,16 +301,20 @@ export default function OutreachEmailTool() {
                                         className="absolute top-4 right-4 p-2 bg-gray-800 hover:bg-gray-700 rounded-lg text-gray-400 hover:text-white transition-colors"
                                         title="Copy to clipboard"
                                     >
-                                        {isCopied ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
+                                        {isCopied ? (
+                                            <Check className="w-4 h-4 text-green-500" />
+                                        ) : (
+                                            <Copy className="w-4 h-4" />
+                                        )}
                                     </button>
-                                    <div className="prose prose-invert max-w-none whitespace-pre-wrap">
+                                    <div className="prose prose-invert max-w-none whitespace-pre-wrap text-sm">
                                         {generatedContent}
                                     </div>
                                 </>
                             ) : (
                                 <div className="absolute inset-0 flex flex-col items-center justify-center text-gray-500 opacity-50 p-6 text-center">
                                     <Mail className="w-16 h-16 mb-4" />
-                                    <p className="text-lg">Draft email will appear here.</p>
+                                    <p className="text-lg">Personalized email will appear here.</p>
                                 </div>
                             )}
                         </div>

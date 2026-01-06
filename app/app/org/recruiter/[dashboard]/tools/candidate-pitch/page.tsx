@@ -1,40 +1,153 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
-import { ArrowLeft, Sparkles, Send, Copy, Check, Presentation } from 'lucide-react';
+import { ArrowLeft, Send, Copy, Check, Presentation, User, Briefcase } from 'lucide-react';
 import Link from 'next/link';
+import { ErrorState } from '@/components/ui/ErrorState';
+import { createClient } from '@/lib/supabase/client';
+
+interface Profile {
+    id: string;
+    full_name: string | null;
+    job_title: string | null;
+    skills: string[] | null;
+    experience_years: number | null;
+}
+
+interface Job {
+    id: string;
+    title: string;
+    organization: {
+        name: string;
+    };
+}
 
 export default function CandidatePitchTool() {
     const params = useParams();
+    const [profiles, setProfiles] = useState<Profile[]>([]);
+    const [jobs, setJobs] = useState<Job[]>([]);
+    const [selectedProfile, setSelectedProfile] = useState<Profile | null>(null);
+    const [selectedJob, setSelectedJob] = useState<Job | null>(null);
     const [candidateName, setCandidateName] = useState('');
     const [keySkills, setKeySkills] = useState('');
+    const [pitchStyle, setPitchStyle] = useState<'email' | 'slack' | 'presentation'>('email');
     const [generatedContent, setGeneratedContent] = useState('');
+    const [isLoadingData, setIsLoadingData] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
     const [isCopied, setIsCopied] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+
+    // Fetch candidates and jobs
+    useEffect(() => {
+        const fetchData = async () => {
+            const supabase = createClient();
+
+            try {
+                // Fetch applicant profiles
+                const { data: profilesData } = await supabase
+                    .from('profiles')
+                    .select('id, full_name, job_title, skills, experience_years')
+                    .eq('role', 'applicant')
+                    .limit(100);
+
+                setProfiles(profilesData || []);
+
+                // Fetch jobs
+                const { data: jobsData } = await supabase
+                    .from('jobs')
+                    .select(`
+                        id,
+                        title,
+                        organization:organizations(name)
+                    `)
+                    .eq('status', 'published')
+                    .limit(50);
+
+                const transformed = (jobsData || []).map(job => ({
+                    ...job,
+                    organization: Array.isArray(job.organization) ? job.organization[0] : job.organization
+                }));
+
+                setJobs(transformed);
+                console.log('[CandidatePitch] Loaded profiles and jobs');
+            } catch (err) {
+                console.error('[CandidatePitch] Error:', err);
+            } finally {
+                setIsLoadingData(false);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+    const handleSelectProfile = (profile: Profile) => {
+        setSelectedProfile(profile);
+        setCandidateName(profile.full_name || '');
+        setKeySkills(`
+${profile.job_title || 'Professional'}
+${profile.experience_years ? `${profile.experience_years} years of experience` : ''}
+Skills: ${profile.skills?.join(', ') || 'Various'}
+        `.trim());
+    };
 
     const handleGenerate = async () => {
-        if (!candidateName) return;
+        if (!candidateName) {
+            setError('Please select a candidate or enter their name.');
+            return;
+        }
 
         setIsLoading(true);
+        setError(null);
         setGeneratedContent('');
 
+        const targetRole = selectedJob?.title || 'the open position';
+        const company = selectedJob?.organization?.name || 'your company';
+
+        const styleInstructions = {
+            email: 'Format as a professional email to a hiring manager. Include a subject line. Keep it concise (under 200 words).',
+            slack: 'Format as a Slack message. Use emojis sparingly. Be casual but professional. Very brief (under 100 words).',
+            presentation: 'Format as bullet points for a verbal pitch or slide deck. Include talking points and key data.'
+        };
+
         const prompt = `
-            Write a compelling candidate pitch for a client/hiring manager.
+            You are an expert recruiter pitching a candidate to a hiring manager.
             
-            Candidate: ${candidateName}
-            Key Strengths/Skills: ${keySkills}
+            CANDIDATE:
+            Name: ${candidateName}
+            Background: ${keySkills}
             
-            Goal: Convince the hiring manager to interview this person immediately.
-            Structure:
-            1. "The Hook" (One sentence summary).
-            2. Top 3 Selling Points.
-            3. "Ideally Suited For" section.
+            TARGET ROLE: ${targetRole} at ${company}
+            FORMAT: ${styleInstructions[pitchStyle]}
             
-            Tone: Persuasive, punchy, and professional.
+            Create a compelling candidate pitch that:
+            
+            1. **Opens with a hook** - One impactful sentence that grabs attention
+            2. **Highlights top 3 selling points** - Why this person is special
+            3. **Addresses the role fit** - How they match this specific opportunity
+            4. **Creates urgency** - Why you shouldn't wait to interview them
+            5. **Clear CTA** - What action the hiring manager should take next
+            
+            Tone: Persuasive, confident, data-driven where possible.
+            
+            ${pitchStyle === 'email' ? `
+            Also provide:
+            - A catchy subject line
+            - 2 alternative opening hooks
+            ` : ''}
+            
+            ${pitchStyle === 'presentation' ? `
+            Also provide:
+            - 5-7 bullet points for a slide
+            - 3 potential objections and how to handle them
+            ` : ''}
+            
+            Make the hiring manager want to meet this candidate TODAY.
         `;
 
         try {
+            console.log('[CandidatePitch] Generating pitch for:', candidateName);
+
             const res = await fetch('/api/ai/generate', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -45,9 +158,10 @@ export default function CandidatePitchTool() {
 
             const data = await res.json();
             setGeneratedContent(data.result);
-        } catch (error) {
-            console.error(error);
-            alert('Failed to generate pitch.');
+            console.log('[CandidatePitch] Pitch generated');
+        } catch (err: any) {
+            console.error('[CandidatePitch] Error:', err);
+            setError(err.message || 'Failed to generate pitch.');
         } finally {
             setIsLoading(false);
         }
@@ -61,12 +175,13 @@ export default function CandidatePitchTool() {
 
     return (
         <div className="min-h-screen bg-[var(--background)] p-8">
-            <div className="max-w-4xl mx-auto">
+            <div className="max-w-5xl mx-auto">
                 <Link
                     href={`/app/org/recruiter/${params.dashboard}/tools`}
-                    className="inline-flex items-center text-gray-400 hover:text-white mb-6"
+                    className="inline-flex items-center text-gray-400 hover:text-white mb-6 transition-colors"
                 >
-                    <ArrowLeft className="w-4 h-4 mr-2" /> Back to Tools
+                    <ArrowLeft className="w-4 h-4 mr-2" />
+                    Back to Tools
                 </Link>
 
                 <div className="flex items-center gap-4 mb-8">
@@ -75,18 +190,77 @@ export default function CandidatePitchTool() {
                     </div>
                     <div>
                         <h1 className="text-3xl font-bold mb-1">Candidate Pitch Generator</h1>
-                        <p className="text-gray-400">Sell your candidates to clients effectively.</p>
+                        <p className="text-gray-400">Sell your candidates to clients with compelling pitches.</p>
                     </div>
                 </div>
 
+                {error && (
+                    <div className="mb-6">
+                        <ErrorState message={error} onRetry={() => setError(null)} />
+                    </div>
+                )}
+
                 <div className="grid lg:grid-cols-2 gap-8">
                     <div className="space-y-6">
+                        {/* Candidate Selection */}
+                        <div className="card p-6 border border-gray-800 bg-[#15171e]">
+                            <label className="block text-sm font-medium mb-2 text-gray-300">Select Candidate</label>
+                            {isLoadingData ? (
+                                <div className="flex items-center justify-center py-3">
+                                    <div className="animate-spin rounded-full h-5 w-5 border-2 border-[var(--primary-blue)] border-t-transparent" />
+                                </div>
+                            ) : profiles.length === 0 ? (
+                                <p className="text-gray-500 text-sm">No candidates found</p>
+                            ) : (
+                                <div className="space-y-2 max-h-40 overflow-y-auto">
+                                    {profiles.map((profile) => (
+                                        <button
+                                            key={profile.id}
+                                            onClick={() => handleSelectProfile(profile)}
+                                            className={`w-full text-left p-3 rounded-lg border transition-all ${selectedProfile?.id === profile.id
+                                                    ? 'border-orange-500 bg-orange-500/10'
+                                                    : 'border-gray-800 bg-[#0b0c0f] hover:border-gray-700'
+                                                }`}
+                                        >
+                                            <div className="flex items-center gap-2">
+                                                <User className="w-4 h-4 text-gray-500" />
+                                                <div>
+                                                    <p className="font-medium text-white text-sm">{profile.full_name || 'Unknown'}</p>
+                                                    <p className="text-xs text-gray-400">{profile.job_title || 'No title'}</p>
+                                                </div>
+                                            </div>
+                                        </button>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Target Job */}
+                        <div className="card p-6 border border-gray-800 bg-[#15171e]">
+                            <label className="block text-sm font-medium mb-2 text-gray-300">Target Job (Optional)</label>
+                            <select
+                                value={selectedJob?.id || ''}
+                                onChange={(e) => {
+                                    const job = jobs.find(j => j.id === e.target.value);
+                                    setSelectedJob(job || null);
+                                }}
+                                className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm focus:border-[var(--primary-blue)] focus:outline-none"
+                            >
+                                <option value="">-- General pitch --</option>
+                                {jobs.map((job) => (
+                                    <option key={job.id} value={job.id}>
+                                        {job.title} at {job.organization?.name || 'Unknown'}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+
                         <div className="card p-6 border border-gray-800 bg-[#15171e]">
                             <label className="block text-sm font-medium mb-2 text-gray-300">Candidate Name</label>
                             <input
                                 type="text"
                                 value={candidateName}
-                                onChange={(e) => setCandidateName(e.target.value)}
+                                onChange={(e) => { setCandidateName(e.target.value); setSelectedProfile(null); }}
                                 className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm focus:border-[var(--primary-blue)] focus:outline-none"
                                 placeholder="Sam Taylor"
                             />
@@ -97,9 +271,40 @@ export default function CandidatePitchTool() {
                             <textarea
                                 value={keySkills}
                                 onChange={(e) => setKeySkills(e.target.value)}
-                                className="w-full h-40 bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm focus:border-[var(--primary-blue)] focus:outline-none resize-none"
+                                className="w-full h-28 bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm focus:border-[var(--primary-blue)] focus:outline-none resize-none"
                                 placeholder="e.g. 5 yrs in React, led team of 10, built SaaS from 0 to 1M ARR."
                             />
+                        </div>
+
+                        {/* Pitch Style */}
+                        <div className="card p-6 border border-gray-800 bg-[#15171e]">
+                            <label className="block text-sm font-medium mb-3 text-gray-300">Pitch Style</label>
+                            <div className="grid grid-cols-3 gap-2">
+                                <button
+                                    onClick={() => setPitchStyle('email')}
+                                    className={`p-3 rounded-lg border text-center transition-all ${pitchStyle === 'email' ? 'border-orange-500 bg-orange-500/10' : 'border-gray-800 bg-[#0b0c0f]'
+                                        }`}
+                                >
+                                    <p className="text-sm font-medium text-white">Email</p>
+                                    <p className="text-xs text-gray-500">Formal</p>
+                                </button>
+                                <button
+                                    onClick={() => setPitchStyle('slack')}
+                                    className={`p-3 rounded-lg border text-center transition-all ${pitchStyle === 'slack' ? 'border-orange-500 bg-orange-500/10' : 'border-gray-800 bg-[#0b0c0f]'
+                                        }`}
+                                >
+                                    <p className="text-sm font-medium text-white">Slack</p>
+                                    <p className="text-xs text-gray-500">Quick</p>
+                                </button>
+                                <button
+                                    onClick={() => setPitchStyle('presentation')}
+                                    className={`p-3 rounded-lg border text-center transition-all ${pitchStyle === 'presentation' ? 'border-orange-500 bg-orange-500/10' : 'border-gray-800 bg-[#0b0c0f]'
+                                        }`}
+                                >
+                                    <p className="text-sm font-medium text-white">Deck</p>
+                                    <p className="text-xs text-gray-500">Slides</p>
+                                </button>
+                            </div>
                         </div>
 
                         <button
@@ -108,25 +313,31 @@ export default function CandidatePitchTool() {
                             className="w-full btn btn-primary py-4 flex items-center justify-center gap-2 disabled:opacity-50"
                         >
                             {isLoading ? (
-                                <>Generatiing... <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent" /></>
+                                <>
+                                    Generating...
+                                    <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent" />
+                                </>
                             ) : (
-                                <>Generate Pitch <Send className="w-4 h-4" /></>
+                                <>
+                                    <Presentation className="w-4 h-4" />
+                                    Generate Pitch
+                                </>
                             )}
                         </button>
                     </div>
 
                     <div className="relative">
-                        <div className="h-full min-h-[500px] bg-[#15171e] border border-gray-800 rounded-xl p-8 relative">
+                        <div className="h-full min-h-[600px] bg-[#15171e] border border-gray-800 rounded-xl p-8 relative overflow-auto">
                             {generatedContent ? (
                                 <>
                                     <button
                                         onClick={copyToClipboard}
-                                        className="absolute top-4 right-4 p-2 bg-gray-800 hover:bg-gray-700 rounded-lg text-gray-400 hover:text-white transition-colors"
+                                        className="absolute top-4 right-4 p-2 bg-gray-800 hover:bg-gray-700 rounded-lg text-gray-400 hover:text-white transition-colors z-10"
                                         title="Copy to clipboard"
                                     >
                                         {isCopied ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
                                     </button>
-                                    <div className="prose prose-invert max-w-none whitespace-pre-wrap">
+                                    <div className="prose prose-invert max-w-none whitespace-pre-wrap text-sm">
                                         {generatedContent}
                                     </div>
                                 </>

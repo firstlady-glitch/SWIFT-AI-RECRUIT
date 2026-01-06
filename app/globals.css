@@ -97,6 +97,31 @@
   box-sizing: border-box;
 }
 
+/* Slim Scrollbars */
+::-webkit-scrollbar {
+  width: 3px;
+  height: 3px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--foreground-secondary);
+}
+
+/* Firefox slim scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -253,12 +278,12 @@ p {
 
 /* Buttons */
 .btn {
-  padding: 0.875rem 2rem;
+  padding: 0.75rem 1.5rem;
   border-radius: var(--radius-full);
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 0.875rem;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   border: none;
   display: inline-flex;
   align-items: center;
@@ -266,6 +291,20 @@ p {
   text-align: center;
   gap: 0.5rem;
   text-decoration: none;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.btn-sm {
+  padding: 0.5rem 1rem;
+  font-size: 0.75rem;
+}
+
+@media (min-width: 768px) {
+  .btn {
+    padding: 0.875rem 2rem;
+    font-size: 1rem;
+  }
 }
 
 .btn-primary {
@@ -356,9 +395,9 @@ p {
   opacity: 0.2;
 }
 
-/* Section spacing */
+/* Section spacing - reduced for mobile */
 .section {
-  padding: var(--spacing-2xl) var(--spacing-md);
+  padding: var(--spacing-lg) var(--spacing-sm);
   max-width: 1280px;
   margin: 0 auto;
 }

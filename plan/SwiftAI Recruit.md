@@ -28,7 +28,7 @@ By offering these comprehensive services, SwiftAI Recruit empowers organizations
 
 **Brand Name: SwiftAI Recruit**
 
-* **Logo:** logo.png, banner.png, favicon.ico 
+* **Logo:** Design a sleek, stylized swift bird in motion, with wings extended to resemble the shape of an abstract AI-related element like a neural network or binary code. The design should be modern, minimalist, and convey a sense of speed and innovation.  
 * **Color Palette:** Use a bold and contemporary color palette featuring shades of deep blue for professionalism and trust, paired with accents of vibrant orange to represent energy and creativity.  
 * **Typography:** Choose a modern sans-serif font for the company name, with clean lines and a tech-forward aesthetic. For supporting text, opt for a complementary font that is easy to read and pairs well with the primary font.  
 * **Visual Elements:** Incorporate subtle visual elements related to AI and recruitment throughout branding materials, such as circuit patterns or abstract shapes representing connections and networks. These elements should add visual interest while reinforcing the company's focus on technology and efficiency.  

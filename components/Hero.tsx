@@ -21,12 +21,13 @@ export default function Hero() {
                 </p>
 
                 {/* CTA Buttons */}
-                <div className="flex flex-row gap-4 mb-12 animate-slide-up" style={{ animationDelay: '0.3s' }}>
-                    <Link href="/auth/register?role=applicant" className="btn btn-primary text-lg px-8 py-4">
-                        Get Started Free <ArrowRight className="w-5 h-5" />
+                <div className="flex flex-col sm:flex-row gap-3 mb-10 animate-slide-up" style={{ animationDelay: '0.3s' }}>
+                    <Link href="/auth/register?role=applicant" className="btn btn-primary">
+                        <span>Get Started Free</span>
+                        <ArrowRight className="w-4 h-4" />
                     </Link>
-                    <Link href="/auth/register?role=org" className="btn btn-outline text-lg px-8 py-4">
-                        Hire a Talent
+                    <Link href="/auth/register?role=org" className="btn btn-outline">
+                        <span>Hire a Talent</span>
                     </Link>
                 </div>
 

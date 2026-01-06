@@ -2,59 +2,75 @@
 
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
-import { FileText, Sparkles, MessageSquare, ArrowRight } from 'lucide-react';
+import { FileText, MessageSquare, Sparkles, PenTool, Target } from 'lucide-react';
+
+const tools = [
+    {
+        name: 'Smart Resume Parser',
+        description: 'Extract profile data from your resume with AI. Use existing resume or paste new.',
+        icon: FileText,
+        href: 'resume-parser',
+        color: 'text-emerald-500',
+        bgColor: 'bg-emerald-500/10'
+    },
+    {
+        name: 'Resume Optimizer',
+        description: 'Get AI feedback to improve your resume with ATS scoring and keyword analysis.',
+        icon: Sparkles,
+        href: 'resume-optimizer',
+        color: 'text-purple-500',
+        bgColor: 'bg-purple-500/10'
+    },
+    {
+        name: 'Cover Letter Generator',
+        description: 'Write personalized cover letters tailored to specific job postings.',
+        icon: PenTool,
+        href: 'cover-letter',
+        color: 'text-blue-500',
+        bgColor: 'bg-blue-500/10'
+    },
+    {
+        name: 'Interview Prep AI',
+        description: 'Practice with AI-generated interview questions with hints and progress tracking.',
+        icon: MessageSquare,
+        href: 'interview-prep',
+        color: 'text-pink-500',
+        bgColor: 'bg-pink-500/10'
+    },
+    {
+        name: 'Job Fit Predictor',
+        description: 'Compare your profile against jobs to see match score and skill gaps.',
+        icon: Target,
+        href: 'job-fit',
+        color: 'text-orange-500',
+        bgColor: 'bg-orange-500/10'
+    }
+];
 
 export default function ApplicantToolsPage() {
     const params = useParams();
-    const dashboardId = params.dashboard;
-
-    const tools = [
-        {
-            name: "Cover Letter Writer",
-            desc: "Instantly write tailored cover letters for any job.",
-            icon: <FileText className="w-8 h-8 text-[var(--primary-blue)]" />,
-            href: `/app/applicant/${dashboardId}/tools/cover-letter`,
-            color: "bg-[var(--primary-blue)]/10"
-        },
-        {
-            name: "Resume Optimizer",
-            desc: "Get expert feedback on your resume content.",
-            icon: <Sparkles className="w-8 h-8 text-purple-500" />,
-            href: `/app/applicant/${dashboardId}/tools/resume-optimizer`,
-            color: "bg-purple-500/10"
-        },
-        {
-            name: "Interview Prep",
-            desc: "Practice with custom interview questions.",
-            icon: <MessageSquare className="w-8 h-8 text-pink-500" />,
-            href: `/app/applicant/${dashboardId}/tools/interview-prep`,
-            color: "bg-pink-500/10"
-        }
-    ];
 
     return (
-        <div className="p-8">
-            <h1 className="text-3xl font-bold mb-2">Job Seeker Tools</h1>
-            <p className="text-[var(--foreground-secondary)] mb-8">AI-powered tools to accelerate your career.</p>
+        <div className="min-h-screen bg-[var(--background)] p-8">
+            <div className="max-w-4xl mx-auto">
+                <h1 className="text-3xl font-bold mb-2">AI Tools</h1>
+                <p className="text-gray-400 mb-8">Supercharge your job search with intelligent tools.</p>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {tools.map((tool, idx) => (
-                    <Link
-                        key={idx}
-                        href={tool.href}
-                        className="card p-6 border border-gray-800 bg-[#15171e] hover:border-[var(--primary-blue)] transition-all group"
-                    >
-                        <div className={`w-16 h-16 rounded-2xl ${tool.color} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
-                            {tool.icon}
-                        </div>
-                        <h3 className="text-xl font-bold mb-2">{tool.name}</h3>
-                        <p className="text-[var(--foreground-secondary)] mb-6 text-sm">{tool.desc}</p>
-
-                        <div className="flex items-center text-[var(--primary-blue)] font-medium text-sm">
-                            Open Tool <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-                        </div>
-                    </Link>
-                ))}
+                <div className="grid md:grid-cols-2 gap-6">
+                    {tools.map((tool) => (
+                        <Link
+                            key={tool.name}
+                            href={`/app/applicant/${params.dashboard}/tools/${tool.href}`}
+                            className="card p-6 border border-gray-800 bg-[#15171e] hover:border-[var(--primary-blue)] transition-all group"
+                        >
+                            <div className={`p-3 rounded-xl ${tool.bgColor} ${tool.color} w-fit mb-4 group-hover:scale-110 transition-transform`}>
+                                <tool.icon className="w-6 h-6" />
+                            </div>
+                            <h3 className="text-lg font-bold mb-2">{tool.name}</h3>
+                            <p className="text-gray-400 text-sm">{tool.description}</p>
+                        </Link>
+                    ))}
+                </div>
             </div>
         </div>
     );

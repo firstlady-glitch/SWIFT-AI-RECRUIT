@@ -1,30 +1,18 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
-import { createClient } from '@/lib/supabase/client';
+import { useRouter } from 'next/navigation';
 
 export default function ApplicantPage() {
     const router = useRouter();
 
     useEffect(() => {
-        const checkAuth = async () => {
-            const supabase = createClient();
-            const { data: { user } } = await supabase.auth.getUser();
-
-            if (user) {
-                router.replace(`/app/applicant/${user.id}`);
-            } else {
-                router.push('/auth/login');
-            }
-        };
-
-        checkAuth();
+        router.replace('/app/applicant/jobs');
     }, [router]);
 
     return (
-        <div className="min-h-screen flex items-center justify-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[var(--primary-blue)]"></div>
+        <div className="min-h-screen bg-[var(--background)] flex items-center justify-center">
+            <div className="text-gray-400">Redirecting to jobs...</div>
         </div>
     );
 }
