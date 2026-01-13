@@ -1,10 +1,145 @@
 'use client';
 
-import { useState } from 'react';
-import { User, Bell, Shield, Wallet, Save } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { User, Bell, Shield, Wallet, Save, Loader2, CreditCard, MapPin, Briefcase, Link as LinkIcon } from 'lucide-react';
+import Link from 'next/link';
+import { createClient } from '@/lib/supabase/client';
+import { ErrorState } from '@/components/ui/ErrorState';
 
 export default function ApplicantSettings() {
+    const router = useRouter();
     const [activeTab, setActiveTab] = useState('profile');
+    const [isLoading, setIsLoading] = useState(true);
+    const [isSaving, setIsSaving] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+    const [success, setSuccess] = useState(false);
+
+    const [formData, setFormData] = useState({
+        full_name: '',
+        email: '',
+        job_title: '',
+        location: '',
+        phone: '',
+        linkedin_url: '',
+        website: '',
+        experience_years: 0,
+        skills: [] as string[],
+    });
+
+    const [notifications, setNotifications] = useState({
+        application_status: true,
+        job_recommendations: true,
+        interview_reminders: true,
+        marketing: false,
+    });
+
+    useEffect(() => {
+        fetchProfile();
+    }, []);
+
+    const fetchProfile = async () => {
+        setIsLoading(true);
+        const supabase = createClient();
+
+        try {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) {
+                router.push('/auth/login');
+                return;
+            }
+
+            const { data: profile, error: profileError } = await supabase
+                .from('profiles')
+                .select('*')
+                .eq('id', user.id)
+                .single();
+
+            if (profileError) throw profileError;
+
+            setFormData({
+                full_name: profile.full_name || '',
+                email: profile.email || user.email || '',
+                job_title: profile.job_title || '',
+                location: profile.location || '',
+                phone: profile.phone || '',
+                linkedin_url: profile.linkedin_url || '',
+                website: profile.website || '',
+                experience_years: profile.experience_years || 0,
+                skills: profile.skills || [],
+            });
+        } catch (err: any) {
+            console.error('[Settings] Error:', err);
+            setError('Failed to load profile');
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const handleSave = async () => {
+        setIsSaving(true);
+        setError(null);
+        setSuccess(false);
+
+        const supabase = createClient();
+
+        try {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) return;
+
+            const { error: updateError } = await supabase
+                .from('profiles')
+                .update({
+                    full_name: formData.full_name,
+                    job_title: formData.job_title,
+                    location: formData.location,
+                    phone: formData.phone,
+                    linkedin_url: formData.linkedin_url,
+                    website: formData.website,
+                    experience_years: formData.experience_years,
+                    skills: formData.skills,
+                    updated_at: new Date().toISOString(),
+                })
+                .eq('id', user.id);
+
+            if (updateError) throw updateError;
+
+            setSuccess(true);
+            setTimeout(() => setSuccess(false), 3000);
+        } catch (err: any) {
+            setError(err.message || 'Failed to save');
+        } finally {
+            setIsSaving(false);
+        }
+    };
+
+    const openStripePortal = async () => {
+        try {
+            const res = await fetch('/api/stripe/portal', { method: 'POST' });
+            const data = await res.json();
+            if (data.url) {
+                window.location.href = data.url;
+            } else if (data.redirect) {
+                router.push('/pricing?role=applicant');
+            }
+        } catch (err) {
+            router.push('/pricing?role=applicant');
+        }
+    };
+
+    if (isLoading) {
+        return (
+            <div className="p-8 max-w-6xl mx-auto">
+                <div className="h-8 w-48 bg-gray-800 rounded animate-pulse mb-8" />
+                <div className="grid md:grid-cols-4 gap-8">
+                    <div className="h-48 bg-gray-800 rounded-xl animate-pulse" />
+                    <div className="md:col-span-3 h-96 bg-gray-800 rounded-xl animate-pulse" />
+                </div>
+            </div>
+        );
+    }
+
+    if (error && !formData.email) return <ErrorState message={error} onRetry={fetchProfile} />;
 
     return (
         <div className="p-8 max-w-6xl mx-auto">
@@ -36,7 +171,7 @@ export default function ApplicantSettings() {
                         onClick={() => setActiveTab('billing')}
                         className={`w-full flex items-center gap-3 p-4 transition-colors ${activeTab === 'billing' ? 'bg-[var(--primary-blue)]/10 text-[var(--primary-blue)]' : 'hover:bg-gray-800 text-gray-400'}`}
                     >
-                        <Wallet className="w-5 h-5" /> Billing (Pro)
+                        <Wallet className="w-5 h-5" /> Subscription
                     </button>
                 </div>
 
@@ -45,26 +180,104 @@ export default function ApplicantSettings() {
                     {activeTab === 'profile' && (
                         <div className="space-y-6">
                             <div className="card p-6 border border-gray-800 bg-[#15171e]">
-                                <h3 className="text-xl font-bold mb-4">Personal Information</h3>
+                                <h3 className="text-xl font-bold mb-6">Personal Information</h3>
                                 <div className="grid md:grid-cols-2 gap-6">
                                     <div>
-                                        <label className="block text-sm font-medium mb-2 text-gray-400">Full Name</label>
-                                        <input type="text" className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm" defaultValue="John Doe" />
+                                        <label className="block text-sm font-medium mb-2 text-gray-400">
+                                            <User className="w-4 h-4 inline mr-1" /> Full Name
+                                        </label>
+                                        <input
+                                            type="text"
+                                            value={formData.full_name}
+                                            onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
+                                            className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm"
+                                        />
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-medium mb-2 text-gray-400">Headline</label>
-                                        <input type="text" className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm" defaultValue="Senior React Developer" />
+                                        <label className="block text-sm font-medium mb-2 text-gray-400">
+                                            <Briefcase className="w-4 h-4 inline mr-1" /> Job Title
+                                        </label>
+                                        <input
+                                            type="text"
+                                            value={formData.job_title}
+                                            onChange={(e) => setFormData({ ...formData, job_title: e.target.value })}
+                                            className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm"
+                                            placeholder="e.g., Senior React Developer"
+                                        />
                                     </div>
-                                    <div className="md:col-span-2">
-                                        <label className="block text-sm font-medium mb-2 text-gray-400">Bio</label>
-                                        <textarea className="w-full h-32 bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm resize-none" defaultValue="Passionate developer building great user experiences..." />
+                                    <div>
+                                        <label className="block text-sm font-medium mb-2 text-gray-400">
+                                            <MapPin className="w-4 h-4 inline mr-1" /> Location
+                                        </label>
+                                        <input
+                                            type="text"
+                                            value={formData.location}
+                                            onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+                                            className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm"
+                                            placeholder="City, Country"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium mb-2 text-gray-400">
+                                            Phone
+                                        </label>
+                                        <input
+                                            type="tel"
+                                            value={formData.phone}
+                                            onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                                            className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium mb-2 text-gray-400">
+                                            <LinkIcon className="w-4 h-4 inline mr-1" /> LinkedIn URL
+                                        </label>
+                                        <input
+                                            type="url"
+                                            value={formData.linkedin_url}
+                                            onChange={(e) => setFormData({ ...formData, linkedin_url: e.target.value })}
+                                            className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm"
+                                            placeholder="https://linkedin.com/in/..."
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium mb-2 text-gray-400">
+                                            Years of Experience
+                                        </label>
+                                        <input
+                                            type="number"
+                                            value={formData.experience_years}
+                                            onChange={(e) => setFormData({ ...formData, experience_years: parseInt(e.target.value) || 0 })}
+                                            className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm"
+                                            min={0}
+                                        />
                                     </div>
                                 </div>
                             </div>
 
+                            {error && (
+                                <div className="p-4 bg-red-500/10 border border-red-500/30 rounded-lg text-red-400 text-sm">
+                                    {error}
+                                </div>
+                            )}
+
+                            {success && (
+                                <div className="p-4 bg-green-500/10 border border-green-500/30 rounded-lg text-green-400 text-sm">
+                                    ✓ Profile updated successfully!
+                                </div>
+                            )}
+
                             <div className="flex justify-end">
-                                <button className="btn btn-primary px-6 py-2 flex items-center gap-2">
-                                    <Save className="w-4 h-4" /> Save Changes
+                                <button
+                                    onClick={handleSave}
+                                    disabled={isSaving}
+                                    className="btn btn-primary px-6 py-2 flex items-center gap-2 disabled:opacity-50"
+                                >
+                                    {isSaving ? (
+                                        <><Loader2 className="w-4 h-4 animate-spin" /> Saving...</>
+                                    ) : (
+                                        <><Save className="w-4 h-4" /> Save Changes</>
+                                    )}
                                 </button>
                             </div>
                         </div>
@@ -72,21 +285,43 @@ export default function ApplicantSettings() {
 
                     {activeTab === 'notifications' && (
                         <div className="card p-6 border border-gray-800 bg-[#15171e]">
-                            <h3 className="text-xl font-bold mb-4">Notification Preferences</h3>
+                            <h3 className="text-xl font-bold mb-6">Notification Preferences</h3>
                             <div className="space-y-4">
                                 <div className="flex items-center justify-between p-4 border border-gray-800 rounded-lg bg-[#0b0c0f]">
                                     <div>
-                                        <div className="font-medium text-white">Application Status</div>
-                                        <div className="text-sm text-gray-400">Get emails when your status changes</div>
+                                        <div className="font-medium text-white">Application Status Updates</div>
+                                        <div className="text-sm text-gray-400">Get notified when your application status changes</div>
                                     </div>
-                                    <input type="checkbox" className="w-5 h-5 toggle-checkbox" defaultChecked />
+                                    <input
+                                        type="checkbox"
+                                        checked={notifications.application_status}
+                                        onChange={(e) => setNotifications({ ...notifications, application_status: e.target.checked })}
+                                        className="w-5 h-5"
+                                    />
                                 </div>
                                 <div className="flex items-center justify-between p-4 border border-gray-800 rounded-lg bg-[#0b0c0f]">
                                     <div>
                                         <div className="font-medium text-white">Job Recommendations</div>
-                                        <div className="text-sm text-gray-400">Weekly AI curated job lists</div>
+                                        <div className="text-sm text-gray-400">Weekly AI curated job suggestions</div>
                                     </div>
-                                    <input type="checkbox" className="w-5 h-5 toggle-checkbox" defaultChecked />
+                                    <input
+                                        type="checkbox"
+                                        checked={notifications.job_recommendations}
+                                        onChange={(e) => setNotifications({ ...notifications, job_recommendations: e.target.checked })}
+                                        className="w-5 h-5"
+                                    />
+                                </div>
+                                <div className="flex items-center justify-between p-4 border border-gray-800 rounded-lg bg-[#0b0c0f]">
+                                    <div>
+                                        <div className="font-medium text-white">Interview Reminders</div>
+                                        <div className="text-sm text-gray-400">Get reminded before scheduled interviews</div>
+                                    </div>
+                                    <input
+                                        type="checkbox"
+                                        checked={notifications.interview_reminders}
+                                        onChange={(e) => setNotifications({ ...notifications, interview_reminders: e.target.checked })}
+                                        className="w-5 h-5"
+                                    />
                                 </div>
                             </div>
                         </div>
@@ -94,23 +329,51 @@ export default function ApplicantSettings() {
 
                     {activeTab === 'security' && (
                         <div className="card p-6 border border-gray-800 bg-[#15171e]">
-                            <h3 className="text-xl font-bold mb-4">Security Settings</h3>
+                            <h3 className="text-xl font-bold mb-6">Security Settings</h3>
                             <div className="space-y-6">
                                 <div>
                                     <label className="block text-sm font-medium mb-2 text-gray-400">Email Address</label>
-                                    <input type="email" className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm" defaultValue="john@example.com" disabled />
+                                    <input
+                                        type="email"
+                                        value={formData.email}
+                                        disabled
+                                        className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm opacity-50"
+                                    />
+                                    <p className="text-xs text-gray-500 mt-1">Contact support to change your email</p>
                                 </div>
-                                <button className="text-[var(--primary-blue)] hover:underline text-sm">Change Password</button>
+                                <div className="pt-4 border-t border-gray-800">
+                                    <button className="text-[var(--primary-blue)] hover:underline text-sm">
+                                        Change Password
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     )}
 
                     {activeTab === 'billing' && (
-                        <div className="card p-6 border border-gray-800 bg-[#15171e] text-center py-12">
-                            <Wallet className="w-12 h-12 text-gray-600 mx-auto mb-4" />
-                            <h3 className="text-xl font-bold mb-2">No Active Subscription</h3>
-                            <p className="text-gray-400 mb-6">Upgrade to Pro to unlock unlimited AI credits.</p>
-                            <button className="btn btn-primary px-6 py-2">View Plans</button>
+                        <div className="card p-6 border border-gray-800 bg-[#15171e]">
+                            <h3 className="text-xl font-bold mb-4">Subscription</h3>
+                            <p className="text-gray-400 mb-6">
+                                Manage your subscription and billing through our secure payment portal.
+                            </p>
+
+                            <div className="flex gap-4">
+                                <button
+                                    onClick={openStripePortal}
+                                    className="btn btn-primary flex items-center gap-2"
+                                >
+                                    <CreditCard className="w-4 h-4" /> Manage Billing
+                                </button>
+                                <Link href="/pricing?role=applicant" className="btn btn-secondary flex items-center gap-2">
+                                    View Plans
+                                </Link>
+                            </div>
+
+                            <div className="mt-6 p-4 bg-blue-500/10 border border-blue-500/30 rounded-lg">
+                                <p className="text-sm text-blue-400">
+                                    Upgrade to Pro for unlimited AI resume builds, cover letter generator, and priority job matching.
+                                </p>
+                            </div>
                         </div>
                     )}
                 </div>

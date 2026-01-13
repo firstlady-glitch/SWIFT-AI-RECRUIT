@@ -1,14 +1,24 @@
 'use client';
 
-import { useState } from 'react';
-import { Check, ArrowRight, Briefcase, Search, FileText, UserCheck, Calendar, BarChart, Users, Zap } from 'lucide-react';
+import { useState, useEffect, Suspense } from 'react';
+import { useSearchParams, useRouter } from 'next/navigation';
+import { Check, ArrowRight, Briefcase, Search, FileText, UserCheck, Calendar, BarChart, Users, Zap, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import Navigation from '@/components/Navigation';
 import Image from 'next/image';
 import Footer from '@/components/Footer';
 
-export default function FeaturesPage() {
+function FeaturesContent() {
+    const searchParams = useSearchParams();
+    const router = useRouter();
     const [activeTab, setActiveTab] = useState<'applicant' | 'employer'>('applicant');
+
+    // Handle URL params
+    useEffect(() => {
+        const tab = searchParams.get('tab');
+        if (tab === 'employer') setActiveTab('employer');
+        else if (tab === 'applicant') setActiveTab('applicant');
+    }, [searchParams]);
 
     return (
         <div className="min-h-screen bg-[var(--background)]">
@@ -33,22 +43,26 @@ export default function FeaturesPage() {
                     {/* Tabs */}
                     <div className="inline-flex gap-2 bg-white/10 p-1 rounded-xl backdrop-blur-sm border border-white/20">
                         <button
-                            onClick={() => setActiveTab('applicant')}
+                            onClick={() => {
+                                setActiveTab('applicant');
+                                router.push('/features?tab=applicant');
+                            }}
                             className={`px-7 py-3 rounded-lg font-semibold transition-all duration-300 ${activeTab === 'applicant'
                                 ? 'bg-white text-[var(--primary-blue)] shadow-lg'
                                 : 'bg-[#1f1f1f] text-gray-200 hover:bg-[#2a2a2a]'
                                 }`}
-
                         >
                             Job Seekers
                         </button>
                         <button
-                            onClick={() => setActiveTab('employer')}
+                            onClick={() => {
+                                setActiveTab('employer');
+                                router.push('/features?tab=employer');
+                            }}
                             className={`px-7 py-3 rounded-lg font-semibold transition-all duration-300 ${activeTab === 'employer'
                                 ? 'bg-[var(--accent-orange)] text-white shadow-lg'
                                 : 'bg-[#1f1f1f] text-gray-200 hover:bg-[#2a2a2a]'
                                 }`}
-
                         >
                             Employers & Recruiters
                         </button>
@@ -65,9 +79,15 @@ export default function FeaturesPage() {
     );
 }
 
-function ApplicantContent() {
-    const [showPricing, setShowPricing] = useState(false);
+export default function FeaturesPage() {
+    return (
+        <Suspense fallback={<div className="min-h-screen bg-[var(--background)] flex items-center justify-center"><Loader2 className="w-8 h-8 animate-spin text-gray-500" /></div>}>
+            <FeaturesContent />
+        </Suspense>
+    );
+}
 
+function ApplicantContent() {
     const features = [
         {
             icon: <Search className="w-8 h-8 text-[var(--primary-blue)]" />,
@@ -91,6 +111,12 @@ function ApplicantContent() {
         }
     ];
 
+    const plans = [
+        { name: 'Starter', price: 15, cta: 'Get Started', href: '/pricing?role=applicant' },
+        { name: 'Professional', price: 30, cta: 'Start Free Trial', href: '/pricing?role=applicant', popular: true },
+        { name: 'Career+', price: 45, cta: 'Get Started', href: '/pricing?role=applicant' },
+    ];
+
     return (
         <div className="space-y-16">
             {/* Features Grid */}
@@ -106,75 +132,62 @@ function ApplicantContent() {
                 ))}
             </div>
 
-            {/* Pricing Section */}
-            <div className="max-w-5xl mx-auto">
-                <div className="text-center mb-12">
-                    <h2 className="text-3xl font-bold mb-4">Simple, Transparent Pricing</h2>
-                    <p className="text-[var(--foreground-secondary)]">Start for free, upgrade for power.</p>
+            {/* AI Tools Section */}
+            <div className="bg-gradient-to-r from-blue-600 to-blue-800 rounded-2xl p-8 md:p-12 text-white">
+                <div className="max-w-3xl">
+                    <h2 className="text-3xl font-bold mb-4">5 Powerful AI Tools</h2>
+                    <p className="text-white/80 mb-6">
+                        Our AI suite helps you stand out from the competition and land your dream job faster.
+                    </p>
+                    <div className="grid md:grid-cols-2 gap-4 mb-8">
+                        <div className="flex items-center gap-3">
+                            <Check className="w-5 h-5 text-green-400" />
+                            <span>Resume Parser & Optimizer</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                            <Check className="w-5 h-5 text-green-400" />
+                            <span>Cover Letter Generator</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                            <Check className="w-5 h-5 text-green-400" />
+                            <span>Interview Prep Coach</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                            <Check className="w-5 h-5 text-green-400" />
+                            <span>Job Fit Analysis</span>
+                        </div>
+                    </div>
+                    <Link href="/pricing?role=applicant" className="inline-flex items-center gap-2 bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors">
+                        View Pricing <ArrowRight className="w-4 h-4" />
+                    </Link>
                 </div>
+            </div>
 
-                {!showPricing ? (
-                    <div className="card max-w-md mx-auto p-8 text-center border-2 border-[var(--primary-blue)] bg-blue-50/50">
-                        <h3 className="text-sm font-bold text-[var(--primary-blue)] uppercase tracking-wider mb-2">Basic Plan</h3>
-                        <div className="text-5xl font-bold mb-2">$15<span className="text-lg text-[var(--foreground-secondary)] font-medium">/mo</span></div>
-                        <p className="text-[var(--foreground-secondary)] mb-6">Perfect for active job seekers</p>
-                        <button
-                            onClick={() => setShowPricing(true)}
-                            className="btn btn-primary w-full mb-4"
+            {/* Quick Pricing */}
+            <div className="text-center">
+                <h2 className="text-3xl font-bold mb-4">Simple Pricing</h2>
+                <p className="text-[var(--foreground-secondary)] mb-8">Start for free, upgrade when you're ready.</p>
+                <div className="flex flex-wrap justify-center gap-6">
+                    {plans.map((plan) => (
+                        <Link
+                            key={plan.name}
+                            href={plan.href}
+                            className={`px-8 py-4 rounded-xl border transition-all hover:scale-105 ${plan.popular
+                                ? 'bg-[var(--primary-blue)] text-white border-[var(--primary-blue)]'
+                                : 'border-gray-200 hover:border-[var(--primary-blue)]'
+                                }`}
                         >
-                            View All Plans
-                        </button>
-                        <p className="text-xs text-[var(--foreground-secondary)]">Includes AI Resume Builder & Tracking</p>
-                    </div>
-                ) : (
-                    <div className="grid md:grid-cols-3 gap-8 animate-in fade-in slide-in-from-bottom-8 duration-500">
-                        {/* Tier 1 */}
-                        <div className="card p-8 border border-[var(--border)] hover:border-[var(--primary-blue)] transition-all">
-                            <h3 className="text-xl font-bold mb-2">Starter</h3>
-                            <div className="text-4xl font-bold mb-4">$15<span className="text-sm text-[var(--foreground-secondary)]">/mo</span></div>
-                            <ul className="space-y-3 mb-8 text-[var(--foreground-secondary)] text-sm">
-                                <li className="flex gap-2"><Check className="w-5 h-5 text-[var(--success)]" /> 5 AI Resume builds</li>
-                                <li className="flex gap-2"><Check className="w-5 h-5 text-[var(--success)]" /> Basic job matching</li>
-                                <li className="flex gap-2"><Check className="w-5 h-5 text-[var(--success)]" /> Application tracking</li>
-                            </ul>
-                            <button disabled className="btn w-full bg-gray-100 text-gray-400 cursor-not-allowed">Coming Soon</button>
-                        </div>
-
-                        {/* Tier 2 */}
-                        <div className="card p-8 border-2 border-[var(--primary-blue)] relative transform md:-translate-y-4 shadow-xl">
-                            <div className="absolute top-0 right-0 bg-[var(--primary-blue)] text-white text-xs font-bold px-3 py-1 rounded-bl-lg rounded-tr-lg">POPULAR</div>
-                            <h3 className="text-xl font-bold mb-2">Pro</h3>
-                            <div className="text-4xl font-bold mb-4">$30<span className="text-sm text-[var(--foreground-secondary)]">/mo</span></div>
-                            <ul className="space-y-3 mb-8 text-[var(--foreground-secondary)] text-sm">
-                                <li className="flex gap-2"><Check className="w-5 h-5 text-[var(--success)]" /> Unlimited AI Resumes</li>
-                                <li className="flex gap-2"><Check className="w-5 h-5 text-[var(--success)]" /> Priority job matching</li>
-                                <li className="flex gap-2"><Check className="w-5 h-5 text-[var(--success)]" /> Featured profile badge</li>
-                                <li className="flex gap-2"><Check className="w-5 h-5 text-[var(--success)]" /> Cover letter generator</li>
-                            </ul>
-                            <button disabled className="btn btn-primary w-full opacity-15 cursor-not-allowed">Coming Soon</button>
-                        </div>
-
-                        {/* Tier 3 */}
-                        <div className="card p-8 border border-[var(--border)] hover:border-[var(--primary-blue)] transition-all">
-                            <h3 className="text-xl font-bold mb-2">Career+</h3>
-                            <div className="text-4xl font-bold mb-4">$45<span className="text-sm text-[var(--foreground-secondary)]">/mo</span></div>
-                            <ul className="space-y-3 mb-8 text-[var(--foreground-secondary)] text-sm">
-                                <li className="flex gap-2"><Check className="w-5 h-5 text-[var(--success)]" /> Everything in Pro</li>
-                                <li className="flex gap-2"><Check className="w-5 h-5 text-[var(--success)]" /> 1-on-1 Career Coaching</li>
-                                <li className="flex gap-2"><Check className="w-5 h-5 text-[var(--success)]" /> Salary negotiation help</li>
-                            </ul>
-                            <button disabled className="btn w-full bg-gray-100 text-gray-400 cursor-not-allowed">Coming Soon</button>
-                        </div>
-                    </div>
-                )}
+                            <div className="font-bold">{plan.name}</div>
+                            <div className="text-2xl font-bold">${plan.price}<span className="text-sm font-normal">/mo</span></div>
+                        </Link>
+                    ))}
+                </div>
             </div>
         </div>
     );
 }
 
 function EmployerContent() {
-    const [showPricing, setShowPricing] = useState(false);
-
     const features = [
         {
             icon: <Briefcase className="w-8 h-8 text-[var(--accent-orange)]" />,
@@ -198,6 +211,12 @@ function EmployerContent() {
         }
     ];
 
+    const plans = [
+        { name: 'Growth', price: 99, cta: 'Get Started', href: '/pricing?role=employer' },
+        { name: 'Scale', price: 249, cta: 'Start Free Trial', href: '/pricing?role=employer', popular: true },
+        { name: 'Enterprise', price: 499, cta: 'Contact Sales', href: '/pricing?role=employer' },
+    ];
+
     return (
         <div className="space-y-16">
             {/* Features Grid */}
@@ -213,68 +232,56 @@ function EmployerContent() {
                 ))}
             </div>
 
-            {/* Pricing Section */}
-            <div className="max-w-5xl mx-auto">
-                <div className="text-center mb-12">
-                    <h2 className="text-3xl font-bold mb-4">Agencies & Employers</h2>
-                    <p className="text-[var(--foreground-secondary)]">Scale your hiring without scaling your budget.</p>
+            {/* AI Tools Section */}
+            <div className="bg-gradient-to-r from-orange-500 to-orange-700 rounded-2xl p-8 md:p-12 text-white">
+                <div className="max-w-3xl">
+                    <h2 className="text-3xl font-bold mb-4">5 Powerful AI Hiring Tools</h2>
+                    <p className="text-white/80 mb-6">
+                        Hire faster and smarter with AI that screens, ranks, and helps you make better decisions.
+                    </p>
+                    <div className="grid md:grid-cols-2 gap-4 mb-8">
+                        <div className="flex items-center gap-3">
+                            <Check className="w-5 h-5 text-green-300" />
+                            <span>AI Job Description Generator</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                            <Check className="w-5 h-5 text-green-300" />
+                            <span>Candidate Ranking & Scoring</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                            <Check className="w-5 h-5 text-green-300" />
+                            <span>Interview Script Builder</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                            <Check className="w-5 h-5 text-green-300" />
+                            <span>Offer Letter Generator</span>
+                        </div>
+                    </div>
+                    <Link href="/pricing?role=employer" className="inline-flex items-center gap-2 bg-white text-orange-600 px-6 py-3 rounded-lg font-semibold hover:bg-orange-50 transition-colors">
+                        View Pricing <ArrowRight className="w-4 h-4" />
+                    </Link>
                 </div>
+            </div>
 
-                {!showPricing ? (
-                    <div className="card max-w-md mx-auto p-8 text-center border-2 border-[var(--accent-orange)] bg-orange-50/50">
-                        <h3 className="text-sm font-bold text-[var(--accent-orange)] uppercase tracking-wider mb-2">Growth Plan</h3>
-                        <div className="text-5xl font-bold mb-2">$30<span className="text-lg text-[var(--foreground-secondary)] font-medium">/mo</span></div>
-                        <p className="text-[var(--foreground-secondary)] mb-6">Essential tools for growing teams</p>
-                        <button
-                            onClick={() => setShowPricing(true)}
-                            className="btn bg-[var(--accent-orange)] text-white hover:bg-[#e05e2b] px-6 py-3 rounded-lg font-semibold w-full mb-4 shadow-lg hover:shadow-xl transition-all"
+            {/* Quick Pricing */}
+            <div className="text-center">
+                <h2 className="text-3xl font-bold mb-4">Plans for Every Team Size</h2>
+                <p className="text-[var(--foreground-secondary)] mb-8">Scale your hiring without scaling your budget.</p>
+                <div className="flex flex-wrap justify-center gap-6">
+                    {plans.map((plan) => (
+                        <Link
+                            key={plan.name}
+                            href={plan.href}
+                            className={`px-8 py-4 rounded-xl border transition-all hover:scale-105 ${plan.popular
+                                ? 'bg-[var(--accent-orange)] text-white border-[var(--accent-orange)]'
+                                : 'border-gray-200 hover:border-[var(--accent-orange)]'
+                                }`}
                         >
-                            View Full Price Grid
-                        </button>
-                        <p className="text-xs text-[var(--foreground-secondary)]">Includes 3 Active Jobs & AI Matching</p>
-                    </div>
-                ) : (
-                    <div className="grid md:grid-cols-3 gap-8 animate-in fade-in slide-in-from-bottom-8 duration-500">
-                        {/* Tier 1 */}
-                        <div className="card p-8 border border-[var(--border)] hover:border-[var(--accent-orange)] transition-all">
-                            <h3 className="text-xl font-bold mb-2">Growth</h3>
-                            <div className="text-4xl font-bold mb-4">$30<span className="text-sm text-[var(--foreground-secondary)]">/mo</span></div>
-                            <ul className="space-y-3 mb-8 text-[var(--foreground-secondary)] text-sm">
-                                <li className="flex gap-2"><Check className="w-5 h-5 text-[var(--success)]" /> 3 Active Job Posts</li>
-                                <li className="flex gap-2"><Check className="w-5 h-5 text-[var(--success)]" /> Basic AI Matching</li>
-                                <li className="flex gap-2"><Check className="w-5 h-5 text-[var(--success)]" /> Email Support</li>
-                            </ul>
-                            <button disabled className="btn w-full bg-gray-100 text-gray-400 cursor-not-allowed">Coming Soon</button>
-                        </div>
-
-                        {/* Tier 2 */}
-                        <div className="card p-8 border-2 border-[var(--accent-orange)] relative transform md:-translate-y-4 shadow-xl">
-                            <div className="absolute top-0 right-0 bg-[var(--accent-orange)] text-white text-xs font-bold px-3 py-1 rounded-bl-lg rounded-tr-lg">RECOMMENDED</div>
-                            <h3 className="text-xl font-bold mb-2">Scale</h3>
-                            <div className="text-4xl font-bold mb-4">$45<span className="text-sm text-[var(--foreground-secondary)]">/mo</span></div>
-                            <ul className="space-y-3 mb-8 text-[var(--foreground-secondary)] text-sm">
-                                <li className="flex gap-2"><Check className="w-5 h-5 text-[var(--success)]" /> 10 Active Job Posts</li>
-                                <li className="flex gap-2"><Check className="w-5 h-5 text-[var(--success)]" /> Advanced AI Ranking</li>
-                                <li className="flex gap-2"><Check className="w-5 h-5 text-[var(--success)]" /> Team Collaboration</li>
-                                <li className="flex gap-2"><Check className="w-5 h-5 text-[var(--success)]" /> Interview Scheduler</li>
-                            </ul>
-                            <button disabled className="btn w-full bg-[var(--accent-orange)] opacity-15 text-white cursor-not-allowed">Coming Soon</button>
-                        </div>
-
-                        {/* Tier 3 */}
-                        <div className="card p-8 border border-[var(--border)] hover:border-[var(--accent-orange)] transition-all">
-                            <h3 className="text-xl font-bold mb-2">Enterprise</h3>
-                            <div className="text-4xl font-bold mb-4">$60<span className="text-sm text-[var(--foreground-secondary)]">/mo</span></div>
-                            <ul className="space-y-3 mb-8 text-[var(--foreground-secondary)] text-sm">
-                                <li className="flex gap-2"><Check className="w-5 h-5 text-[var(--success)]" /> Unlimited Jobs</li>
-                                <li className="flex gap-2"><Check className="w-5 h-5 text-[var(--success)]" /> Dedicated Account Manager</li>
-                                <li className="flex gap-2"><Check className="w-5 h-5 text-[var(--success)]" /> ATS Integration</li>
-                                <li className="flex gap-2"><Check className="w-5 h-5 text-[var(--success)]" /> API Access</li>
-                            </ul>
-                            <button disabled className="btn w-full bg-gray-100 text-gray-400 cursor-not-allowed">Coming Soon</button>
-                        </div>
-                    </div>
-                )}
+                            <div className="font-bold">{plan.name}</div>
+                            <div className="text-2xl font-bold">${plan.price}<span className="text-sm font-normal">/mo</span></div>
+                        </Link>
+                    ))}
+                </div>
             </div>
         </div>
     );

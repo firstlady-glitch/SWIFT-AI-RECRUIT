@@ -1,15 +1,162 @@
 'use client';
 
-import { useState } from 'react';
-import { Building2, Bell, Users, CreditCard, Save } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useParams, useRouter } from 'next/navigation';
+import { Building2, Users, CreditCard, Save, Loader2, Globe, MapPin, Phone, FileText, Upload } from 'lucide-react';
+import Link from 'next/link';
+import { createClient } from '@/lib/supabase/client';
+import { ErrorState } from '@/components/ui/ErrorState';
+import type { Organization } from '@/types';
 
 export default function EmployerSettings() {
+    const params = useParams();
+    const router = useRouter();
     const [activeTab, setActiveTab] = useState('company');
+    const [isLoading, setIsLoading] = useState(true);
+    const [isSaving, setIsSaving] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+    const [success, setSuccess] = useState(false);
+
+    const [formData, setFormData] = useState({
+        name: '',
+        website: '',
+        phone: '',
+        location: '',
+        industry: '',
+        size: '',
+        description: '',
+        logo_url: '',
+    });
+
+    useEffect(() => {
+        fetchOrganization();
+    }, []);
+
+    const fetchOrganization = async () => {
+        setIsLoading(true);
+        const supabase = createClient();
+
+        try {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) {
+                router.push('/auth/login');
+                return;
+            }
+
+            const { data: profile } = await supabase
+                .from('profiles')
+                .select('organization_id')
+                .eq('id', user.id)
+                .single();
+
+            if (!profile?.organization_id) {
+                router.push('/app/org/employer/setup');
+                return;
+            }
+
+            const { data: org, error: orgError } = await supabase
+                .from('organizations')
+                .select('*')
+                .eq('id', profile.organization_id)
+                .single();
+
+            if (orgError) throw orgError;
+
+            setFormData({
+                name: org.name || '',
+                website: org.website || '',
+                phone: org.phone || '',
+                location: org.location || '',
+                industry: org.industry || '',
+                size: org.size || '',
+                description: org.description || '',
+                logo_url: org.logo_url || '',
+            });
+        } catch (err: any) {
+            console.error('[Settings] Error:', err);
+            setError('Failed to load organization');
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const handleSave = async () => {
+        setIsSaving(true);
+        setError(null);
+        setSuccess(false);
+
+        const supabase = createClient();
+
+        try {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) return;
+
+            const { data: profile } = await supabase
+                .from('profiles')
+                .select('organization_id')
+                .eq('id', user.id)
+                .single();
+
+            if (!profile?.organization_id) return;
+
+            const { error: updateError } = await supabase
+                .from('organizations')
+                .update({
+                    name: formData.name,
+                    website: formData.website,
+                    phone: formData.phone,
+                    location: formData.location,
+                    industry: formData.industry,
+                    size: formData.size,
+                    description: formData.description,
+                    logo_url: formData.logo_url,
+                    updated_at: new Date().toISOString(),
+                })
+                .eq('id', profile.organization_id);
+
+            if (updateError) throw updateError;
+
+            setSuccess(true);
+            setTimeout(() => setSuccess(false), 3000);
+            console.log('[Settings] Organization updated');
+        } catch (err: any) {
+            console.error('[Settings] Error:', err);
+            setError(err.message || 'Failed to save');
+        } finally {
+            setIsSaving(false);
+        }
+    };
+
+    const openStripePortal = async () => {
+        try {
+            const res = await fetch('/api/stripe/portal', { method: 'POST' });
+            const data = await res.json();
+            if (data.url) {
+                window.location.href = data.url;
+            }
+        } catch (err) {
+            console.error('Failed to open billing portal');
+        }
+    };
+
+    if (isLoading) {
+        return (
+            <div className="p-8 max-w-6xl mx-auto">
+                <div className="h-8 w-48 bg-gray-800 rounded animate-pulse mb-8" />
+                <div className="grid md:grid-cols-4 gap-8">
+                    <div className="h-48 bg-gray-800 rounded-xl animate-pulse" />
+                    <div className="md:col-span-3 h-96 bg-gray-800 rounded-xl animate-pulse" />
+                </div>
+            </div>
+        );
+    }
+
+    if (error && !formData.name) return <ErrorState message={error} onRetry={fetchOrganization} />;
 
     return (
         <div className="p-8 max-w-6xl mx-auto">
             <h1 className="text-3xl font-bold mb-2">Company Settings</h1>
-            <p className="text-[var(--foreground-secondary)] mb-8">Manage company profile and hiring team.</p>
+            <p className="text-[var(--foreground-secondary)] mb-8">Update your company profile and manage your subscription.</p>
 
             <div className="grid md:grid-cols-4 gap-8">
                 {/* Settings Sidebar */}
@@ -20,12 +167,12 @@ export default function EmployerSettings() {
                     >
                         <Building2 className="w-5 h-5" /> Company Profile
                     </button>
-                    <button
-                        onClick={() => setActiveTab('team')}
-                        className={`w-full flex items-center gap-3 p-4 border-b border-gray-800 transition-colors ${activeTab === 'team' ? 'bg-[var(--primary-blue)]/10 text-[var(--primary-blue)]' : 'hover:bg-gray-800 text-gray-400'}`}
+                    <Link
+                        href={`/app/org/employer/${params.dashboard}/team`}
+                        className="w-full flex items-center gap-3 p-4 border-b border-gray-800 hover:bg-gray-800 text-gray-400 transition-colors"
                     >
                         <Users className="w-5 h-5" /> Team Members
-                    </button>
+                    </Link>
                     <button
                         onClick={() => setActiveTab('billing')}
                         className={`w-full flex items-center gap-3 p-4 transition-colors ${activeTab === 'billing' ? 'bg-[var(--primary-blue)]/10 text-[var(--primary-blue)]' : 'hover:bg-gray-800 text-gray-400'}`}
@@ -39,49 +186,168 @@ export default function EmployerSettings() {
                     {activeTab === 'company' && (
                         <div className="space-y-6">
                             <div className="card p-6 border border-gray-800 bg-[#15171e]">
-                                <h3 className="text-xl font-bold mb-4">Company Details</h3>
+                                <h3 className="text-xl font-bold mb-6">Company Details</h3>
+
+                                {/* Logo */}
+                                <div className="mb-6">
+                                    <label className="block text-sm font-medium mb-2 text-gray-400">Company Logo</label>
+                                    <div className="flex items-center gap-4">
+                                        <div className="w-20 h-20 rounded-xl bg-gray-800 flex items-center justify-center overflow-hidden">
+                                            {formData.logo_url ? (
+                                                <img src={formData.logo_url} alt="Logo" className="w-full h-full object-cover" />
+                                            ) : (
+                                                <Building2 className="w-8 h-8 text-gray-500" />
+                                            )}
+                                        </div>
+                                        <input
+                                            type="url"
+                                            value={formData.logo_url}
+                                            onChange={(e) => setFormData({ ...formData, logo_url: e.target.value })}
+                                            placeholder="Logo URL (e.g., https://...)"
+                                            className="flex-1 bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm"
+                                        />
+                                    </div>
+                                </div>
+
                                 <div className="grid md:grid-cols-2 gap-6">
                                     <div>
-                                        <label className="block text-sm font-medium mb-2 text-gray-400">Company Name</label>
-                                        <input type="text" className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm" defaultValue="Acme Corp" />
+                                        <label className="block text-sm font-medium mb-2 text-gray-400">
+                                            <Building2 className="w-4 h-4 inline mr-1" /> Company Name *
+                                        </label>
+                                        <input
+                                            type="text"
+                                            value={formData.name}
+                                            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                                            className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm"
+                                            required
+                                        />
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-medium mb-2 text-gray-400">Website</label>
-                                        <input type="text" className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm" defaultValue="https://acme.com" />
+                                        <label className="block text-sm font-medium mb-2 text-gray-400">
+                                            <Globe className="w-4 h-4 inline mr-1" /> Website
+                                        </label>
+                                        <input
+                                            type="url"
+                                            value={formData.website}
+                                            onChange={(e) => setFormData({ ...formData, website: e.target.value })}
+                                            className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm"
+                                            placeholder="https://..."
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium mb-2 text-gray-400">
+                                            <Phone className="w-4 h-4 inline mr-1" /> Phone
+                                        </label>
+                                        <input
+                                            type="tel"
+                                            value={formData.phone}
+                                            onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                                            className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium mb-2 text-gray-400">
+                                            <MapPin className="w-4 h-4 inline mr-1" /> Location
+                                        </label>
+                                        <input
+                                            type="text"
+                                            value={formData.location}
+                                            onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+                                            className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm"
+                                            placeholder="City, Country"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium mb-2 text-gray-400">Industry</label>
+                                        <select
+                                            value={formData.industry}
+                                            onChange={(e) => setFormData({ ...formData, industry: e.target.value })}
+                                            className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm"
+                                        >
+                                            <option value="">Select Industry</option>
+                                            <option value="Technology">Technology</option>
+                                            <option value="Finance">Finance</option>
+                                            <option value="Healthcare">Healthcare</option>
+                                            <option value="Education">Education</option>
+                                            <option value="Manufacturing">Manufacturing</option>
+                                            <option value="Retail">Retail</option>
+                                            <option value="Other">Other</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium mb-2 text-gray-400">Company Size</label>
+                                        <select
+                                            value={formData.size}
+                                            onChange={(e) => setFormData({ ...formData, size: e.target.value })}
+                                            className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm"
+                                        >
+                                            <option value="">Select Size</option>
+                                            <option value="1-10">1-10 employees</option>
+                                            <option value="11-50">11-50 employees</option>
+                                            <option value="51-200">51-200 employees</option>
+                                            <option value="201-500">201-500 employees</option>
+                                            <option value="501-1000">501-1000 employees</option>
+                                            <option value="1000+">1000+ employees</option>
+                                        </select>
                                     </div>
                                     <div className="md:col-span-2">
-                                        <label className="block text-sm font-medium mb-2 text-gray-400">Description</label>
-                                        <textarea className="w-full h-32 bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm resize-none" defaultValue="Leading provider of awesome solutions..." />
+                                        <label className="block text-sm font-medium mb-2 text-gray-400">
+                                            <FileText className="w-4 h-4 inline mr-1" /> Company Description
+                                        </label>
+                                        <textarea
+                                            value={formData.description}
+                                            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                                            className="w-full h-32 bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm resize-none"
+                                            placeholder="Tell candidates about your company..."
+                                        />
                                     </div>
                                 </div>
                             </div>
 
+                            {error && (
+                                <div className="p-4 bg-red-500/10 border border-red-500/30 rounded-lg text-red-400 text-sm">
+                                    {error}
+                                </div>
+                            )}
+
+                            {success && (
+                                <div className="p-4 bg-green-500/10 border border-green-500/30 rounded-lg text-green-400 text-sm">
+                                    ✓ Company profile updated successfully!
+                                </div>
+                            )}
+
                             <div className="flex justify-end">
-                                <button className="btn btn-primary px-6 py-2 flex items-center gap-2">
-                                    <Save className="w-4 h-4" /> Save Changes
+                                <button
+                                    onClick={handleSave}
+                                    disabled={isSaving || !formData.name}
+                                    className="btn btn-primary px-6 py-2 flex items-center gap-2 disabled:opacity-50"
+                                >
+                                    {isSaving ? (
+                                        <><Loader2 className="w-4 h-4 animate-spin" /> Saving...</>
+                                    ) : (
+                                        <><Save className="w-4 h-4" /> Save Changes</>
+                                    )}
                                 </button>
                             </div>
                         </div>
                     )}
 
-                    {activeTab === 'team' && (
+                    {activeTab === 'billing' && (
                         <div className="card p-6 border border-gray-800 bg-[#15171e]">
-                            <div className="flex justify-between items-center mb-6">
-                                <h3 className="text-xl font-bold">Team Members</h3>
-                                <button className="btn btn-secondary text-xs px-3 py-1">Invite Member</button>
-                            </div>
+                            <h3 className="text-xl font-bold mb-4">Subscription</h3>
+                            <p className="text-gray-400 mb-6">Manage your subscription and billing through Stripe.</p>
 
-                            <div className="space-y-4">
-                                <div className="flex items-center justify-between p-4 border border-gray-800 rounded-lg bg-[#0b0c0f]">
-                                    <div className="flex items-center gap-3">
-                                        <div className="w-8 h-8 rounded-full bg-blue-500/20 text-blue-500 flex items-center justify-center font-bold">JD</div>
-                                        <div>
-                                            <div className="font-medium text-white">Jane Doe</div>
-                                            <div className="text-sm text-gray-400">jane@acme.com</div>
-                                        </div>
-                                    </div>
-                                    <span className="text-xs bg-green-500/10 text-green-500 px-2 py-1 rounded">Admin</span>
-                                </div>
+                            <button
+                                onClick={openStripePortal}
+                                className="btn btn-primary flex items-center gap-2"
+                            >
+                                <CreditCard className="w-4 h-4" /> Manage Billing
+                            </button>
+
+                            <div className="mt-6 p-4 bg-blue-500/10 border border-blue-500/30 rounded-lg">
+                                <p className="text-sm text-blue-400">
+                                    Use the billing portal to update payment methods, view invoices, and manage your subscription.
+                                </p>
                             </div>
                         </div>
                     )}

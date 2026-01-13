@@ -16,6 +16,15 @@ function ApplicantSetupContent() {
     );
     const [selectedPlan, setSelectedPlan] = useState(searchParams.get('plan') || 'free');
     const [isLoading, setIsLoading] = useState(false);
+    const [acceptPayments, setAcceptPayments] = useState(false);
+
+    // Fetch payment config
+    useEffect(() => {
+        fetch('/api/config')
+            .then(res => res.json())
+            .then(data => setAcceptPayments(data.acceptPayments))
+            .catch(() => { });
+    }, []);
 
     // Skills Modal State
     const [isSkillsModalOpen, setIsSkillsModalOpen] = useState(false);
@@ -281,18 +290,26 @@ function ApplicantSetupContent() {
                             </ul>
                         </div>
 
-                        {/* Starter Plan - Coming Soon */}
-                        <div className="card p-8 border border-[var(--border)] opacity-75 relative overflow-hidden group">
-                            <div className="absolute inset-0 bg-black/60 z-10 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm">
-                                <Lock className="w-12 h-12 text-white mb-2" />
-                                <span className="text-white font-bold text-lg">Coming Soon</span>
-                            </div>
+                        {/* Starter Plan */}
+                        <div className={`card p-8 border border-[var(--border)] relative overflow-hidden ${!acceptPayments ? 'opacity-75 group' : ''}`}>
+                            {!acceptPayments && (
+                                <div className="absolute inset-0 bg-black/60 z-10 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm">
+                                    <Lock className="w-12 h-12 text-white mb-2" />
+                                    <span className="text-white font-bold text-lg">Coming Soon</span>
+                                </div>
+                            )}
 
                             <h3 className="text-xl font-bold mb-2">Starter</h3>
                             <p className="text-[var(--foreground-secondary)] text-sm mb-6">For individuals just starting out</p>
                             <div className="text-4xl font-bold mb-6">$15<span className="text-lg text-[var(--foreground-secondary)] font-normal">/mo</span></div>
 
-                            <button disabled className="btn btn-secondary w-full mb-8 opacity-50 cursor-not-allowed">Coming Soon</button>
+                            <button
+                                onClick={() => acceptPayments && handlePlanSelect('starter')}
+                                disabled={!acceptPayments}
+                                className={`btn w-full mb-8 ${acceptPayments ? 'btn-primary' : 'btn-secondary opacity-50 cursor-not-allowed'}`}
+                            >
+                                {acceptPayments ? 'Select Plan' : 'Coming Soon'}
+                            </button>
 
                             <ul className="space-y-4 text-left text-sm">
                                 <li className="flex gap-3"><Check className="w-5 h-5 text-[var(--success)]" /> 5 AI Resume Builds</li>
@@ -302,19 +319,27 @@ function ApplicantSetupContent() {
                             </ul>
                         </div>
 
-                        {/* Professional Plan - Coming Soon */}
-                        <div className="card p-8 border-2 border-[var(--primary-blue)]/30 relative transform md:-translate-y-4 shadow-xl opacity-75 overflow-hidden group">
-                            <div className="absolute top-0 right-0 left-0 bg-[var(--primary-blue)]/50 text-white text-xs font-bold py-1 rounded-t-lg text-center">MOST POPULAR</div>
-                            <div className="absolute inset-0 bg-black/60 z-10 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm">
-                                <Lock className="w-12 h-12 text-white mb-2" />
-                                <span className="text-white font-bold text-lg">Coming Soon</span>
-                            </div>
+                        {/* Professional Plan */}
+                        <div className={`card p-8 border-2 border-[var(--primary-blue)]/30 relative transform md:-translate-y-4 shadow-xl overflow-hidden ${!acceptPayments ? 'opacity-75 group' : ''}`}>
+                            <div className="absolute top-0 right-0 left-0 bg-[var(--primary-blue)] text-white text-xs font-bold py-1 rounded-t-lg text-center">MOST POPULAR</div>
+                            {!acceptPayments && (
+                                <div className="absolute inset-0 bg-black/60 z-10 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm">
+                                    <Lock className="w-12 h-12 text-white mb-2" />
+                                    <span className="text-white font-bold text-lg">Coming Soon</span>
+                                </div>
+                            )}
 
                             <h3 className="text-xl font-bold mb-2 mt-2">Professional</h3>
                             <p className="text-[var(--foreground-secondary)] text-sm mb-6">For serious job seekers</p>
                             <div className="text-4xl font-bold mb-6">$30<span className="text-lg text-[var(--foreground-secondary)] font-normal">/mo</span></div>
 
-                            <button disabled className="btn btn-secondary w-full mb-8 opacity-50 cursor-not-allowed">Coming Soon</button>
+                            <button
+                                onClick={() => acceptPayments && handlePlanSelect('pro')}
+                                disabled={!acceptPayments}
+                                className={`btn w-full mb-8 ${acceptPayments ? 'btn-primary' : 'btn-secondary opacity-50 cursor-not-allowed'}`}
+                            >
+                                {acceptPayments ? 'Select Plan' : 'Coming Soon'}
+                            </button>
 
                             <ul className="space-y-4 text-left text-sm">
                                 <li className="flex gap-3"><Check className="w-5 h-5 text-[var(--success)]" /> Unlimited AI Resumes</li>
