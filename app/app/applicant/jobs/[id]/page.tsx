@@ -7,7 +7,7 @@ import { LoadingState } from '@/components/ui/LoadingState';
 import { ErrorState } from '@/components/ui/ErrorState';
 import {
     Building2, MapPin, DollarSign, Briefcase, Calendar,
-    ArrowLeft, FileText, X, Upload
+    ArrowLeft, FileText, X, Upload, ExternalLink
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -21,6 +21,8 @@ interface JobDetails {
     salary_range_min: number | null;
     salary_range_max: number | null;
     created_at: string;
+    application_type: 'internal' | 'external';
+    external_apply_url: string | null;
     organization: { name: string; logo_url: string | null; description: string | null };
 }
 
@@ -61,6 +63,8 @@ export default function JobDetailsPage() {
                     salary_range_min,
                     salary_range_max,
                     created_at,
+                    application_type,
+                    external_apply_url,
                     organization:organizations(name, logo_url, description)
                 `)
                 .eq('id', jobId)
@@ -111,6 +115,16 @@ export default function JobDetailsPage() {
             .single();
 
         setUserResume(data?.resume_url || null);
+    };
+
+    const handleExternalClick = async () => {
+        // Track the click
+        try {
+            await fetch(`/api/jobs/${jobId}/click`, { method: 'POST' });
+            console.log('[JobDetails] Tracked external link click');
+        } catch (err) {
+            console.error('[JobDetails] Failed to track click:', err);
+        }
     };
 
     const handleApply = async () => {
@@ -205,13 +219,26 @@ export default function JobDetailsPage() {
                             </div>
                         </div>
 
-                        <button
-                            onClick={() => setShowApplyModal(true)}
-                            disabled={hasApplied}
-                            className={`btn px-8 py-3 ${hasApplied ? 'bg-gray-800 text-gray-500 cursor-not-allowed' : 'btn-primary'}`}
-                        >
-                            {hasApplied ? 'Already Applied' : 'Apply Now'}
-                        </button>
+                        {job.application_type === 'external' && job.external_apply_url ? (
+                            <a
+                                href={job.external_apply_url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                onClick={handleExternalClick}
+                                className="btn btn-primary px-8 py-3 flex items-center gap-2"
+                            >
+                                Apply Now
+                                <ExternalLink className="w-4 h-4" />
+                            </a>
+                        ) : (
+                            <button
+                                onClick={() => setShowApplyModal(true)}
+                                disabled={hasApplied}
+                                className={`btn px-8 py-3 ${hasApplied ? 'bg-gray-800 text-gray-500 cursor-not-allowed' : 'btn-primary'}`}
+                            >
+                                {hasApplied ? 'Already Applied' : 'Apply Now'}
+                            </button>
+                        )}
                     </div>
                 </div>
 

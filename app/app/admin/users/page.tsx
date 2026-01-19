@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 import { ErrorState } from '@/components/ui/ErrorState';
+import { EmptyState } from '@/components/ui/EmptyState';
 import type { Profile, UserRole } from '@/types';
 
 export default function AdminUsersPage() {
@@ -269,9 +270,12 @@ export default function AdminUsersPage() {
                 })}
 
                 {filteredUsers.length === 0 && (
-                    <div className="text-center py-12">
-                        <Users className="w-12 h-12 text-gray-600 mx-auto mb-4" />
-                        <p className="text-gray-500">No users found</p>
+                    <div className="bg-[#15171e] border border-gray-800 rounded-xl">
+                        <EmptyState
+                            icon={Users}
+                            title="No Users Found"
+                            description={searchQuery || roleFilter !== 'all' ? 'Try adjusting your search or filter criteria.' : 'No users have registered yet.'}
+                        />
                     </div>
                 )}
             </div>

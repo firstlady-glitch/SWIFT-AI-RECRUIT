@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import { ErrorState } from '@/components/ui/ErrorState';
-import { Plus, X } from 'lucide-react';
+import { Plus, X, ExternalLink, FileText, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 
 export default function CreateJobPage() {
@@ -19,7 +19,9 @@ export default function CreateJobPage() {
         type: 'Full-time',
         salary_range_min: '',
         salary_range_max: '',
-        requirements: ['']
+        requirements: [''],
+        application_type: 'internal' as 'internal' | 'external',
+        external_apply_url: ''
     });
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -55,6 +57,8 @@ export default function CreateJobPage() {
                     salary_range_min: formData.salary_range_min ? parseInt(formData.salary_range_min) : null,
                     salary_range_max: formData.salary_range_max ? parseInt(formData.salary_range_max) : null,
                     requirements: formData.requirements.filter(r => r.trim()),
+                    application_type: formData.application_type,
+                    external_apply_url: formData.application_type === 'external' ? formData.external_apply_url : null,
                     status: 'draft'
                 })
                 .select()
@@ -185,13 +189,72 @@ export default function CreateJobPage() {
                                 <div className="mt-2">
                                     <Link
                                         href="/app/org/employer/dashboard/tools/job-description"
-                                        className="text-sm text-[var(--primary-blue)] hover:underline"
+                                        className="text-sm text-[var(--primary-blue)] hover:underline flex items-center gap-1"
                                     >
-                                        → Use AI Job Description Generator
+                                        <ArrowRight className="w-4 h-4" />
+                                        Use AI Job Description Generator
                                     </Link>
                                 </div>
                             </div>
                         </div>
+                    </div>
+
+                    {/* Application Type */}
+                    <div className="bg-[#15171e] border border-gray-800 rounded-xl p-6">
+                        <h2 className="text-xl font-bold mb-4">Application Method</h2>
+                        <p className="text-gray-400 text-sm mb-4">
+                            Choose how candidates will apply for this position.
+                        </p>
+
+                        <div className="grid md:grid-cols-2 gap-4 mb-4">
+                            <button
+                                type="button"
+                                onClick={() => setFormData(prev => ({ ...prev, application_type: 'internal' }))}
+                                className={`p-4 border rounded-xl text-left transition-all ${formData.application_type === 'internal'
+                                    ? 'border-[var(--primary-blue)] bg-blue-500/10'
+                                    : 'border-gray-800 hover:border-gray-600'
+                                    }`}
+                            >
+                                <div className="flex items-center gap-3 mb-2">
+                                    <FileText className="w-5 h-5 text-[var(--primary-blue)]" />
+                                    <span className="font-semibold">In-App Application</span>
+                                </div>
+                                <p className="text-sm text-gray-400">
+                                    Candidates apply on SwiftAI. Get AI scoring, analytics, and full pipeline management.
+                                </p>
+                            </button>
+
+                            <button
+                                type="button"
+                                onClick={() => setFormData(prev => ({ ...prev, application_type: 'external' }))}
+                                className={`p-4 border rounded-xl text-left transition-all ${formData.application_type === 'external'
+                                    ? 'border-[var(--accent-orange)] bg-orange-500/10'
+                                    : 'border-gray-800 hover:border-gray-600'
+                                    }`}
+                            >
+                                <div className="flex items-center gap-3 mb-2">
+                                    <ExternalLink className="w-5 h-5 text-[var(--accent-orange)]" />
+                                    <span className="font-semibold">External Link</span>
+                                </div>
+                                <p className="text-sm text-gray-400">
+                                    Redirect to your careers page. You'll receive click analytics only.
+                                </p>
+                            </button>
+                        </div>
+
+                        {formData.application_type === 'external' && (
+                            <div>
+                                <label className="block text-sm font-medium mb-2">External Application URL *</label>
+                                <input
+                                    type="url"
+                                    required={formData.application_type === 'external'}
+                                    value={formData.external_apply_url}
+                                    onChange={(e) => setFormData(prev => ({ ...prev, external_apply_url: e.target.value }))}
+                                    placeholder="https://yourcompany.com/careers/job-123"
+                                    className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg px-4 py-2 focus:border-[var(--accent-orange)] focus:outline-none"
+                                />
+                            </div>
+                        )}
                     </div>
 
                     <div className="bg-[#15171e] border border-gray-800 rounded-xl p-6">

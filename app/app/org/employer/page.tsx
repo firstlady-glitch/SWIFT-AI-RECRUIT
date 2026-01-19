@@ -1,13 +1,26 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { createClient } from '@/lib/supabase/client';
 
 export default function EmployerPage() {
     const router = useRouter();
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        router.replace('/app/org/employer/dashboard');
+        const redirectToUserDashboard = async () => {
+            const supabase = createClient();
+            const { data: { user } } = await supabase.auth.getUser();
+
+            if (user) {
+                router.replace(`/app/org/employer/${user.id}`);
+            } else {
+                router.replace('/auth/login');
+            }
+        };
+
+        redirectToUserDashboard();
     }, [router]);
 
     return (

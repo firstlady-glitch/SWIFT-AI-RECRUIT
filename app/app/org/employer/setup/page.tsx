@@ -55,7 +55,29 @@ function EmployerSetupContent() {
                 logoUrl = logoData.secure_url;
             }
 
-            // Create or update organization
+            // STEP 1: Ensure profile exists first (may have failed during registration)
+            const { data: existingProfile } = await supabase
+                .from('profiles')
+                .select('id')
+                .eq('id', user.id)
+                .single();
+
+            if (!existingProfile) {
+                // Create the profile first if it doesn't exist
+                const { error: createProfileError } = await supabase
+                    .from('profiles')
+                    .insert({
+                        id: user.id,
+                        email: user.email,
+                        full_name: user.user_metadata?.full_name || '',
+                        role: 'employer',
+                        onboarding_completed: false
+                    });
+
+                if (createProfileError) throw createProfileError;
+            }
+
+            // STEP 2: Create or update organization (now profile exists)
             const { data: org, error: orgError } = await supabase
                 .from('organizations')
                 .upsert({
@@ -76,15 +98,15 @@ function EmployerSetupContent() {
 
             if (orgError) throw orgError;
 
-            // Update user profile
+            // STEP 3: Update user profile with organization and complete onboarding
             const { error: profileError } = await supabase
                 .from('profiles')
-                .upsert({
-                    id: user.id,
+                .update({
                     organization_id: org.id,
                     role: 'employer',
                     onboarding_completed: true
-                });
+                })
+                .eq('id', user.id);
 
             if (profileError) throw profileError;
 

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { CreditCard, DollarSign, TrendingUp, Calendar, Download, FileText } from 'lucide-react';
+import { EmptyState } from '@/components/ui/EmptyState';
 import { createClient } from '@/lib/supabase/client';
 import type { Billing } from '@/types';
 
@@ -180,10 +181,11 @@ export default function AdminBillingPage() {
                         </table>
                     </div>
                 ) : (
-                    <div className="text-center py-12">
-                        <CreditCard className="w-12 h-12 text-gray-600 mx-auto mb-4" />
-                        <p className="text-gray-500">No transactions yet</p>
-                    </div>
+                    <EmptyState
+                        icon={CreditCard}
+                        title="No Transactions Yet"
+                        description="Payment transactions will appear here once users start subscribing."
+                    />
                 )}
             </div>
         </div>

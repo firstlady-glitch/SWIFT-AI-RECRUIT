@@ -20,6 +20,7 @@ interface DataTableProps<T> {
     sortDirection?: 'asc' | 'desc';
     onSort?: (column: string) => void;
     emptyMessage?: string;
+    emptyState?: ReactNode;
     className?: string;
 }
 
@@ -32,6 +33,7 @@ export function DataTable<T extends Record<string, unknown>>({
     sortDirection,
     onSort,
     emptyMessage = 'No data available',
+    emptyState,
     className = ''
 }: DataTableProps<T>) {
     const getValue = (row: T, key: string): unknown => {
@@ -60,6 +62,13 @@ export function DataTable<T extends Record<string, unknown>>({
     };
 
     if (data.length === 0) {
+        if (emptyState) {
+            return (
+                <div className={`bg-[#15171e] border border-gray-800 rounded-xl ${className}`}>
+                    {emptyState}
+                </div>
+            );
+        }
         return (
             <div className={`bg-[#15171e] border border-gray-800 rounded-xl p-12 text-center ${className}`}>
                 <p className="text-gray-500">{emptyMessage}</p>
@@ -98,8 +107,8 @@ export function DataTable<T extends Record<string, unknown>>({
                             <tr
                                 key={String(row[keyField])}
                                 className={`border-b border-gray-800/50 last:border-0 ${onRowClick
-                                        ? 'cursor-pointer hover:bg-[#1a1c24] transition-colors'
-                                        : ''
+                                    ? 'cursor-pointer hover:bg-[#1a1c24] transition-colors'
+                                    : ''
                                     }`}
                                 onClick={() => onRowClick?.(row)}
                             >

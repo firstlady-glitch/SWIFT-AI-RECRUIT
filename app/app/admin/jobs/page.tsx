@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Briefcase, Search, Building2, MapPin, DollarSign, Eye, Trash2, Globe, EyeOff } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 import { ErrorState } from '@/components/ui/ErrorState';
+import { EmptyState } from '@/components/ui/EmptyState';
 import type { Job, JobStatus } from '@/types';
 
 type JobWithOrg = Omit<Job, 'organization'> & {
@@ -197,9 +198,12 @@ export default function AdminJobsPage() {
                 ))}
 
                 {filteredJobs.length === 0 && (
-                    <div className="text-center py-12">
-                        <Briefcase className="w-12 h-12 text-gray-600 mx-auto mb-4" />
-                        <p className="text-gray-500">No jobs found</p>
+                    <div className="bg-[#15171e] border border-gray-800 rounded-xl">
+                        <EmptyState
+                            icon={Briefcase}
+                            title="No Jobs Found"
+                            description={searchQuery || statusFilter !== 'all' ? 'Try adjusting your search or filter criteria.' : 'No jobs have been posted yet.'}
+                        />
                     </div>
                 )}
             </div>

@@ -48,6 +48,8 @@ export async function proxy(request: NextRequest) {
   // Public paths that don't require auth
   const isPublicPath =
     currentPath === "/" ||
+    currentPath.startsWith("/api") ||
+    currentPath.startsWith("/login") ||
     currentPath.startsWith("/auth") ||
     currentPath.startsWith("/about") ||
     currentPath.startsWith("/features") ||
@@ -60,13 +62,15 @@ export async function proxy(request: NextRequest) {
     currentPath.startsWith("/terms") ||
     currentPath.startsWith("/privacy") ||
     currentPath.startsWith("/cookies") ||
-    currentPath.startsWith("/data-policy");
+    currentPath.startsWith("/data-policy") ||
+    currentPath.startsWith("/dev");
 
   // Role-Specific Landing Pages (Where they go on mount/login)
   const roleDefaults: Record<string, string> = {
     applicant: "/app/applicant",       // Applicant goes to /app/applicant page
     employer: "/app/org/employer",     // Employer goes to /app/org/employer
     recruiter: "/app/org/recruiter",   // Recruiter goes to /app/org/recruiter
+    org: "/app/org",                   // Generic org (pre-selection) goes to /app/org
     admin: "/admin/dashboard",
   };
 
@@ -90,25 +94,58 @@ export async function proxy(request: NextRequest) {
   // SCENARIO B: User IS Logged In
   // ---------------------------------------------------------
 
-  // 1. Fetch User Role
-  // We check 'user_metadata' first for performance. 
-  // If not found there, we fetch from the 'profiles' table.
-  let userRole = user.user_metadata?.role;
+  // 1. Fetch User Role AND Onboarding Status
+  // Profile.role is the source of truth, user_metadata is only a fallback
+  let userRole: string | undefined;
+  let onboardingCompleted = false;
 
-  if (!userRole) {
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("role")
-      .eq("id", user.id)
-      .single();
+  // Always fetch profile to get current role and onboarding status
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("role, onboarding_completed")
+    .eq("id", user.id)
+    .single();
 
-    userRole = profile?.role;
+  if (profile) {
+    // Profile role is the source of truth
+    userRole = profile.role;
+    onboardingCompleted = profile.onboarding_completed ?? false;
+  } else {
+    // Fallback to user_metadata only if profile doesn't exist
+    userRole = user.user_metadata?.role;
   }
 
   // Fallback if role is completely missing (shouldn't happen with correct DB setup)
   if (!userRole) {
     // Force logout or send to an error page
     return NextResponse.redirect(new URL("/login", request.url));
+  }
+
+  // ---------------------------------------------------------
+  // ONBOARDING CHECK: If onboarding is incomplete, redirect to setup
+  // ---------------------------------------------------------
+
+  // Define setup paths (these should be accessible during onboarding)
+  const isSetupPath =
+    currentPath.startsWith("/app/applicant/setup") ||
+    currentPath.startsWith("/app/org/employer/setup") ||
+    currentPath.startsWith("/app/org/recruiter/setup") ||
+    currentPath === "/app/org"; // Org role selection page
+
+  // If onboarding is NOT completed
+  if (!onboardingCompleted) {
+    // Allow access to setup paths
+    if (isSetupPath) {
+      return response;
+    }
+
+    // Redirect to appropriate setup page
+    if (userRole === "applicant") {
+      return NextResponse.redirect(new URL("/app/applicant/setup", request.url));
+    } else if (userRole === "employer" || userRole === "recruiter" || userRole === "org") {
+      // Org users go to /app/org to select/confirm their specific role
+      return NextResponse.redirect(new URL("/app/org", request.url));
+    }
   }
 
   // 2. Handle Root/Auth Redirects (e.g. user goes to "/" or "/login" while authenticated)
@@ -133,8 +170,14 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(new URL(roleDefaults[userRole], request.url));
   }
 
-  // Allow /app base and /app/org base for redirection
-  if (currentPath === "/app" || currentPath === "/app/org") {
+  // Redirect /app base to role-specific dashboard (only if onboarding is complete)
+  if (currentPath === "/app") {
+    return NextResponse.redirect(new URL(roleDefaults[userRole] || "/app/org", request.url));
+  }
+
+  // Redirect /app/org to role-specific dashboard ONLY for employer/recruiter with completed onboarding
+  // For "org" role, this is their setup page so don't redirect
+  if (currentPath === "/app/org" && userRole !== "org") {
     return NextResponse.redirect(new URL(roleDefaults[userRole], request.url));
   }
 

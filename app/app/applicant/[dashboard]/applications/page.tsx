@@ -7,7 +7,8 @@ import { DataTable, StatusBadge, Column } from '@/components/ui/DataTable';
 import { Pagination } from '@/components/ui/Pagination';
 import { LoadingState } from '@/components/ui/LoadingState';
 import { ErrorState } from '@/components/ui/ErrorState';
-import { Building2, MapPin, ArrowRight, Activity } from 'lucide-react';
+import { Building2, MapPin, ArrowRight, Activity, FileText } from 'lucide-react';
+import { EmptyState } from '@/components/ui/EmptyState';
 import Link from 'next/link';
 
 interface Application extends Record<string, unknown> {
@@ -194,7 +195,15 @@ export default function ApplicantApplicationsPage() {
                             columns={columns}
                             data={pagination.data}
                             keyField="id"
-                            emptyMessage="You haven't applied to any jobs yet."
+                            emptyState={
+                                <EmptyState
+                                    icon={FileText}
+                                    title="No Applications Yet"
+                                    description="You haven't applied to any jobs yet. Start exploring opportunities!"
+                                    actionLabel="Browse Jobs"
+                                    actionHref="/app/applicant/jobs"
+                                />
+                            }
                         />
 
                         <Pagination

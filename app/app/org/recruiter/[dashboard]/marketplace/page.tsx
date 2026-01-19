@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 import { ErrorState } from '@/components/ui/ErrorState';
+import { EmptyState } from '@/components/ui/EmptyState';
 import type { Job } from '@/types';
 
 type MarketplaceJob = Omit<Job, 'organization'> & {
@@ -97,7 +98,7 @@ export default function RecruiterMarketplacePage() {
 
     if (isLoading) {
         return (
-            <div className="max-w-6xl mx-auto">
+            <div className="p-8 max-w-6xl mx-auto">
                 <h1 className="text-2xl font-bold mb-6">Job Marketplace</h1>
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {[...Array(6)].map((_, i) => (
@@ -111,7 +112,7 @@ export default function RecruiterMarketplacePage() {
     if (error) return <ErrorState message={error} onRetry={fetchMarketplaceJobs} />;
 
     return (
-        <div className="max-w-6xl mx-auto">
+        <div className="p-8 max-w-6xl mx-auto">
             <div className="mb-8">
                 <h1 className="text-2xl font-bold mb-2">Job Marketplace</h1>
                 <p className="text-gray-400">Find employer jobs to source candidates for and earn commissions</p>
@@ -220,9 +221,12 @@ export default function RecruiterMarketplacePage() {
             </div>
 
             {filteredJobs.length === 0 && (
-                <div className="text-center py-16 bg-[#15171e] border border-gray-800 rounded-xl">
-                    <Briefcase className="w-12 h-12 text-gray-600 mx-auto mb-4" />
-                    <p className="text-gray-500">No jobs available</p>
+                <div className="bg-[#15171e] border border-gray-800 rounded-xl">
+                    <EmptyState
+                        icon={Briefcase}
+                        title="No Jobs Available"
+                        description={searchQuery || locationFilter ? 'Try adjusting your search criteria.' : 'There are no open positions in the marketplace at the moment.'}
+                    />
                 </div>
             )}
         </div>

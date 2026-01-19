@@ -26,7 +26,10 @@ export default function EmployerSettings() {
         size: '',
         description: '',
         logo_url: '',
+        departments: [] as string[],
     });
+    const [logoFile, setLogoFile] = useState<File | null>(null);
+    const [logoPreview, setLogoPreview] = useState<string | null>(null);
 
     useEffect(() => {
         fetchOrganization();
@@ -71,7 +74,11 @@ export default function EmployerSettings() {
                 size: org.size || '',
                 description: org.description || '',
                 logo_url: org.logo_url || '',
+                departments: org.departments || [],
             });
+            if (org.logo_url) {
+                setLogoPreview(org.logo_url);
+            }
         } catch (err: any) {
             console.error('[Settings] Error:', err);
             setError('Failed to load organization');
@@ -99,6 +106,28 @@ export default function EmployerSettings() {
 
             if (!profile?.organization_id) return;
 
+            // Upload new logo if selected
+            let newLogoUrl = formData.logo_url;
+            if (logoFile) {
+                const logoFormData = new FormData();
+                logoFormData.append('file', logoFile);
+                logoFormData.append('upload_preset', 'profiles');
+                logoFormData.append('folder', `company-logos/${user.id}`);
+
+                const logoResponse = await fetch(
+                    'https://api.cloudinary.com/v1_1/drw5se2tr/image/upload',
+                    {
+                        method: 'POST',
+                        body: logoFormData
+                    }
+                );
+
+                if (!logoResponse.ok) throw new Error('Logo upload failed');
+
+                const logoData = await logoResponse.json();
+                newLogoUrl = logoData.secure_url;
+            }
+
             const { error: updateError } = await supabase
                 .from('organizations')
                 .update({
@@ -109,12 +138,17 @@ export default function EmployerSettings() {
                     industry: formData.industry,
                     size: formData.size,
                     description: formData.description,
-                    logo_url: formData.logo_url,
+                    logo_url: newLogoUrl,
+                    departments: formData.departments,
                     updated_at: new Date().toISOString(),
                 })
                 .eq('id', profile.organization_id);
 
             if (updateError) throw updateError;
+
+            // Clear the file input after successful upload
+            setLogoFile(null);
+            setFormData({ ...formData, logo_url: newLogoUrl });
 
             setSuccess(true);
             setTimeout(() => setSuccess(false), 3000);
@@ -191,21 +225,36 @@ export default function EmployerSettings() {
                                 {/* Logo */}
                                 <div className="mb-6">
                                     <label className="block text-sm font-medium mb-2 text-gray-400">Company Logo</label>
-                                    <div className="flex items-center gap-4">
-                                        <div className="w-20 h-20 rounded-xl bg-gray-800 flex items-center justify-center overflow-hidden">
-                                            {formData.logo_url ? (
-                                                <img src={formData.logo_url} alt="Logo" className="w-full h-full object-cover" />
+                                    <div className="flex items-center gap-6">
+                                        <div className="w-24 h-24 rounded-xl bg-[#0b0c0f] border border-gray-800 overflow-hidden flex items-center justify-center">
+                                            {logoPreview ? (
+                                                <img src={logoPreview} alt="Company Logo" className="w-full h-full object-cover" />
                                             ) : (
-                                                <Building2 className="w-8 h-8 text-gray-500" />
+                                                <Building2 className="w-10 h-10 text-gray-600" />
                                             )}
                                         </div>
-                                        <input
-                                            type="url"
-                                            value={formData.logo_url}
-                                            onChange={(e) => setFormData({ ...formData, logo_url: e.target.value })}
-                                            placeholder="Logo URL (e.g., https://...)"
-                                            className="flex-1 bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm"
-                                        />
+                                        <div>
+                                            <input
+                                                type="file"
+                                                id="logo-upload"
+                                                accept="image/*"
+                                                className="hidden"
+                                                onChange={(e) => {
+                                                    const file = e.target.files?.[0];
+                                                    if (file) {
+                                                        setLogoFile(file);
+                                                        setLogoPreview(URL.createObjectURL(file));
+                                                    }
+                                                }}
+                                            />
+                                            <label
+                                                htmlFor="logo-upload"
+                                                className="btn btn-secondary px-4 py-2 cursor-pointer text-sm"
+                                            >
+                                                Change Logo
+                                            </label>
+                                            <p className="text-xs text-gray-500 mt-2">PNG, JPG up to 2MB</p>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -289,6 +338,17 @@ export default function EmployerSettings() {
                                             <option value="501-1000">501-1000 employees</option>
                                             <option value="1000+">1000+ employees</option>
                                         </select>
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium mb-2 text-gray-400">Departments</label>
+                                        <input
+                                            type="text"
+                                            value={formData.departments.join(', ')}
+                                            onChange={(e) => setFormData({ ...formData, departments: e.target.value.split(',').map(s => s.trim()).filter(Boolean) })}
+                                            placeholder="Engineering, Marketing, Sales, HR"
+                                            className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm"
+                                        />
+                                        <p className="text-xs text-gray-500 mt-1">Separate departments with commas</p>
                                     </div>
                                     <div className="md:col-span-2">
                                         <label className="block text-sm font-medium mb-2 text-gray-400">

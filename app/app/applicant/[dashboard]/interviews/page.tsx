@@ -6,6 +6,7 @@ import { LoadingState } from '@/components/ui/LoadingState';
 import { ErrorState } from '@/components/ui/ErrorState';
 import { Calendar, Clock, Video, MapPin, ExternalLink, CalendarDays } from 'lucide-react';
 import { StatusBadge } from '@/components/ui/DataTable';
+import { EmptyState } from '@/components/ui/EmptyState';
 
 interface Interview {
     id: string;
@@ -114,10 +115,14 @@ export default function ApplicantInterviewsPage() {
                 {isLoading ? (
                     <LoadingState type="list" count={3} />
                 ) : interviews.length === 0 ? (
-                    <div className="bg-[#15171e] border border-gray-800 rounded-xl p-12 text-center">
-                        <CalendarDays className="w-16 h-16 text-gray-700 mx-auto mb-4" />
-                        <h3 className="text-xl font-bold mb-2">No Interviews Scheduled</h3>
-                        <p className="text-gray-400">You don't have any upcoming interviews at the moment.</p>
+                    <div className="bg-[#15171e] border border-gray-800 rounded-xl">
+                        <EmptyState
+                            icon={CalendarDays}
+                            title="No Interviews Scheduled"
+                            description="You don't have any upcoming interviews at the moment. Keep applying to jobs!"
+                            actionLabel="Browse Jobs"
+                            actionHref="/app/applicant/jobs"
+                        />
                     </div>
                 ) : (
                     <div className="space-y-4">

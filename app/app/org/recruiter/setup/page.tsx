@@ -55,7 +55,43 @@ function RecruiterSetupContent() {
                 logoUrl = logoData.secure_url;
             }
 
-            // Create or update organization
+            // STEP 1: Ensure profile exists first (may have failed during registration)
+            console.log('Step 1: Checking if profile exists for user:', user.id);
+            const { data: existingProfile, error: profileCheckError } = await supabase
+                .from('profiles')
+                .select('id')
+                .eq('id', user.id)
+                .single();
+
+            if (profileCheckError && profileCheckError.code !== 'PGRST116') {
+                // PGRST116 = "no rows returned" which is expected if profile doesn't exist
+                console.error('Error checking profile:', profileCheckError);
+            }
+
+            if (!existingProfile) {
+                // Create the profile first if it doesn't exist
+                console.log('Step 1b: Profile not found, creating new profile...');
+                const { error: createProfileError } = await supabase
+                    .from('profiles')
+                    .insert({
+                        id: user.id,
+                        email: user.email,
+                        full_name: user.user_metadata?.full_name || '',
+                        role: 'recruiter',
+                        onboarding_completed: false
+                    });
+
+                if (createProfileError) {
+                    console.error('Failed to create profile:', createProfileError);
+                    throw createProfileError;
+                }
+                console.log('Step 1b: Profile created successfully');
+            } else {
+                console.log('Step 1: Profile already exists');
+            }
+
+            // STEP 2: Create or update organization (now profile exists)
+            console.log('Step 2: Creating organization...');
             const { data: org, error: orgError } = await supabase
                 .from('organizations')
                 .upsert({
@@ -74,25 +110,37 @@ function RecruiterSetupContent() {
                 .select()
                 .single();
 
-            if (orgError) throw orgError;
+            if (orgError) {
+                console.error('Failed to create organization:', orgError);
+                throw orgError;
+            }
+            console.log('Step 2: Organization created:', org.id);
 
-            // Update user profile
+            // STEP 3: Update user profile with organization and complete onboarding
+            console.log('Step 3: Updating profile with organization...');
             const { error: profileError } = await supabase
                 .from('profiles')
-                .upsert({
-                    id: user.id,
+                .update({
                     organization_id: org.id,
                     role: 'recruiter',
                     onboarding_completed: true
-                });
+                })
+                .eq('id', user.id);
 
-            if (profileError) throw profileError;
+            if (profileError) {
+                console.error('Failed to update profile:', profileError);
+                throw profileError;
+            }
+            console.log('Step 3: Profile updated, onboarding complete!');
 
             const redirectTarget = searchParams.get('redirectTarget');
             const redirectQuery = redirectTarget ? `?redirectTarget=${redirectTarget}` : '';
-            router.push(`/app/org/recruiter/${user.id}${redirectQuery}`);
+            const finalUrl = `/app/org/recruiter`;
+            console.log('Redirecting to:', finalUrl);
+            router.push(finalUrl + redirectQuery);
         } catch (error: any) {
-            alert(error.message);
+            console.error('Setup error:', error);
+            alert('Setup failed: ' + (error.message || JSON.stringify(error)));
             setIsLoading(false);
         }
     };

@@ -1,6 +1,6 @@
 {
   "name": "swift-ai-recruit",
-  "version": "0.1.0",
+  "version": "1.11.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -15,6 +15,7 @@
     "cloudinary": "^2.8.0",
     "lucide-react": "^0.559.0",
     "next": "16.0.8",
+    "nextjs-toploader": "^3.9.17",
     "nodemailer": "^7.0.12",
     "react": "19.2.1",
     "react-dom": "19.2.1",

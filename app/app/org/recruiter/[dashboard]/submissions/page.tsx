@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { Link2, Copy, Check, Users, Briefcase, Eye, Award, TrendingUp, ExternalLink } from 'lucide-react';
+import { EmptyState } from '@/components/ui/EmptyState';
 import { createClient } from '@/lib/supabase/client';
 
 interface ReferralStats {
@@ -181,13 +182,13 @@ export default function RecruiterSubmissionsPage() {
                         ))}
                     </div>
                 ) : (
-                    <div className="p-8 text-center text-gray-500">
-                        <Briefcase className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                        <p>No submissions yet</p>
-                        <a href={`/app/org/recruiter/${params.dashboard}/marketplace`} className="mt-2 text-[var(--primary-blue)] hover:underline inline-flex items-center gap-1">
-                            Browse Jobs <ExternalLink className="w-3 h-3" />
-                        </a>
-                    </div>
+                    <EmptyState
+                        icon={Briefcase}
+                        title="No Submissions Yet"
+                        description="Start sourcing candidates for employer jobs to earn commissions."
+                        actionLabel="Browse Marketplace"
+                        actionHref={`/app/org/recruiter/${params.dashboard}/marketplace`}
+                    />
                 )}
             </div>
         </div>

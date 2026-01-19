@@ -2,7 +2,7 @@
 
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
-import { Mail, Phone, MapPin, Send } from 'lucide-react';
+import { Mail, Phone, MapPin, Send, ArrowRight } from 'lucide-react';
 import { useState } from 'react';
 
 export default function ContactPage() {
@@ -77,7 +77,9 @@ export default function ContactPage() {
                             <p className="text-sm text-[var(--foreground-secondary)] mb-4">
                                 For large organizations with custom needs, contact our sales team directly.
                             </p>
-                            <a href="mailto:enterprise@swiftairecruit.com" className="text-[var(--primary-blue)] font-semibold text-sm">Contact Enterprise Sales →</a>
+                            <a href="mailto:enterprise@swiftairecruit.com" className="text-[var(--primary-blue)] font-semibold text-sm flex items-center gap-1">
+                                Contact Enterprise Sales <ArrowRight className="w-4 h-4" />
+                            </a>
                         </div>
                     </div>
 

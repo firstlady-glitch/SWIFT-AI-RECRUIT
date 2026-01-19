@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { MessageCircle, X, Send, Mail, Phone, Bot } from "lucide-react";
+import { MessageCircle, X, Send, Mail, Phone } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
 interface Message {
     role: "user" | "model";
@@ -98,11 +99,13 @@ export default function ChatWidget() {
         <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-2">
             {/* Chat Window */}
             {isChatOpen && (
-                <div className="mb-4 w-[350px] md:w-[400px] h-[500px] bg-white rounded-lg shadow-2xl border border-gray-200 flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-5 duration-300">
+                <div className="mb-4 w-[350px] md:w-[400px] h-[500px] bg-white rounded-lg shadow-2xl flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-5 duration-300">
                     {/* Header */}
-                    <div className="bg-blue-600 p-4 flex justify-between items-center text-white">
-                        <div className="flex items-center gap-2">
-                            <Bot size={24} />
+                    <div className="bg-gray-900/80 backdrop-blur-md p-4 flex justify-between items-center text-white">
+                        <div className="flex items-center gap-3">
+                            <div className="bg-white/10 backdrop-blur-sm p-1.5 rounded-lg">
+                                <Image src="/icon.png" alt="SwiftAI" width={24} height={24} className="rounded" />
+                            </div>
                             <h3 className="font-semibold">SwiftAI Recruit Chat</h3>
                         </div>
                         <button
@@ -123,8 +126,8 @@ export default function ChatWidget() {
                             >
                                 <div
                                     className={`max-w-[80%] p-3 rounded-lg text-sm ${msg.role === "user"
-                                            ? "bg-blue-600 text-white rounded-br-none"
-                                            : "bg-white border border-gray-200 text-gray-800 rounded-bl-none shadow-sm"
+                                        ? "bg-blue-600 text-white rounded-br-none"
+                                        : "bg-white border border-gray-200 text-gray-800 rounded-bl-none shadow-sm"
                                         }`}
                                 >
                                     {msg.text}
@@ -151,7 +154,7 @@ export default function ChatWidget() {
                             onChange={(e) => setInput(e.target.value)}
                             onKeyDown={handleKeyDown}
                             placeholder="Ask me anything..."
-                            className="flex-1 px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                            className="flex-1 px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm text-gray-900 placeholder-gray-500"
                         />
                         <button
                             onClick={sendMessage}
@@ -195,8 +198,8 @@ export default function ChatWidget() {
                         className="flex items-center gap-3 bg-white text-gray-800 px-4 py-2 rounded-full shadow-lg border border-gray-100 hover:bg-gray-50 transition-all hover:scale-105 group"
                     >
                         <span className="font-medium text-sm">Chatbot</span>
-                        <div className="bg-blue-600 text-white p-2 rounded-full group-hover:bg-blue-700 transition-colors">
-                            <Bot size={18} />
+                        <div className="bg-white/30 backdrop-blur-sm p-1.5 rounded-full group-hover:bg-white/50 transition-colors overflow-hidden">
+                            <Image src="/icon.png" alt="SwiftAI" width={28} height={28} className="rounded-full" />
                         </div>
                     </button>
                 </div>

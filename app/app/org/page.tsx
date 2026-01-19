@@ -91,15 +91,15 @@ function OrgSetupContent() {
                         <ul className="space-y-2 text-sm text-[var(--foreground-secondary)]">
                             <li className="flex items-start gap-2">
                                 <span className="text-[var(--success)] mt-1">✓</span>
-                                <span>Access global talent database</span>
+                                <span>Real-time team collaboration</span>
                             </li>
                             <li className="flex items-start gap-2">
                                 <span className="text-[var(--success)] mt-1">✓</span>
-                                <span>AI-powered candidate matching</span>
+                                <span>Data-driven hiring insights</span>
                             </li>
                             <li className="flex items-start gap-2">
                                 <span className="text-[var(--success)] mt-1">✓</span>
-                                <span>Track placements and commissions</span>
+                                <span>Centralized feedback workflows</span>
                             </li>
                         </ul>
                     </Link>
@@ -116,15 +116,15 @@ function OrgSetupContent() {
                         <ul className="space-y-2 text-sm text-[var(--foreground-secondary)]">
                             <li className="flex items-start gap-2">
                                 <span className="text-[var(--success)] mt-1">✓</span>
-                                <span>Post unlimited job listings</span>
+                                <span>Structured & fair hiring practices</span>
                             </li>
                             <li className="flex items-start gap-2">
                                 <span className="text-[var(--success)] mt-1">✓</span>
-                                <span>AI-generated job descriptions</span>
+                                <span>Multi-channel job distribution</span>
                             </li>
                             <li className="flex items-start gap-2">
                                 <span className="text-[var(--success)] mt-1">✓</span>
-                                <span>Collaborate with your hiring team</span>
+                                <span>Pipeline analytics & insights</span>
                             </li>
                         </ul>
                     </Link>
@@ -164,8 +164,8 @@ function OrgSetupContent() {
                         <div
                             onClick={() => handlePlanSelect('starter')}
                             className={`card p-6 border relative overflow-hidden transition-all ${acceptPayments
-                                    ? `cursor-pointer ${selectedPlan === 'starter' ? 'border-[var(--primary-blue)] ring-2 ring-[var(--primary-blue)]/20' : 'border-[var(--border)] hover:border-[var(--primary-blue)]'}`
-                                    : 'opacity-75 cursor-not-allowed group border-[var(--border)]'
+                                ? `cursor-pointer ${selectedPlan === 'starter' ? 'border-[var(--primary-blue)] ring-2 ring-[var(--primary-blue)]/20' : 'border-[var(--border)] hover:border-[var(--primary-blue)]'}`
+                                : 'opacity-75 cursor-not-allowed group border-[var(--border)]'
                                 }`}
                         >
                             {!acceptPayments && (
@@ -189,8 +189,8 @@ function OrgSetupContent() {
                         <div
                             onClick={() => handlePlanSelect('pro')}
                             className={`card p-6 border-2 relative overflow-hidden transition-all ${acceptPayments
-                                    ? `cursor-pointer ${selectedPlan === 'pro' ? 'border-[var(--primary-blue)] ring-2 ring-[var(--primary-blue)]/20' : 'border-[var(--primary-blue)]/30 hover:border-[var(--primary-blue)]'}`
-                                    : 'opacity-75 cursor-not-allowed group border-[var(--primary-blue)]/30'
+                                ? `cursor-pointer ${selectedPlan === 'pro' ? 'border-[var(--primary-blue)] ring-2 ring-[var(--primary-blue)]/20' : 'border-[var(--primary-blue)]/30 hover:border-[var(--primary-blue)]'}`
+                                : 'opacity-75 cursor-not-allowed group border-[var(--primary-blue)]/30'
                                 }`}
                         >
                             <div className="absolute top-0 right-0 left-0 bg-[var(--primary-blue)]/50 text-white text-xs font-bold py-1 rounded-t-lg text-center">MOST POPULAR</div>
@@ -215,8 +215,8 @@ function OrgSetupContent() {
                         <div
                             onClick={() => handlePlanSelect('team')}
                             className={`card p-6 border relative overflow-hidden transition-all ${acceptPayments
-                                    ? `cursor-pointer ${selectedPlan === 'team' ? 'border-[var(--primary-blue)] ring-2 ring-[var(--primary-blue)]/20' : 'border-[var(--border)] hover:border-[var(--primary-blue)]'}`
-                                    : 'opacity-75 cursor-not-allowed group border-[var(--border)]'
+                                ? `cursor-pointer ${selectedPlan === 'team' ? 'border-[var(--primary-blue)] ring-2 ring-[var(--primary-blue)]/20' : 'border-[var(--border)] hover:border-[var(--primary-blue)]'}`
+                                : 'opacity-75 cursor-not-allowed group border-[var(--border)]'
                                 }`}
                         >
                             {!acceptPayments && (

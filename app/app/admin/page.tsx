@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 import { ErrorState } from '@/components/ui/ErrorState';
+import { EmptyState } from '@/components/ui/EmptyState';
 
 interface Stats {
     totalUsers: number;
@@ -198,7 +199,11 @@ export default function AdminDashboard() {
                         ))}
                     </div>
                 ) : (
-                    <p className="text-gray-500 text-center py-8">No recent activity</p>
+                    <EmptyState
+                        icon={Activity}
+                        title="No Recent Activity"
+                        description="Platform events and activities will appear here."
+                    />
                 )}
             </div>
         </div>

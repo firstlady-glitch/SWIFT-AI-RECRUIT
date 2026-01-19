@@ -35,7 +35,13 @@ export default function RecruiterSettings() {
         location: '',
         description: '',
         specializations: [] as string[],
+        logo_url: '',
+        industry: '',
+        size: '',
+        years_in_business: 0,
     });
+    const [logoFile, setLogoFile] = useState<File | null>(null);
+    const [logoPreview, setLogoPreview] = useState<string | null>(null);
 
     useEffect(() => {
         fetchData();
@@ -47,17 +53,22 @@ export default function RecruiterSettings() {
 
         try {
             const { data: { user } } = await supabase.auth.getUser();
+            console.log('[Settings] User:', user?.id);
+
             if (!user) {
                 router.push('/auth/login');
                 return;
             }
 
-            // Fetch profile
-            const { data: profile } = await supabase
+            // Fetch profile with organization (explicitly specify FK to avoid ambiguity)
+            const { data: profile, error: profileError } = await supabase
                 .from('profiles')
-                .select('*, organization:organizations(*)')
+                .select('*, organization:organizations!organization_id(*)')
                 .eq('id', user.id)
                 .single();
+
+            console.log('[Settings] Profile:', profile);
+            console.log('[Settings] Profile Error:', profileError);
 
             if (profile) {
                 setFormData({
@@ -73,6 +84,8 @@ export default function RecruiterSettings() {
                 });
 
                 const org = Array.isArray(profile.organization) ? profile.organization[0] : profile.organization;
+                console.log('[Settings] Org:', org);
+
                 if (org) {
                     setOrgData({
                         name: org.name || '',
@@ -81,7 +94,14 @@ export default function RecruiterSettings() {
                         location: org.location || '',
                         description: org.description || '',
                         specializations: org.specializations || [],
+                        logo_url: org.logo_url || '',
+                        industry: org.industry || '',
+                        size: org.size || '',
+                        years_in_business: org.years_in_business || 0,
                     });
+                    if (org.logo_url) {
+                        setLogoPreview(org.logo_url);
+                    }
                 }
             }
         } catch (err: any) {
@@ -148,6 +168,28 @@ export default function RecruiterSettings() {
 
             if (!profile?.organization_id) return;
 
+            // Upload new logo if selected
+            let newLogoUrl = orgData.logo_url;
+            if (logoFile) {
+                const logoFormData = new FormData();
+                logoFormData.append('file', logoFile);
+                logoFormData.append('upload_preset', 'profiles');
+                logoFormData.append('folder', `company-logos/${user.id}`);
+
+                const logoResponse = await fetch(
+                    'https://api.cloudinary.com/v1_1/drw5se2tr/image/upload',
+                    {
+                        method: 'POST',
+                        body: logoFormData
+                    }
+                );
+
+                if (!logoResponse.ok) throw new Error('Logo upload failed');
+
+                const logoData = await logoResponse.json();
+                newLogoUrl = logoData.secure_url;
+            }
+
             const { error: updateError } = await supabase
                 .from('organizations')
                 .update({
@@ -157,11 +199,19 @@ export default function RecruiterSettings() {
                     location: orgData.location,
                     description: orgData.description,
                     specializations: orgData.specializations,
+                    industry: orgData.industry,
+                    size: orgData.size,
+                    years_in_business: orgData.years_in_business,
+                    logo_url: newLogoUrl,
                     updated_at: new Date().toISOString(),
                 })
                 .eq('id', profile.organization_id);
 
             if (updateError) throw updateError;
+
+            // Clear the file input after successful upload
+            setLogoFile(null);
+            setOrgData({ ...orgData, logo_url: newLogoUrl });
 
             setSuccess(true);
             setTimeout(() => setSuccess(false), 3000);
@@ -176,9 +226,19 @@ export default function RecruiterSettings() {
         try {
             const res = await fetch('/api/stripe/portal', { method: 'POST' });
             const data = await res.json();
-            if (data.url) window.location.href = data.url;
-        } catch (err) {
-            console.error('Failed to open billing portal');
+
+            if (!res.ok) {
+                throw new Error(data.error || 'Failed to create portal session');
+            }
+
+            if (data.url) {
+                window.location.href = data.url;
+            } else {
+                throw new Error('No portal URL returned');
+            }
+        } catch (err: any) {
+            console.error('[Settings] Failed to open billing portal:', err);
+            setError(err.message || 'Failed to open billing portal');
         }
     };
 
@@ -300,6 +360,43 @@ export default function RecruiterSettings() {
                         <div className="space-y-6">
                             <div className="card p-6 border border-gray-800 bg-[#15171e]">
                                 <h3 className="text-xl font-bold mb-6">Agency Details</h3>
+
+                                {/* Logo Section */}
+                                <div className="mb-6">
+                                    <label className="block text-sm text-gray-400 mb-2">Agency Logo</label>
+                                    <div className="flex items-center gap-6">
+                                        <div className="w-24 h-24 rounded-xl bg-[#0b0c0f] border border-gray-800 overflow-hidden flex items-center justify-center">
+                                            {logoPreview ? (
+                                                <img src={logoPreview} alt="Agency Logo" className="w-full h-full object-cover" />
+                                            ) : (
+                                                <Building2 className="w-10 h-10 text-gray-600" />
+                                            )}
+                                        </div>
+                                        <div>
+                                            <input
+                                                type="file"
+                                                id="logo-upload"
+                                                accept="image/*"
+                                                className="hidden"
+                                                onChange={(e) => {
+                                                    const file = e.target.files?.[0];
+                                                    if (file) {
+                                                        setLogoFile(file);
+                                                        setLogoPreview(URL.createObjectURL(file));
+                                                    }
+                                                }}
+                                            />
+                                            <label
+                                                htmlFor="logo-upload"
+                                                className="btn btn-secondary px-4 py-2 cursor-pointer text-sm"
+                                            >
+                                                Change Logo
+                                            </label>
+                                            <p className="text-xs text-gray-500 mt-2">PNG, JPG up to 2MB</p>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div className="grid md:grid-cols-2 gap-6">
                                     <div>
                                         <label className="block text-sm text-gray-400 mb-2">Agency Name</label>
@@ -307,6 +404,41 @@ export default function RecruiterSettings() {
                                             type="text"
                                             value={orgData.name}
                                             onChange={(e) => setOrgData({ ...orgData, name: e.target.value })}
+                                            className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm text-gray-400 mb-2">Industry</label>
+                                        <input
+                                            type="text"
+                                            value={orgData.industry}
+                                            onChange={(e) => setOrgData({ ...orgData, industry: e.target.value })}
+                                            className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm"
+                                            placeholder="Technology, Healthcare, etc."
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm text-gray-400 mb-2">Team Size</label>
+                                        <select
+                                            value={orgData.size}
+                                            onChange={(e) => setOrgData({ ...orgData, size: e.target.value })}
+                                            className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm"
+                                        >
+                                            <option value="">Select size</option>
+                                            <option value="1-5">1-5 recruiters</option>
+                                            <option value="6-10">6-10 recruiters</option>
+                                            <option value="11-25">11-25 recruiters</option>
+                                            <option value="26-50">26-50 recruiters</option>
+                                            <option value="51+">51+ recruiters</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm text-gray-400 mb-2">Years in Business</label>
+                                        <input
+                                            type="number"
+                                            min="0"
+                                            value={orgData.years_in_business}
+                                            onChange={(e) => setOrgData({ ...orgData, years_in_business: parseInt(e.target.value) || 0 })}
                                             className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm"
                                         />
                                     </div>
@@ -319,12 +451,41 @@ export default function RecruiterSettings() {
                                             className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm"
                                         />
                                     </div>
+                                    <div>
+                                        <label className="block text-sm text-gray-400 mb-2">Phone</label>
+                                        <input
+                                            type="tel"
+                                            value={orgData.phone}
+                                            onChange={(e) => setOrgData({ ...orgData, phone: e.target.value })}
+                                            className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm text-gray-400 mb-2">Location</label>
+                                        <input
+                                            type="text"
+                                            value={orgData.location}
+                                            onChange={(e) => setOrgData({ ...orgData, location: e.target.value })}
+                                            className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm text-gray-400 mb-2">Specializations</label>
+                                        <input
+                                            type="text"
+                                            value={orgData.specializations.join(', ')}
+                                            onChange={(e) => setOrgData({ ...orgData, specializations: e.target.value.split(',').map(s => s.trim()).filter(Boolean) })}
+                                            placeholder="Full Stack, DevOps, Data Science"
+                                            className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm"
+                                        />
+                                    </div>
                                     <div className="md:col-span-2">
                                         <label className="block text-sm text-gray-400 mb-2">Description</label>
                                         <textarea
                                             value={orgData.description}
                                             onChange={(e) => setOrgData({ ...orgData, description: e.target.value })}
                                             className="w-full h-32 bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm resize-none"
+                                            placeholder="Tell us about your agency..."
                                         />
                                     </div>
                                 </div>

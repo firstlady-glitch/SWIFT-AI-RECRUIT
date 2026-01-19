@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { Building2, Search, Filter, Users, MapPin, Globe, MoreVertical, Trash2 } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 import { ErrorState } from '@/components/ui/ErrorState';
+import { EmptyState } from '@/components/ui/EmptyState';
 import type { Organization, OrgType } from '@/types';
 
 export default function AdminOrganizationsPage() {
@@ -165,9 +166,12 @@ export default function AdminOrganizationsPage() {
             </div>
 
             {filteredOrgs.length === 0 && (
-                <div className="text-center py-12">
-                    <Building2 className="w-12 h-12 text-gray-600 mx-auto mb-4" />
-                    <p className="text-gray-500">No organizations found</p>
+                <div className="bg-[#15171e] border border-gray-800 rounded-xl">
+                    <EmptyState
+                        icon={Building2}
+                        title="No Organizations Found"
+                        description={searchQuery || typeFilter !== 'all' ? 'Try adjusting your search or filter criteria.' : 'No organizations have been created yet.'}
+                    />
                 </div>
             )}
         </div>

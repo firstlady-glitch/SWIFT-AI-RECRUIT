@@ -1,41 +1,41 @@
-import { Check, Clock, TrendingUp, Users, Zap, Shield, Cpu, FileText, LayoutDashboard, Briefcase, BarChart } from 'lucide-react';
+import { Check, Clock, TrendingUp, Users, Zap, Shield, Cpu, FileText, LayoutDashboard, Briefcase, BarChart, Share2, Globe, MessageSquare } from 'lucide-react';
 
 export default function Features() {
     const features = [
         {
-            icon: <FileText className="w-8 h-8 text-[var(--primary-blue)]" />,
-            title: "AI CV Parsing",
-            description: "Instantly extract and structure candidates data from resumes with 99% accuracy.",
+            icon: <LayoutDashboard className="w-8 h-8 text-[var(--primary-blue)]" />,
+            title: "Centralized Hiring Hub",
+            description: "Manage resumes, interviews, feedback, and hiring decisions from one unified dashboard.",
             color: "blue-50"
         },
         {
-            icon: <Cpu className="w-8 h-8 text-[var(--accent-orange)]" />,
-            title: "Job Matching Engine",
-            description: "Automatically match the best candidates to your job requirements in seconds.",
+            icon: <BarChart className="w-8 h-8 text-[var(--accent-orange)]" />,
+            title: "Structured & Fair Hiring",
+            description: "Define clear job requirements, utilize consistent interviews, and reduce unconscious bias.",
             color: "orange-50"
         },
         {
-            icon: <LayoutDashboard className="w-8 h-8 text-[var(--success)]" />,
-            title: "Applicant Tracking System",
-            description: "Manage your entire hiring pipeline from a single, intuitive dashboard.",
+            icon: <Globe className="w-8 h-8 text-[var(--success)]" />,
+            title: "Multi-Channel Distribution",
+            description: "Automatically publish jobs to your careers page, LinkedIn, Indeed, and referral programs.",
             color: "green-50"
         },
         {
-            icon: <Briefcase className="w-8 h-8 text-purple-600" />,
-            title: "Recruiter Workspace",
-            description: "Dedicated tools for agencies to manage multiple clients and talent pools.",
+            icon: <Users className="w-8 h-8 text-purple-600" />,
+            title: "Seamless Team Collaboration",
+            description: "Real-time collaboration between recruiters and hiring managers with centralized feedback.",
             color: "purple-50"
         },
         {
-            icon: <BarChart className="w-8 h-8 text-red-500" />,
-            title: "Automated Scoring",
-            description: "Get unbiased, data-driven candidate scores to make faster hiring decisions.",
+            icon: <TrendingUp className="w-8 h-8 text-red-500" />,
+            title: "Data-Driven Insights",
+            description: "Track time-to-hire, source quality, and pipeline health with advanced reporting.",
             color: "red-50"
         },
         {
             icon: <Shield className="w-8 h-8 text-[var(--primary-blue)]" />,
-            title: "Security & Compliance",
-            description: "Enterprise-grade data protection with GDPR and SOC2 compliance built-in.",
+            title: "Compliance & Security",
+            description: "GDPR-compliant data handling with enterprise-grade encryption and audit trails.",
             color: "blue-50"
         }
     ];

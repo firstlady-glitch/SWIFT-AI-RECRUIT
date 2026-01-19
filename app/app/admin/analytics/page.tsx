@@ -9,8 +9,10 @@ import {
     TrendingUp,
     Calendar,
     ArrowUp,
-    ArrowDown
+    ArrowDown,
+    Building2
 } from 'lucide-react';
+import { EmptyState } from '@/components/ui/EmptyState';
 import { createClient } from '@/lib/supabase/client';
 
 interface AnalyticsData {
@@ -213,7 +215,12 @@ export default function AdminAnalyticsPage() {
                             </div>
                         ))}
                         {(!data?.topOrganizations || data.topOrganizations.length === 0) && (
-                            <p className="text-gray-500 text-center py-4">No data</p>
+                            <EmptyState
+                                icon={Building2}
+                                title="No Data Available"
+                                description="Organization data will appear once they start posting jobs."
+                                className="py-4"
+                            />
                         )}
                     </div>
                 </div>

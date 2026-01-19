@@ -7,7 +7,8 @@ import { DataTable, StatusBadge, Column } from '@/components/ui/DataTable';
 import { Pagination } from '@/components/ui/Pagination';
 import { LoadingState } from '@/components/ui/LoadingState';
 import { ErrorState } from '@/components/ui/ErrorState';
-import { Plus, Eye, Users } from 'lucide-react';
+import { Plus, Eye, Users, Briefcase } from 'lucide-react';
+import { EmptyState } from '@/components/ui/EmptyState';
 import Link from 'next/link';
 
 interface Job extends Record<string, unknown> {
@@ -156,14 +157,14 @@ export default function EmployerJobsPage() {
     return (
         <div className="min-h-screen bg-[var(--background)] p-8">
             <div className="max-w-7xl mx-auto">
-                <div className="flex justify-between items-center mb-8">
+                <div className="flex flex-col gap-4 md:flex-row md:justify-between md:items-center mb-8">
                     <div>
                         <h1 className="text-3xl font-bold mb-2">My Jobs</h1>
                         <p className="text-gray-400">Manage your job postings and applicants.</p>
                     </div>
                     <Link
-                        href="/app/org/employer/jobs/create"
-                        className="btn btn-primary px-4 py-2 flex items-center gap-2"
+                        href={`jobs/create`}
+                        className="btn btn-primary px-4 py-2 flex items-center gap-2 w-fit"
                     >
                         <Plus className="w-4 h-4" />
                         Create Job
@@ -195,7 +196,15 @@ export default function EmployerJobsPage() {
                             columns={columns}
                             data={pagination.data}
                             keyField="id"
-                            emptyMessage="No jobs found. Create your first job post!"
+                            emptyState={
+                                <EmptyState
+                                    icon={Briefcase}
+                                    title="No Jobs Found"
+                                    description="You haven't created any job postings yet. Start attracting top talent!"
+                                    actionLabel="Create Your First Job"
+                                    actionHref="/app/org/employer/jobs/create"
+                                />
+                            }
                         />
                         <Pagination
                             page={pagination.page}

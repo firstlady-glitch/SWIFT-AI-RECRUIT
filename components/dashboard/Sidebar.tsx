@@ -9,10 +9,18 @@ import {
     LogOut,
     Briefcase,
     Users,
-    FileText
+    FileText,
+    Search,
+    Store,
+    Send,
+    PanelLeftClose,
+    PanelLeft,
+    Menu,
+    X,
+    CalendarDays
 } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
-import Image from 'next/image';
+import { useSidebar } from './SidebarContext';
 
 interface SidebarProps {
     role: 'applicant' | 'employer' | 'recruiter';
@@ -22,6 +30,7 @@ interface SidebarProps {
 export default function Sidebar({ role, dashboardId }: SidebarProps) {
     const pathname = usePathname();
     const router = useRouter();
+    const { isCollapsed, isMobileOpen, toggleCollapsed, toggleMobile, closeMobile } = useSidebar();
 
     const basePath = `/app/${role === 'applicant' ? 'applicant' : `org/${role}`}/${dashboardId}`;
 
@@ -35,65 +44,170 @@ export default function Sidebar({ role, dashboardId }: SidebarProps) {
         {
             label: 'Dashboard',
             href: basePath,
-            icon: <LayoutDashboard className="w-5 h-5" />
+            icon: <LayoutDashboard className="w-5 h-5 shrink-0" />
         },
+        ...(role === 'applicant' ? [
+            {
+                label: 'Browse Jobs',
+                href: '/app/applicant/jobs',
+                icon: <Briefcase className="w-5 h-5 shrink-0" />
+            },
+            {
+                label: 'Applications',
+                href: `${basePath}/applications`,
+                icon: <FileText className="w-5 h-5 shrink-0" />
+            },
+            {
+                label: 'Interviews',
+                href: `${basePath}/interviews`,
+                icon: <CalendarDays className="w-5 h-5 shrink-0" />
+            },
+        ] : []),
+        ...(role === 'recruiter' ? [
+            {
+                label: 'Jobs',
+                href: `${basePath}/jobs`,
+                icon: <Briefcase className="w-5 h-5 shrink-0" />
+            },
+            {
+                label: 'Marketplace',
+                href: `${basePath}/marketplace`,
+                icon: <Store className="w-5 h-5 shrink-0" />
+            },
+            {
+                label: 'Sourcing',
+                href: `${basePath}/sourcing`,
+                icon: <Search className="w-5 h-5 shrink-0" />
+            },
+            {
+                label: 'Submissions',
+                href: `${basePath}/submissions`,
+                icon: <Send className="w-5 h-5 shrink-0" />
+            },
+        ] : []),
+        ...(role === 'employer' ? [
+            {
+                label: 'Jobs',
+                href: `${basePath}/jobs`,
+                icon: <Briefcase className="w-5 h-5 shrink-0" />
+            },
+            {
+                label: 'Team',
+                href: `${basePath}/team`,
+                icon: <Users className="w-5 h-5 shrink-0" />
+            },
+        ] : []),
         {
             label: 'AI Tools',
             href: `${basePath}/tools`,
-            icon: <Wrench className="w-5 h-5" />
+            icon: <Wrench className="w-5 h-5 shrink-0" />
         },
         {
             label: 'Settings',
             href: `${basePath}/settings`,
-            icon: <Settings className="w-5 h-5" />
+            icon: <Settings className="w-5 h-5 shrink-0" />
         }
     ];
 
-    // Role specific items could be added here
-    if (role === 'applicant') {
-        // e.g. My Applications?
-    }
-
     return (
-        <aside className="w-64 bg-[#15171e] border-r border-gray-800 flex flex-col h-screen fixed left-0 top-0 z-40">
-            {/* Logo Area */}
-            <div className="p-6 border-b border-gray-800 flex items-center gap-3">
-                <div className="w-8 h-8 bg-[var(--primary-blue)] rounded-lg flex items-center justify-center">
-                    <span className="text-white font-bold text-lg">S</span>
+        <>
+            {/* Mobile Menu Button */}
+            <button
+                onClick={toggleMobile}
+                className="md:hidden fixed top-4 left-4 z-50 p-2 bg-[#15171e] border border-gray-800 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800 transition-all"
+                aria-label="Toggle menu"
+            >
+                {isMobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
+
+            {/* Mobile Backdrop */}
+            {isMobileOpen && (
+                <div
+                    className="md:hidden fixed inset-0 bg-black/50 z-40 backdrop-blur-sm"
+                    onClick={closeMobile}
+                />
+            )}
+
+            {/* Sidebar */}
+            <aside
+                className={`
+                    bg-[#15171e] border-r border-gray-800 flex flex-col h-screen fixed left-0 top-0 z-40
+                    transition-all duration-300 ease-in-out
+                    ${isCollapsed ? 'w-16' : 'w-64'}
+                    ${isMobileOpen ? 'translate-x-0' : '-translate-x-full'}
+                    md:translate-x-0
+                `}
+            >
+                {/* Logo Area */}
+                <div className={`p-4 border-b border-gray-800 flex items-center gap-3 ${isCollapsed ? 'justify-center' : ''}`}>
+                    <div className="w-8 h-8 shrink-0">
+                        <img
+                            src="/icon.png"
+                            alt="SwiftAI Recruit"
+                            className="w-full h-full object-contain"
+                        />
+                    </div>
+                    <span className={`text-white font-bold text-lg tracking-tight whitespace-nowrap transition-opacity duration-300 ${isCollapsed ? 'opacity-0 hidden' : 'opacity-100'}`}>
+                        SwiftAI Recruit
+                    </span>
                 </div>
-                <span className="text-white font-bold text-lg tracking-tight">SwiftAI Recruit</span>
-            </div>
 
-            {/* Navigation */}
-            <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
-                {navItems.map((item) => {
-                    const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
-                    return (
-                        <Link
-                            key={item.href}
-                            href={item.href}
-                            className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${isActive
-                                    ? 'bg-[var(--primary-blue)]/10 text-[var(--primary-blue)] font-medium border border-[var(--primary-blue)]/20'
-                                    : 'text-gray-400 hover:bg-gray-800 hover:text-white'
-                                }`}
-                        >
-                            {item.icon}
-                            {item.label}
-                        </Link>
-                    );
-                })}
-            </nav>
+                {/* Navigation */}
+                <nav className="flex-1 p-2 space-y-1 overflow-y-auto">
+                    {navItems.map((item) => {
+                        const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
+                        return (
+                            <Link
+                                key={item.href}
+                                href={item.href}
+                                onClick={closeMobile}
+                                title={isCollapsed ? item.label : undefined}
+                                className={`
+                                    flex items-center gap-3 px-3 py-3 rounded-xl transition-all
+                                    ${isCollapsed ? 'justify-center' : ''}
+                                    ${isActive
+                                        ? 'bg-[var(--primary-blue)]/10 text-[var(--primary-blue)] font-medium border border-[var(--primary-blue)]/20'
+                                        : 'text-gray-400 hover:bg-gray-800 hover:text-white'
+                                    }
+                                `}
+                            >
+                                {item.icon}
+                                <span className={`whitespace-nowrap transition-opacity duration-300 ${isCollapsed ? 'opacity-0 hidden' : 'opacity-100'}`}>
+                                    {item.label}
+                                </span>
+                            </Link>
+                        );
+                    })}
+                </nav>
 
-            {/* User/Logout Area */}
-            <div className="p-4 border-t border-gray-800">
-                <button
-                    onClick={handleLogout}
-                    className="flex items-center gap-3 px-4 py-3 rounded-xl w-full text-left text-gray-400 hover:bg-red-500/10 hover:text-red-400 transition-all"
-                >
-                    <LogOut className="w-5 h-5" />
-                    Sign Out
-                </button>
-            </div>
-        </aside>
+                {/* Collapse Toggle (Desktop only) */}
+                <div className="hidden md:block p-2 border-t border-gray-800">
+                    <button
+                        onClick={toggleCollapsed}
+                        className={`flex items-center gap-3 px-3 py-3 rounded-xl w-full text-left text-gray-400 hover:bg-gray-800 hover:text-white transition-all ${isCollapsed ? 'justify-center' : ''}`}
+                        title={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+                    >
+                        {isCollapsed ? <PanelLeft className="w-5 h-5 shrink-0" /> : <PanelLeftClose className="w-5 h-5 shrink-0" />}
+                        <span className={`whitespace-nowrap transition-opacity duration-300 ${isCollapsed ? 'opacity-0 hidden' : 'opacity-100'}`}>
+                            Collapse
+                        </span>
+                    </button>
+                </div>
+
+                {/* User/Logout Area */}
+                <div className="p-2 border-t border-gray-800">
+                    <button
+                        onClick={handleLogout}
+                        className={`flex items-center gap-3 px-3 py-3 rounded-xl w-full text-left text-gray-400 hover:bg-red-500/10 hover:text-red-400 transition-all ${isCollapsed ? 'justify-center' : ''}`}
+                        title={isCollapsed ? 'Sign Out' : undefined}
+                    >
+                        <LogOut className="w-5 h-5 shrink-0" />
+                        <span className={`whitespace-nowrap transition-opacity duration-300 ${isCollapsed ? 'opacity-0 hidden' : 'opacity-100'}`}>
+                            Sign Out
+                        </span>
+                    </button>
+                </div>
+            </aside>
+        </>
     );
 }

@@ -1,13 +1,26 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { createClient } from '@/lib/supabase/client';
 
 export default function RecruiterPage() {
     const router = useRouter();
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        router.replace('/app/org/recruiter/dashboard');
+        const redirectToUserDashboard = async () => {
+            const supabase = createClient();
+            const { data: { user } } = await supabase.auth.getUser();
+
+            if (user) {
+                router.replace(`/app/org/recruiter/${user.id}`);
+            } else {
+                router.replace('/auth/login');
+            }
+        };
+
+        redirectToUserDashboard();
     }, [router]);
 
     return (
