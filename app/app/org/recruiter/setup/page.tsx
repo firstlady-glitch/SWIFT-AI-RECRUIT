@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useState, Suspense } from 'react';
+import { useState, Suspense, useEffect } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import { Upload } from 'lucide-react';
 
@@ -12,16 +12,31 @@ function RecruiterSetupContent() {
 
     const [isLoading, setIsLoading] = useState(false);
     const [formData, setFormData] = useState({
-        companyName: '',
+        fullName: '',
+        email: '',
+        companyName: '', // Kept backend-side for org name, but mapped from full name
         industry: '',
-        companySize: '',
-        website: '',
-        phone: '',
         location: '',
         specializations: '',
         yearsInBusiness: '',
         logo: null as File | null
     });
+
+    // Pre-fill from user metadata if available
+    useEffect(() => {
+        const loadUser = async () => {
+            const supabase = createClient();
+            const { data: { user } } = await supabase.auth.getUser();
+            if (user) {
+                setFormData(prev => ({
+                    ...prev,
+                    fullName: user.user_metadata?.full_name || '',
+                    email: user.email || ''
+                }));
+            }
+        };
+        loadUser();
+    }, []);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -95,12 +110,11 @@ function RecruiterSetupContent() {
             const { data: org, error: orgError } = await supabase
                 .from('organizations')
                 .upsert({
-                    name: formData.companyName,
+                    name: formData.fullName, // Using Name as Org Name for Freelancers
+                    email: formData.email,
                     type: 'recruiter',
                     industry: formData.industry,
-                    size: formData.companySize,
-                    website: formData.website,
-                    phone: formData.phone,
+                    size: '1', // Default to 1 for freelance
                     location: formData.location,
                     specializations: formData.specializations.split(',').map(s => s.trim()),
                     years_in_business: parseInt(formData.yearsInBusiness),
@@ -123,6 +137,7 @@ function RecruiterSetupContent() {
                 .update({
                     organization_id: org.id,
                     role: 'recruiter',
+                    full_name: formData.fullName, // Update profile name
                     onboarding_completed: true
                 })
                 .eq('id', user.id);
@@ -148,9 +163,9 @@ function RecruiterSetupContent() {
     return (
         <div className="min-h-screen bg-[var(--background)] py-12">
             <div className="max-w-2xl mx-auto px-6">
-                <h1 className="text-4xl font-bold mb-4">Setup Your Recruitment Agency</h1>
+                <h1 className="text-4xl font-bold mb-4">Recruiter Profile Setup</h1>
                 <p className="text-xl text-[var(--foreground-secondary)] mb-8">
-                    Complete your agency profile to start sourcing talent {selectedPlan !== 'free' && <span className="ml-2 inline-block px-2 py-0.5 bg-[var(--primary-blue)] text-white text-xs rounded-full uppercase font-bold tracking-wide align-middle">{selectedPlan} Plan</span>}
+                    Complete your profile to start sourcing talent {selectedPlan !== 'free' && <span className="ml-2 inline-block px-2 py-0.5 bg-[var(--primary-blue)] text-white text-xs rounded-full uppercase font-bold tracking-wide align-middle">{selectedPlan} Plan</span>}
                 </p>
 
                 <form onSubmit={handleSubmit} className="card p-8 space-y-6">
@@ -176,19 +191,36 @@ function RecruiterSetupContent() {
                         </div>
                     </div>
 
-                    <div>
-                        <label htmlFor="companyName" className="block text-sm font-medium mb-2">
-                            Agency Name
-                        </label>
-                        <input
-                            type="text"
-                            id="companyName"
-                            required
-                            value={formData.companyName}
-                            onChange={(e) => setFormData({ ...formData, companyName: e.target.value })}
-                            className="w-full px-4 py-3 rounded-lg border border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--primary-blue)]"
-                            placeholder="TalentSource Recruiters"
-                        />
+                    <div className="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label htmlFor="fullName" className="block text-sm font-medium mb-2">
+                                Full Name
+                            </label>
+                            <input
+                                type="text"
+                                id="fullName"
+                                required
+                                value={formData.fullName}
+                                onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
+                                className="w-full px-4 py-3 rounded-lg border border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--primary-blue)]"
+                                placeholder="John Doe"
+                            />
+                        </div>
+
+                        <div>
+                            <label htmlFor="email" className="block text-sm font-medium mb-2">
+                                Email Address
+                            </label>
+                            <input
+                                type="email"
+                                id="email"
+                                required
+                                value={formData.email}
+                                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                                className="w-full px-4 py-3 rounded-lg border border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--primary-blue)]"
+                                placeholder="john@example.com"
+                            />
+                        </div>
                     </div>
 
                     <div className="grid md:grid-cols-2 gap-6">
@@ -240,59 +272,8 @@ function RecruiterSetupContent() {
                     </div>
 
                     <div>
-                        <label htmlFor="companySize" className="block text-sm font-medium mb-2">
-                            Team Size
-                        </label>
-                        <select
-                            id="companySize"
-                            required
-                            value={formData.companySize}
-                            onChange={(e) => setFormData({ ...formData, companySize: e.target.value })}
-                            className="w-full px-4 py-3 rounded-lg border border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--primary-blue)]"
-                        >
-                            <option value="">Select size</option>
-                            <option value="1-5">1-5 recruiters</option>
-                            <option value="6-10">6-10 recruiters</option>
-                            <option value="11-25">11-25 recruiters</option>
-                            <option value="26-50">26-50 recruiters</option>
-                            <option value="51+">51+ recruiters</option>
-                        </select>
-                    </div>
-
-                    <div className="grid md:grid-cols-2 gap-6">
-                        <div>
-                            <label htmlFor="website" className="block text-sm font-medium mb-2">
-                                Website
-                            </label>
-                            <input
-                                type="url"
-                                id="website"
-                                value={formData.website}
-                                onChange={(e) => setFormData({ ...formData, website: e.target.value })}
-                                className="w-full px-4 py-3 rounded-lg border border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--primary-blue)]"
-                                placeholder="https://example.com"
-                            />
-                        </div>
-
-                        <div>
-                            <label htmlFor="phone" className="block text-sm font-medium mb-2">
-                                Business Phone
-                            </label>
-                            <input
-                                type="tel"
-                                id="phone"
-                                required
-                                value={formData.phone}
-                                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                                className="w-full px-4 py-3 rounded-lg border border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--primary-blue)]"
-                                placeholder="+1 (555) 000-0000"
-                            />
-                        </div>
-                    </div>
-
-                    <div>
                         <label htmlFor="location" className="block text-sm font-medium mb-2">
-                            Office Location
+                            Location
                         </label>
                         <input
                             type="text"
@@ -304,6 +285,10 @@ function RecruiterSetupContent() {
                             placeholder="New York, NY"
                         />
                     </div>
+
+
+
+
 
                     <button
                         type="submit"

@@ -47,9 +47,9 @@ export function StatsCard({
     };
 
     return (
-        <div className={`bg-[#15171e] border border-gray-800 rounded-xl p-6 hover:border-gray-700 transition-colors ${className}`}>
+        <div className={`bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6 hover:border-[var(--foreground-secondary)] transition-colors ${className}`}>
             <div className="flex items-start justify-between mb-4">
-                <span className="text-sm text-gray-400">{title}</span>
+                <span className="text-sm text-[var(--foreground-secondary)]">{title}</span>
                 {icon && (
                     <div className={`p-2 rounded-lg ${colorClasses[color]}`}>
                         {icon}
@@ -59,9 +59,9 @@ export function StatsCard({
 
             <div className="flex items-end justify-between">
                 <div>
-                    <p className="text-3xl font-bold text-white">{value}</p>
+                    <p className="text-3xl font-bold text-[var(--foreground)]">{value}</p>
                     {subtitle && (
-                        <p className="text-sm text-gray-500 mt-1">{subtitle}</p>
+                        <p className="text-sm text-[var(--foreground-secondary)] mt-1">{subtitle}</p>
                     )}
                 </div>
 
@@ -70,7 +70,7 @@ export function StatsCard({
                         {getTrendIcon()}
                         <span>{Math.abs(trend.value)}%</span>
                         {trend.label && (
-                            <span className="text-gray-500 ml-1">{trend.label}</span>
+                            <span className="text-[var(--foreground-secondary)] ml-1">{trend.label}</span>
                         )}
                     </div>
                 )}

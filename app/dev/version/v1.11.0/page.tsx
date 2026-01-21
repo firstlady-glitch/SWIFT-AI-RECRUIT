@@ -27,7 +27,7 @@ export default function Version1110Page() {
                 {/* Changes */}
                 <div className="space-y-6">
                     {/* EmptyState Component Update */}
-                    <div className="bg-[#15171e] border border-gray-800 rounded-xl p-6">
+                    <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6">
                         <div className="flex items-center gap-3 mb-4">
                             <div className="w-10 h-10 bg-cyan-500/20 rounded-lg flex items-center justify-center">
                                 <svg className="w-5 h-5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -62,7 +62,7 @@ export default function Version1110Page() {
                     </div>
 
                     {/* Strategic Platform Alignment */}
-                    <div className="bg-[#15171e] border border-gray-800 rounded-xl p-6">
+                    <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6">
                         <div className="flex items-center gap-3 mb-4">
                             <div className="w-10 h-10 bg-green-500/20 rounded-lg flex items-center justify-center">
                                 <svg className="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -119,7 +119,7 @@ export default function Version1110Page() {
                     </div>
 
                     {/* External Application Links */}
-                    <div className="bg-[#15171e] border border-gray-800 rounded-xl p-6">
+                    <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6">
                         <div className="flex items-center gap-3 mb-4">
                             <div className="w-10 h-10 bg-orange-500/20 rounded-lg flex items-center justify-center">
                                 <svg className="w-5 h-5 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -173,7 +173,7 @@ export default function Version1110Page() {
                     </div>
 
                     {/* Responsive Collapsible Sidebar */}
-                    <div className="bg-[#15171e] border border-gray-800 rounded-xl p-6">
+                    <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6">
                         <div className="flex items-center gap-3 mb-4">
                             <div className="w-10 h-10 bg-purple-500/20 rounded-lg flex items-center justify-center">
                                 <svg className="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -230,7 +230,7 @@ export default function Version1110Page() {
                     </div>
 
                     {/* Dashboard Route Restructuring */}
-                    <div className="bg-[#15171e] border border-gray-800 rounded-xl p-6">
+                    <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6">
                         <div className="flex items-center gap-3 mb-4">
                             <div className="w-10 h-10 bg-blue-500/20 rounded-lg flex items-center justify-center">
                                 <svg className="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -278,7 +278,7 @@ export default function Version1110Page() {
                     </div>
 
                     {/* Sidebar Navigation Updates */}
-                    <div className="bg-[#15171e] border border-gray-800 rounded-xl p-6">
+                    <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6">
                         <div className="flex items-center gap-3 mb-4">
                             <div className="w-10 h-10 bg-yellow-500/20 rounded-lg flex items-center justify-center">
                                 <svg className="w-5 h-5 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -324,7 +324,7 @@ export default function Version1110Page() {
                     </div>
 
                     {/* Logo Branding Update */}
-                    <div className="bg-[#15171e] border border-gray-800 rounded-xl p-6">
+                    <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6">
                         <div className="flex items-center gap-3 mb-4">
                             <div className="w-10 h-10 bg-pink-500/20 rounded-lg flex items-center justify-center">
                                 <svg className="w-5 h-5 text-pink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -351,7 +351,7 @@ export default function Version1110Page() {
                     </div>
 
                     {/* Applicant Jobs Page Navbar */}
-                    <div className="bg-[#15171e] border border-gray-800 rounded-xl p-6">
+                    <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6">
                         <div className="flex items-center gap-3 mb-4">
                             <div className="w-10 h-10 bg-teal-500/20 rounded-lg flex items-center justify-center">
                                 <svg className="w-5 h-5 text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -384,7 +384,7 @@ export default function Version1110Page() {
                     </div>
 
                     {/* Responsive UI Improvements */}
-                    <div className="bg-[#15171e] border border-gray-800 rounded-xl p-6">
+                    <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6">
                         <div className="flex items-center gap-3 mb-4">
                             <div className="w-10 h-10 bg-indigo-500/20 rounded-lg flex items-center justify-center">
                                 <svg className="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -412,7 +412,7 @@ export default function Version1110Page() {
                 </div>
 
                 {/* Component Preview */}
-                <div className="mt-8 bg-[#15171e]/50 border border-gray-800/50 rounded-xl p-6">
+                <div className="mt-8 bg-[var(--background-secondary)]/50 border border-[var(--border)]/50 rounded-xl p-6">
                     <h3 className="text-lg font-semibold mb-4 text-gray-300">Component Props</h3>
                     <div className="overflow-x-auto">
                         <table className="w-full text-sm">

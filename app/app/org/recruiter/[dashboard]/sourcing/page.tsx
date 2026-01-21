@@ -171,7 +171,7 @@ export default function RecruiterSourcingPage() {
                     <p className="text-gray-400">Search and connect with talented candidates.</p>
                 </div>
 
-                <div className="bg-[#15171e] border border-gray-800 rounded-xl p-4 mb-6">
+                <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-4 mb-6">
                     <div className="relative">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
                         <input
@@ -211,7 +211,7 @@ export default function RecruiterSourcingPage() {
             {/* Candidate Detail Modal */}
             {(selectedCandidate || isLoadingDetails) && (
                 <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-                    <div className="bg-[#15171e] border border-gray-800 rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+                    <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
                         {isLoadingDetails ? (
                             <div className="p-12 flex items-center justify-center">
                                 <div className="animate-spin rounded-full h-8 w-8 border-2 border-[var(--primary-blue)] border-t-transparent" />
@@ -219,7 +219,7 @@ export default function RecruiterSourcingPage() {
                         ) : selectedCandidate && (
                             <>
                                 {/* Modal Header */}
-                                <div className="sticky top-0 bg-[#15171e] border-b border-gray-800 p-6 flex items-start justify-between">
+                                <div className="sticky top-0 bg-[var(--background-secondary)] border-b border-[var(--border)] p-6 flex items-start justify-between">
                                     <div className="flex items-center gap-4">
                                         <div className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-2xl font-bold text-white">
                                             {selectedCandidate.full_name?.charAt(0) || '?'}
@@ -334,7 +334,7 @@ export default function RecruiterSourcingPage() {
                                 </div>
 
                                 {/* Modal Footer */}
-                                <div className="sticky bottom-0 bg-[#15171e] border-t border-gray-800 p-6 flex gap-3">
+                                <div className="sticky bottom-0 bg-[var(--background-secondary)] border-t border-[var(--border)] p-6 flex gap-3">
                                     <a
                                         href={`mailto:${selectedCandidate.email}?subject=Opportunity from SwiftAI Recruit&body=Hi ${selectedCandidate.full_name},%0D%0A%0D%0AI came across your profile and would like to discuss a potential opportunity with you.%0D%0A%0D%0ABest regards`}
                                         className="flex-1 btn bg-[var(--primary-blue)] hover:bg-blue-600 text-white py-3 text-center"

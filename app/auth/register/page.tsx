@@ -114,7 +114,7 @@ function RegisterContent() {
 
     if (!role) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-[#0b0c0f] text-gray-100 py-12 px-4">
+            <div className="min-h-screen flex items-center justify-center bg-[var(--background)] text-[var(--foreground)] py-12 px-4">
                 <div className="w-full max-w-5xl">
                     <Link
                         href="/"
@@ -134,30 +134,30 @@ function RegisterContent() {
                     <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
                         <button
                             onClick={() => handleRoleSelect('applicant')}
-                            className="group relative bg-[#15171e] border border-gray-800 hover:border-[var(--primary-blue)] hover:shadow-2xl hover:shadow-blue-900/20 p-10 rounded-3xl transition-all text-left flex flex-col items-center text-center overflow-hidden"
+                            className="group relative bg-[var(--background-secondary)] border border-[var(--border)] hover:border-[var(--primary-blue)] hover:shadow-2xl hover:shadow-blue-900/20 p-10 rounded-3xl transition-all text-left flex flex-col items-center text-center overflow-hidden"
                         >
                             <div className="absolute inset-0 bg-gradient-to-br from-[var(--primary-blue)]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
 
                             <div className="w-20 h-20 rounded-2xl bg-[var(--primary-blue)]/10 text-[var(--primary-blue)] flex items-center justify-center mb-8 group-hover:bg-[var(--primary-blue)] group-hover:text-white transition-colors relative z-10">
                                 <User className="w-10 h-10" />
                             </div>
-                            <h2 className="text-2xl font-bold mb-3 text-white relative z-10">I'm a Job Seeker</h2>
-                            <p className="text-gray-400 relative z-10">
+                            <h2 className="text-2xl font-bold mb-3 text-[var(--foreground)] relative z-10">I'm a Job Seeker</h2>
+                            <p className="text-[var(--foreground-secondary)] relative z-10">
                                 Find your dream job, track applications, and get AI-powered career advice.
                             </p>
                         </button>
 
                         <button
                             onClick={() => handleRoleSelect('org')}
-                            className="group relative bg-[#15171e] border border-gray-800 hover:border-[var(--accent-orange)] hover:shadow-2xl hover:shadow-orange-900/20 p-10 rounded-3xl transition-all text-left flex flex-col items-center text-center overflow-hidden"
+                            className="group relative bg-[var(--background-secondary)] border border-[var(--border)] hover:border-[var(--accent-orange)] hover:shadow-2xl hover:shadow-orange-900/20 p-10 rounded-3xl transition-all text-left flex flex-col items-center text-center overflow-hidden"
                         >
                             <div className="absolute inset-0 bg-gradient-to-br from-[var(--accent-orange)]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
 
                             <div className="w-20 h-20 rounded-2xl bg-[var(--accent-orange)]/10 text-[var(--accent-orange)] flex items-center justify-center mb-8 group-hover:bg-[var(--accent-orange)] group-hover:text-white transition-colors relative z-10">
                                 <Briefcase className="w-10 h-10" />
                             </div>
-                            <h2 className="text-2xl font-bold mb-3 text-white relative z-10">I'm Hiring</h2>
-                            <p className="text-gray-400 relative z-10">
+                            <h2 className="text-2xl font-bold mb-3 text-[var(--foreground)] relative z-10">I'm Hiring</h2>
+                            <p className="text-[var(--foreground-secondary)] relative z-10">
                                 Post jobs, discover ranked candidates, and streamline your entire hiring process.
                             </p>
                         </button>
@@ -168,7 +168,7 @@ function RegisterContent() {
     }
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-[#0b0c0f] text-gray-100 py-12 px-4">
+        <div className="min-h-screen flex items-center justify-center bg-[var(--background)] text-[var(--foreground)] py-12 px-4">
             <div className="w-full max-w-2xl">
                 <button
                     onClick={() => setRole(null)}
@@ -178,9 +178,9 @@ function RegisterContent() {
                     Back to selection
                 </button>
 
-                <div className="bg-[#15171e] border border-gray-800 rounded-2xl p-8 md:p-12 shadow-2xl">
+                <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-2xl p-8 md:p-12 shadow-2xl">
                     <div className="text-center mb-10">
-                        <h1 className="text-3xl font-bold mb-2 text-white">Create Account</h1>
+                        <h1 className="text-3xl font-bold mb-2 text-[var(--foreground)]">Create Account</h1>
                         <p className="text-gray-400">
                             {role === 'applicant' ? 'Start your intelligent job search today' : 'Transform how you hire talent'}
                         </p>
@@ -195,7 +195,7 @@ function RegisterContent() {
                     <form onSubmit={handleSubmit} className="space-y-6">
                         <div className="grid md:grid-cols-2 gap-6">
                             <div className="col-span-2">
-                                <label htmlFor="fullName" className="block text-sm font-medium mb-2 text-gray-300">
+                                <label htmlFor="fullName" className="block text-sm font-medium mb-2 text-[var(--foreground)]">
                                     Full Name
                                 </label>
                                 <div className="relative">
@@ -208,14 +208,14 @@ function RegisterContent() {
                                         required
                                         value={formData.fullName}
                                         onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                                        className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-800 bg-[#0b0c0f] text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-[var(--primary-blue)] focus:border-transparent transition-all"
+                                        className="w-full pl-10 pr-4 py-3 rounded-xl border border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] placeholder-[var(--foreground-secondary)] focus:outline-none focus:ring-2 focus:ring-[var(--primary-blue)] focus:border-transparent transition-all"
                                         placeholder="John Doe"
                                     />
                                 </div>
                             </div>
 
                             <div className="col-span-2">
-                                <label htmlFor="email" className="block text-sm font-medium mb-2 text-gray-300">
+                                <label htmlFor="email" className="block text-sm font-medium mb-2 text-[var(--foreground)]">
                                     Email Address
                                 </label>
                                 <div className="relative">
@@ -231,14 +231,14 @@ function RegisterContent() {
                                         required
                                         value={formData.email}
                                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                                        className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-800 bg-[#0b0c0f] text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-[var(--primary-blue)] focus:border-transparent transition-all"
+                                        className="w-full pl-10 pr-4 py-3 rounded-xl border border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] placeholder-[var(--foreground-secondary)] focus:outline-none focus:ring-2 focus:ring-[var(--primary-blue)] focus:border-transparent transition-all"
                                         placeholder="you@example.com"
                                     />
                                 </div>
                             </div>
 
                             <div>
-                                <label htmlFor="password" className="block text-sm font-medium mb-2 text-gray-300">
+                                <label htmlFor="password" className="block text-sm font-medium mb-2 text-[var(--foreground)]">
                                     Password
                                 </label>
                                 <div className="relative">
@@ -254,14 +254,14 @@ function RegisterContent() {
                                         minLength={6}
                                         value={formData.password}
                                         onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                                        className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-800 bg-[#0b0c0f] text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-[var(--primary-blue)] focus:border-transparent transition-all"
+                                        className="w-full pl-10 pr-4 py-3 rounded-xl border border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] placeholder-[var(--foreground-secondary)] focus:outline-none focus:ring-2 focus:ring-[var(--primary-blue)] focus:border-transparent transition-all"
                                         placeholder="••••••••"
                                     />
                                 </div>
                             </div>
 
                             <div>
-                                <label htmlFor="confirmPassword" className="block text-sm font-medium mb-2 text-gray-300">
+                                <label htmlFor="confirmPassword" className="block text-sm font-medium mb-2 text-[var(--foreground)]">
                                     Confirm Password
                                 </label>
                                 <div className="relative">
@@ -276,7 +276,7 @@ function RegisterContent() {
                                         required
                                         value={formData.confirmPassword}
                                         onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-                                        className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-800 bg-[#0b0c0f] text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-[var(--primary-blue)] focus:border-transparent transition-all"
+                                        className="w-full pl-10 pr-4 py-3 rounded-xl border border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] placeholder-[var(--foreground-secondary)] focus:outline-none focus:ring-2 focus:ring-[var(--primary-blue)] focus:border-transparent transition-all"
                                         placeholder="••••••••"
                                     />
                                 </div>

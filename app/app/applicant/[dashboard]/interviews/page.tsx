@@ -115,7 +115,7 @@ export default function ApplicantInterviewsPage() {
                 {isLoading ? (
                     <LoadingState type="list" count={3} />
                 ) : interviews.length === 0 ? (
-                    <div className="bg-[#15171e] border border-gray-800 rounded-xl">
+                    <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl">
                         <EmptyState
                             icon={CalendarDays}
                             title="No Interviews Scheduled"
@@ -129,7 +129,7 @@ export default function ApplicantInterviewsPage() {
                         {interviews.map((interview) => (
                             <div
                                 key={interview.id}
-                                className="bg-[#15171e] border border-gray-800 rounded-xl p-6 hover:border-[var(--primary-blue)] transition-all hover:shadow-lg hover:shadow-blue-500/10"
+                                className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6 hover:border-[var(--primary-blue)] transition-all hover:shadow-lg hover:shadow-blue-500/10"
                             >
                                 <div className="flex flex-col md:flex-row gap-6">
                                     {/* Date Box */}

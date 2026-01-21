@@ -160,11 +160,11 @@ export function ChatPanel({ isOpen, onClose, recipientId, recipientName, jobId }
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-            <div className="w-full max-w-3xl h-[600px] bg-[#15171e] border border-gray-800 rounded-xl flex overflow-hidden">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+            <div className="w-full max-w-3xl h-[600px] bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl flex overflow-hidden">
                 {/* Conversations List */}
-                <div className="w-1/3 border-r border-gray-800 flex flex-col">
-                    <div className="p-4 border-b border-gray-800">
+                <div className="w-1/3 border-r border-[var(--border)] flex flex-col">
+                    <div className="p-4 border-b border-[var(--border)]">
                         <h3 className="font-semibold flex items-center gap-2">
                             <MessageCircle className="w-5 h-5 text-[var(--primary-blue)]" />
                             Messages
@@ -179,12 +179,12 @@ export function ChatPanel({ isOpen, onClose, recipientId, recipientName, jobId }
                                         setActiveConversation(conv);
                                         fetchMessages(conv.id);
                                     }}
-                                    className={`w-full p-4 text-left border-b border-gray-800 hover:bg-gray-800/50 transition-colors ${activeConversation?.id === conv.id ? 'bg-gray-800/50' : ''}`}
+                                    className={`w-full p-4 text-left border-b border-[var(--border)] hover:bg-[var(--border)]/50 transition-colors ${activeConversation?.id === conv.id ? 'bg-[var(--border)]/50' : ''}`}
                                 >
-                                    <p className="text-white text-sm font-medium truncate">
+                                    <p className="text-[var(--foreground)] text-sm font-medium truncate">
                                         Conversation
                                     </p>
-                                    <p className="text-xs text-gray-500">
+                                    <p className="text-xs text-[var(--foreground-secondary)]">
                                         {conv.last_message_at
                                             ? new Date(conv.last_message_at).toLocaleString()
                                             : 'No messages'}
@@ -202,13 +202,13 @@ export function ChatPanel({ isOpen, onClose, recipientId, recipientName, jobId }
                 {/* Chat Area */}
                 <div className="flex-1 flex flex-col">
                     {/* Header */}
-                    <div className="p-4 border-b border-gray-800 flex items-center justify-between">
-                        <h3 className="font-medium text-white">
+                    <div className="p-4 border-b border-[var(--border)] flex items-center justify-between">
+                        <h3 className="font-medium text-[var(--foreground)]">
                             {recipientName || 'Chat'}
                         </h3>
                         <button
                             onClick={onClose}
-                            className="p-2 text-gray-400 hover:text-white hover:bg-gray-800 rounded-lg"
+                            className="p-2 text-[var(--foreground-secondary)] hover:text-[var(--foreground)] hover:bg-[var(--border)] rounded-lg"
                         >
                             <X className="w-5 h-5" />
                         </button>
@@ -229,7 +229,7 @@ export function ChatPanel({ isOpen, onClose, recipientId, recipientName, jobId }
                                     <div
                                         className={`max-w-[70%] rounded-lg px-4 py-2 ${msg.sender_id === currentUserId
                                             ? 'bg-[var(--primary-blue)] text-white'
-                                            : 'bg-gray-800 text-gray-200'
+                                            : 'bg-[var(--border)] text-[var(--foreground)]'
                                             }`}
                                     >
                                         <p className="text-sm">{msg.content}</p>
@@ -248,7 +248,7 @@ export function ChatPanel({ isOpen, onClose, recipientId, recipientName, jobId }
                     </div>
 
                     {/* Input */}
-                    <div className="p-4 border-t border-gray-800">
+                    <div className="p-4 border-t border-[var(--border)]">
                         <div className="flex gap-2">
                             <input
                                 type="text"
@@ -256,7 +256,7 @@ export function ChatPanel({ isOpen, onClose, recipientId, recipientName, jobId }
                                 onChange={(e) => setNewMessage(e.target.value)}
                                 onKeyPress={handleKeyPress}
                                 placeholder="Type a message..."
-                                className="flex-1 px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:border-[var(--primary-blue)] focus:outline-none"
+                                className="flex-1 px-4 py-3 bg-[var(--background)] border border-[var(--border)] rounded-lg focus:border-[var(--primary-blue)] focus:outline-none text-[var(--foreground)] placeholder-[var(--foreground-secondary)]"
                                 disabled={!activeConversation || isSending}
                             />
                             <button

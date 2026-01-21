@@ -79,20 +79,20 @@ function LoginContent() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-[#0b0c0f] text-gray-100 p-4">
+        <div className="min-h-screen flex items-center justify-center bg-[var(--background)] text-[var(--foreground)] p-4">
             <div className="w-full max-w-lg">
                 <Link
                     href="/"
-                    className="inline-flex items-center gap-2 text-gray-400 hover:text-white transition-colors mb-8"
+                    className="inline-flex items-center gap-2 text-[var(--foreground-secondary)] hover:text-[var(--foreground)] transition-colors mb-8"
                 >
                     <ArrowLeft className="w-4 h-4" />
                     Back to home
                 </Link>
 
-                <div className="bg-[#15171e] border border-gray-800 rounded-2xl p-8 md:p-10 shadow-2xl">
+                <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-2xl p-8 md:p-10 shadow-2xl">
                     <div className="text-center mb-8">
-                        <h1 className="text-3xl font-bold mb-2 text-white">Welcome Back</h1>
-                        <p className="text-gray-400">
+                        <h1 className="text-3xl font-bold mb-2 text-[var(--foreground)]">Welcome Back</h1>
+                        <p className="text-[var(--foreground-secondary)]">
                             Sign in to your SwiftAI Recruit account
                         </p>
                     </div>
@@ -105,7 +105,7 @@ function LoginContent() {
 
                     <form onSubmit={handleSubmit} className="space-y-6">
                         <div>
-                            <label htmlFor="email" className="block text-sm font-medium mb-2 text-gray-300">
+                            <label htmlFor="email" className="block text-sm font-medium mb-2 text-[var(--foreground-secondary)]">
                                 Email Address
                             </label>
                             <div className="relative">
@@ -121,7 +121,7 @@ function LoginContent() {
                                     required
                                     value={formData.email}
                                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                                    className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-800 bg-[#0b0c0f] text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-[var(--primary-blue)] focus:border-transparent transition-all"
+                                    className="w-full pl-10 pr-4 py-3 rounded-xl border border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] placeholder-[var(--foreground-secondary)] focus:outline-none focus:ring-2 focus:ring-[var(--primary-blue)] focus:border-transparent transition-all"
                                     placeholder="you@example.com"
                                 />
                             </div>
@@ -129,7 +129,7 @@ function LoginContent() {
 
                         <div>
                             <div className="flex items-center justify-between mb-2">
-                                <label htmlFor="password" className="block text-sm font-medium text-gray-300">
+                                <label htmlFor="password" className="block text-sm font-medium text-[var(--foreground-secondary)]">
                                     Password
                                 </label>
                                 <Link href="/auth/forgot-password" className="text-sm text-[var(--primary-blue)] hover:text-blue-400 hover:underline">
@@ -148,7 +148,7 @@ function LoginContent() {
                                     required
                                     value={formData.password}
                                     onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                                    className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-800 bg-[#0b0c0f] text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-[var(--primary-blue)] focus:border-transparent transition-all"
+                                    className="w-full pl-10 pr-4 py-3 rounded-xl border border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] placeholder-[var(--foreground-secondary)] focus:outline-none focus:ring-2 focus:ring-[var(--primary-blue)] focus:border-transparent transition-all"
                                     placeholder="••••••••"
                                 />
                             </div>

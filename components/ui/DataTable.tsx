@@ -64,28 +64,28 @@ export function DataTable<T extends Record<string, unknown>>({
     if (data.length === 0) {
         if (emptyState) {
             return (
-                <div className={`bg-[#15171e] border border-gray-800 rounded-xl ${className}`}>
+                <div className={`bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl ${className}`}>
                     {emptyState}
                 </div>
             );
         }
         return (
-            <div className={`bg-[#15171e] border border-gray-800 rounded-xl p-12 text-center ${className}`}>
-                <p className="text-gray-500">{emptyMessage}</p>
+            <div className={`bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-12 text-center ${className}`}>
+                <p className="text-[var(--foreground-secondary)]">{emptyMessage}</p>
             </div>
         );
     }
 
     return (
-        <div className={`bg-[#15171e] border border-gray-800 rounded-xl overflow-hidden ${className}`}>
+        <div className={`bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl overflow-hidden ${className}`}>
             <div className="overflow-x-auto">
                 <table className="w-full">
                     <thead>
-                        <tr className="border-b border-gray-800 bg-[#0b0c0f]">
+                        <tr className="border-b border-[var(--border)] bg-[var(--background)]">
                             {columns.map((column) => (
                                 <th
                                     key={column.key as string}
-                                    className={`text-left text-sm font-medium text-gray-400 px-4 py-3 ${column.sortable ? 'cursor-pointer hover:text-white' : ''
+                                    className={`text-left text-sm font-medium text-[var(--foreground-secondary)] px-4 py-3 ${column.sortable ? 'cursor-pointer hover:text-[var(--foreground)]' : ''
                                         }`}
                                     style={{ width: column.width }}
                                     onClick={() => handleSort(column)}
@@ -106,8 +106,8 @@ export function DataTable<T extends Record<string, unknown>>({
                         {data.map((row, index) => (
                             <tr
                                 key={String(row[keyField])}
-                                className={`border-b border-gray-800/50 last:border-0 ${onRowClick
-                                    ? 'cursor-pointer hover:bg-[#1a1c24] transition-colors'
+                                className={`border-b border-[var(--border)]/50 last:border-0 ${onRowClick
+                                    ? 'cursor-pointer hover:bg-[var(--border)]/50 transition-colors'
                                     : ''
                                     }`}
                                 onClick={() => onRowClick?.(row)}
@@ -115,7 +115,7 @@ export function DataTable<T extends Record<string, unknown>>({
                                 {columns.map((column) => (
                                     <td
                                         key={column.key as string}
-                                        className="px-4 py-4 text-sm text-gray-300"
+                                        className="px-4 py-4 text-sm text-[var(--foreground)]"
                                     >
                                         {renderCell(row, column, index)}
                                     </td>
@@ -160,7 +160,7 @@ const statusColors: Record<string, Record<string, string>> = {
 };
 
 export function StatusBadge({ status, variant = 'application' }: StatusBadgeProps) {
-    const colors = statusColors[variant]?.[status] || 'bg-gray-500/20 text-gray-400';
+    const colors = statusColors[variant]?.[status] || 'bg-[var(--foreground-secondary)]/10 text-[var(--foreground-secondary)]';
 
     return (
         <span className={`px-2 py-1 rounded-full text-xs font-medium capitalize ${colors}`}>

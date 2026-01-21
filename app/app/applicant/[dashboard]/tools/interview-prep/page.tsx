@@ -226,7 +226,7 @@ export default function InterviewPrepTool() {
                         {/* Input Section */}
                         <div className="space-y-6">
                             {/* Job Selection from Applications */}
-                            <div className="card p-6 border border-gray-800 bg-[#15171e]">
+                            <div className="card p-6 border border-[var(--border)] bg-[var(--background-secondary)]">
                                 <label className="block text-sm font-medium mb-2 text-gray-300">
                                     Select from Your Applications
                                 </label>
@@ -243,8 +243,8 @@ export default function InterviewPrepTool() {
                                                 key={job.id}
                                                 onClick={() => { setSelectedJob(job); setManualJobTitle(''); }}
                                                 className={`w-full text-left p-3 rounded-lg border transition-all ${selectedJob?.id === job.id
-                                                        ? 'border-[var(--primary-blue)] bg-[var(--primary-blue)]/10'
-                                                        : 'border-gray-800 bg-[#0b0c0f] hover:border-gray-700'
+                                                    ? 'border-[var(--primary-blue)] bg-[var(--primary-blue)]/10'
+                                                    : 'border-gray-800 bg-[#0b0c0f] hover:border-gray-700'
                                                     }`}
                                             >
                                                 <div className="flex items-center gap-2">
@@ -263,7 +263,7 @@ export default function InterviewPrepTool() {
                             <div className="text-center text-gray-500 text-sm">— OR —</div>
 
                             {/* Manual Entry */}
-                            <div className="card p-6 border border-gray-800 bg-[#15171e]">
+                            <div className="card p-6 border border-[var(--border)] bg-[var(--background-secondary)]">
                                 <label className="block text-sm font-medium mb-2 text-gray-300">Enter Job Title Manually</label>
                                 <input
                                     type="text"
@@ -274,7 +274,7 @@ export default function InterviewPrepTool() {
                                 />
                             </div>
 
-                            <div className="card p-6 border border-gray-800 bg-[#15171e]">
+                            <div className="card p-6 border border-[var(--border)] bg-[var(--background-secondary)]">
                                 <label className="block text-sm font-medium mb-2 text-gray-300">Job Description (Optional)</label>
                                 <textarea
                                     value={manualJobDescription}
@@ -305,7 +305,7 @@ export default function InterviewPrepTool() {
                         </div>
 
                         {/* Preview */}
-                        <div className="bg-[#15171e] border border-gray-800 rounded-xl p-8 flex flex-col items-center justify-center text-center">
+                        <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-8 flex flex-col items-center justify-center text-center">
                             <MessageSquare className="w-16 h-16 text-gray-600 mb-4" />
                             <h3 className="text-xl font-semibold text-gray-400 mb-2">Ready to Practice?</h3>
                             <p className="text-gray-500 text-sm max-w-xs">
@@ -349,7 +349,7 @@ export default function InterviewPrepTool() {
                         </div>
 
                         {/* Current Question */}
-                        <div className="bg-[#15171e] border border-gray-800 rounded-xl p-8">
+                        <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-8">
                             <span className={`inline-block px-3 py-1 rounded-full text-xs font-medium mb-4 ${getCategoryColor(questions[currentQuestionIndex].category)}`}>
                                 {questions[currentQuestionIndex].category}
                             </span>
@@ -398,10 +398,10 @@ export default function InterviewPrepTool() {
                                     key={idx}
                                     onClick={() => { setCurrentQuestionIndex(idx); setShowHint(false); }}
                                     className={`aspect-square rounded-lg flex items-center justify-center text-sm font-medium transition-all ${idx === currentQuestionIndex
-                                            ? 'bg-[var(--primary-blue)] text-white'
-                                            : idx < currentQuestionIndex
-                                                ? 'bg-green-500/20 text-green-400 border border-green-500/30'
-                                                : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
+                                        ? 'bg-[var(--primary-blue)] text-white'
+                                        : idx < currentQuestionIndex
+                                            ? 'bg-green-500/20 text-green-400 border border-green-500/30'
+                                            : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
                                         }`}
                                 >
                                     {idx + 1}

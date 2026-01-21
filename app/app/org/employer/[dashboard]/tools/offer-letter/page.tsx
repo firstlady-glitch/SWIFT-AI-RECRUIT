@@ -215,7 +215,7 @@ export default function OfferLetterTool() {
                     <div className="space-y-6">
                         {/* Candidate Selection */}
                         {applications.length > 0 && (
-                            <div className="card p-6 border border-gray-800 bg-[#15171e]">
+                            <div className="card p-6 border border-[var(--border)] bg-[var(--background-secondary)]">
                                 <label className="block text-sm font-medium mb-2 text-gray-300">
                                     Select from Pipeline
                                 </label>
@@ -230,8 +230,8 @@ export default function OfferLetterTool() {
                                                 key={app.id}
                                                 onClick={() => handleSelectApplication(app)}
                                                 className={`w-full text-left p-3 rounded-lg border transition-all ${selectedApplication?.id === app.id
-                                                        ? 'border-green-500 bg-green-500/10'
-                                                        : 'border-gray-800 bg-[#0b0c0f] hover:border-gray-700'
+                                                    ? 'border-green-500 bg-green-500/10'
+                                                    : 'border-gray-800 bg-[#0b0c0f] hover:border-gray-700'
                                                     }`}
                                             >
                                                 <div className="flex items-center justify-between">
@@ -243,8 +243,8 @@ export default function OfferLetterTool() {
                                                         </div>
                                                     </div>
                                                     <span className={`px-2 py-0.5 rounded text-xs capitalize ${app.status === 'offer' ? 'bg-green-500/20 text-green-400' :
-                                                            app.status === 'interview' ? 'bg-blue-500/20 text-blue-400' :
-                                                                'bg-gray-500/20 text-gray-400'
+                                                        app.status === 'interview' ? 'bg-blue-500/20 text-blue-400' :
+                                                            'bg-gray-500/20 text-gray-400'
                                                         }`}>
                                                         {app.status}
                                                     </span>
@@ -257,7 +257,7 @@ export default function OfferLetterTool() {
                         )}
 
                         {/* Manual Entry */}
-                        <div className="card p-6 border border-gray-800 bg-[#15171e] space-y-4">
+                        <div className="card p-6 border border-[var(--border)] bg-[var(--background-secondary)] space-y-4">
                             <div>
                                 <label className="block text-sm font-medium mb-2 text-gray-300">Candidate Name</label>
                                 <input
@@ -281,7 +281,7 @@ export default function OfferLetterTool() {
                             </div>
                         </div>
 
-                        <div className="card p-6 border border-gray-800 bg-[#15171e] space-y-4">
+                        <div className="card p-6 border border-[var(--border)] bg-[var(--background-secondary)] space-y-4">
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
                                     <label className="block text-sm font-medium mb-2 text-gray-300">
@@ -343,7 +343,7 @@ export default function OfferLetterTool() {
                     </div>
 
                     <div className="relative">
-                        <div className="h-full min-h-[700px] max-h-[900px] bg-[#15171e] border border-gray-800 rounded-xl p-8 relative overflow-auto">
+                        <div className="h-full min-h-[700px] max-h-[900px] bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-8 relative overflow-auto">
                             {generatedContent ? (
                                 <>
                                     <button

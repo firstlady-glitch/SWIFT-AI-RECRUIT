@@ -71,46 +71,47 @@ export function InterviewScheduler({
     };
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-            <div className="bg-[#15171e] border border-gray-800 rounded-xl w-full max-w-md p-6">
+
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+            <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl w-full max-w-md p-6">
                 <div className="flex items-center justify-between mb-6">
-                    <h3 className="text-lg font-semibold">Schedule Interview</h3>
-                    <button onClick={onClose} className="p-2 text-gray-400 hover:text-white rounded-lg">
+                    <h3 className="text-lg font-semibold text-[var(--foreground)]">Schedule Interview</h3>
+                    <button onClick={onClose} className="p-2 text-[var(--foreground-secondary)] hover:text-[var(--foreground)] rounded-lg">
                         <X className="w-5 h-5" />
                     </button>
                 </div>
 
-                <div className="mb-6 p-4 bg-gray-800/50 rounded-lg">
-                    <p className="text-sm text-gray-400">Candidate</p>
-                    <p className="font-medium text-white">{applicantName}</p>
-                    <p className="text-sm text-gray-500">{jobTitle}</p>
+                <div className="mb-6 p-4 bg-[var(--border)]/50 rounded-lg">
+                    <p className="text-sm text-[var(--foreground-secondary)]">Candidate</p>
+                    <p className="font-medium text-[var(--foreground)]">{applicantName}</p>
+                    <p className="text-sm text-[var(--foreground-secondary)]">{jobTitle}</p>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div className="grid grid-cols-2 gap-4">
                         <div>
-                            <label className="block text-sm text-gray-400 mb-2">Date</label>
+                            <label className="block text-sm text-[var(--foreground-secondary)] mb-2">Date</label>
                             <div className="relative">
-                                <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
+                                <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--foreground-secondary)]" />
                                 <input
                                     type="date"
                                     value={formData.date}
                                     onChange={(e) => setFormData({ ...formData, date: e.target.value })}
                                     min={new Date().toISOString().split('T')[0]}
-                                    className="w-full pl-10 pr-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:border-[var(--primary-blue)] focus:outline-none"
+                                    className="w-full pl-10 pr-4 py-3 bg-[var(--background)] border border-[var(--border)] rounded-lg focus:border-[var(--primary-blue)] focus:outline-none text-[var(--foreground)] [color-scheme:dark]"
                                     required
                                 />
                             </div>
                         </div>
                         <div>
-                            <label className="block text-sm text-gray-400 mb-2">Time</label>
+                            <label className="block text-sm text-[var(--foreground-secondary)] mb-2">Time</label>
                             <div className="relative">
-                                <Clock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
+                                <Clock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--foreground-secondary)]" />
                                 <input
                                     type="time"
                                     value={formData.time}
                                     onChange={(e) => setFormData({ ...formData, time: e.target.value })}
-                                    className="w-full pl-10 pr-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:border-[var(--primary-blue)] focus:outline-none"
+                                    className="w-full pl-10 pr-4 py-3 bg-[var(--background)] border border-[var(--border)] rounded-lg focus:border-[var(--primary-blue)] focus:outline-none text-[var(--foreground)] [color-scheme:dark]"
                                     required
                                 />
                             </div>
@@ -118,11 +119,11 @@ export function InterviewScheduler({
                     </div>
 
                     <div>
-                        <label className="block text-sm text-gray-400 mb-2">Duration</label>
+                        <label className="block text-sm text-[var(--foreground-secondary)] mb-2">Duration</label>
                         <select
                             value={formData.duration}
                             onChange={(e) => setFormData({ ...formData, duration: parseInt(e.target.value) })}
-                            className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:border-[var(--primary-blue)] focus:outline-none"
+                            className="w-full px-4 py-3 bg-[var(--background)] border border-[var(--border)] rounded-lg focus:border-[var(--primary-blue)] focus:outline-none text-[var(--foreground)]"
                         >
                             <option value={30}>30 minutes</option>
                             <option value={45}>45 minutes</option>
@@ -138,7 +139,7 @@ export function InterviewScheduler({
                             onClick={() => setFormData({ ...formData, isVirtual: true })}
                             className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-lg border transition-colors ${formData.isVirtual
                                 ? 'border-[var(--primary-blue)] bg-[var(--primary-blue)]/10 text-[var(--primary-blue)]'
-                                : 'border-gray-700 text-gray-400'
+                                : 'border-[var(--border)] text-[var(--foreground-secondary)]'
                                 }`}
                         >
                             <Video className="w-4 h-4" /> Virtual
@@ -148,7 +149,7 @@ export function InterviewScheduler({
                             onClick={() => setFormData({ ...formData, isVirtual: false })}
                             className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-lg border transition-colors ${!formData.isVirtual
                                 ? 'border-[var(--primary-blue)] bg-[var(--primary-blue)]/10 text-[var(--primary-blue)]'
-                                : 'border-gray-700 text-gray-400'
+                                : 'border-[var(--border)] text-[var(--foreground-secondary)]'
                                 }`}
                         >
                             <MapPin className="w-4 h-4" /> In-Person
@@ -157,24 +158,24 @@ export function InterviewScheduler({
 
                     {formData.isVirtual ? (
                         <div>
-                            <label className="block text-sm text-gray-400 mb-2">Meeting Link</label>
+                            <label className="block text-sm text-[var(--foreground-secondary)] mb-2">Meeting Link</label>
                             <input
                                 type="url"
                                 value={formData.meetingLink}
                                 onChange={(e) => setFormData({ ...formData, meetingLink: e.target.value })}
                                 placeholder="https://zoom.us/j/..."
-                                className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:border-[var(--primary-blue)] focus:outline-none"
+                                className="w-full px-4 py-3 bg-[var(--background)] border border-[var(--border)] rounded-lg focus:border-[var(--primary-blue)] focus:outline-none text-[var(--foreground)] placeholder-[var(--foreground-secondary)]"
                             />
                         </div>
                     ) : (
                         <div>
-                            <label className="block text-sm text-gray-400 mb-2">Location</label>
+                            <label className="block text-sm text-[var(--foreground-secondary)] mb-2">Location</label>
                             <input
                                 type="text"
                                 value={formData.location}
                                 onChange={(e) => setFormData({ ...formData, location: e.target.value })}
                                 placeholder="Office address..."
-                                className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:border-[var(--primary-blue)] focus:outline-none"
+                                className="w-full px-4 py-3 bg-[var(--background)] border border-[var(--border)] rounded-lg focus:border-[var(--primary-blue)] focus:outline-none text-[var(--foreground)] placeholder-[var(--foreground-secondary)]"
                             />
                         </div>
                     )}
@@ -187,7 +188,7 @@ export function InterviewScheduler({
                         <button
                             type="button"
                             onClick={onClose}
-                            className="flex-1 py-3 border border-gray-700 text-gray-300 rounded-lg hover:bg-gray-800 transition-colors"
+                            className="flex-1 py-3 border border-[var(--border)] text-[var(--foreground-secondary)] rounded-lg hover:bg-[var(--border)] transition-colors"
                         >
                             Cancel
                         </button>

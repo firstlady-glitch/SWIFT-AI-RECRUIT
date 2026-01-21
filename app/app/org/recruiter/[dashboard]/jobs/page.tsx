@@ -93,7 +93,7 @@ export default function RecruiterJobsPage() {
             </div>
 
             {jobs.length === 0 ? (
-                <div className="bg-[#15171e] border border-gray-800 rounded-xl p-12 text-center">
+                <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-12 text-center">
                     <Briefcase className="w-12 h-12 mx-auto text-gray-600 mb-4" />
                     <h3 className="text-xl font-bold mb-2">No Jobs Posted Yet</h3>
                     <p className="text-gray-400 mb-6">Create your first job posting to start receiving applications.</p>
@@ -111,7 +111,7 @@ export default function RecruiterJobsPage() {
                         <Link
                             key={job.id}
                             href={`/app/org/recruiter/${params.dashboard}/jobs/${job.id}`}
-                            className="bg-[#15171e] border border-gray-800 rounded-xl p-6 hover:border-gray-700 transition-colors"
+                            className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6 hover:border-gray-700 transition-colors"
                         >
                             <div className="flex items-start justify-between">
                                 <div className="flex-1">

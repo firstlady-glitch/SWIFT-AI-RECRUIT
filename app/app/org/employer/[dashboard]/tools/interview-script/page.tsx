@@ -190,7 +190,7 @@ export default function EmployerInterviewTool() {
                 <div className="grid lg:grid-cols-2 gap-8">
                     <div className="space-y-6">
                         {/* Job Selection */}
-                        <div className="card p-6 border border-gray-800 bg-[#15171e]">
+                        <div className="card p-6 border border-[var(--border)] bg-[var(--background-secondary)]">
                             <label className="block text-sm font-medium mb-2 text-gray-300">Select Job</label>
                             {isLoadingJobs ? (
                                 <div className="flex items-center justify-center py-3">
@@ -217,7 +217,7 @@ export default function EmployerInterviewTool() {
                         </div>
 
                         {!selectedJob && (
-                            <div className="card p-6 border border-gray-800 bg-[#15171e]">
+                            <div className="card p-6 border border-[var(--border)] bg-[var(--background-secondary)]">
                                 <label className="block text-sm font-medium mb-2 text-gray-300">Role Title</label>
                                 <input
                                     type="text"
@@ -230,7 +230,7 @@ export default function EmployerInterviewTool() {
                         )}
 
                         <div className="grid grid-cols-2 gap-4">
-                            <div className="card p-6 border border-gray-800 bg-[#15171e]">
+                            <div className="card p-6 border border-[var(--border)] bg-[var(--background-secondary)]">
                                 <label className="block text-sm font-medium mb-2 text-gray-300">Experience Level</label>
                                 <select
                                     value={level}
@@ -245,7 +245,7 @@ export default function EmployerInterviewTool() {
                                 </select>
                             </div>
 
-                            <div className="card p-6 border border-gray-800 bg-[#15171e]">
+                            <div className="card p-6 border border-[var(--border)] bg-[var(--background-secondary)]">
                                 <label className="block text-sm font-medium mb-2 text-gray-300">Interview Round</label>
                                 <select
                                     value={interviewRound}
@@ -279,7 +279,7 @@ export default function EmployerInterviewTool() {
                     </div>
 
                     <div className="relative">
-                        <div className="h-full min-h-[600px] max-h-[800px] bg-[#15171e] border border-gray-800 rounded-xl p-8 relative overflow-auto">
+                        <div className="h-full min-h-[600px] max-h-[800px] bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-8 relative overflow-auto">
                             {generatedContent ? (
                                 <>
                                     <button

@@ -102,7 +102,7 @@ export default function RecruiterMarketplacePage() {
                 <h1 className="text-2xl font-bold mb-6">Job Marketplace</h1>
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {[...Array(6)].map((_, i) => (
-                        <div key={i} className="bg-[#15171e] border border-gray-800 rounded-xl p-6 animate-pulse h-64" />
+                        <div key={i} className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6 animate-pulse h-64" />
                     ))}
                 </div>
             </div>
@@ -120,17 +120,17 @@ export default function RecruiterMarketplacePage() {
 
             {/* Stats */}
             <div className="grid grid-cols-3 gap-4 mb-8">
-                <div className="bg-[#15171e] border border-gray-800 rounded-xl p-4 text-center">
+                <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-4 text-center">
                     <Briefcase className="w-6 h-6 mx-auto mb-2 text-blue-500" />
                     <p className="text-2xl font-bold">{jobs.length}</p>
                     <p className="text-sm text-gray-500">Available Jobs</p>
                 </div>
-                <div className="bg-[#15171e] border border-gray-800 rounded-xl p-4 text-center">
+                <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-4 text-center">
                     <Target className="w-6 h-6 mx-auto mb-2 text-orange-500" />
                     <p className="text-2xl font-bold">{sourcingJobs.length}</p>
                     <p className="text-sm text-gray-500">Jobs Sourcing</p>
                 </div>
-                <div className="bg-[#15171e] border border-gray-800 rounded-xl p-4 text-center">
+                <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-4 text-center">
                     <Star className="w-6 h-6 mx-auto mb-2 text-yellow-500" />
                     <p className="text-2xl font-bold">0</p>
                     <p className="text-sm text-gray-500">Placements</p>
@@ -146,7 +146,7 @@ export default function RecruiterMarketplacePage() {
                         placeholder="Search jobs or companies..."
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full pl-10 pr-4 py-3 bg-[#15171e] border border-gray-800 rounded-lg focus:border-[var(--primary-blue)] focus:outline-none"
+                        className="w-full pl-10 pr-4 py-3 bg-[var(--background)] border border-[var(--border)] rounded-lg focus:border-[var(--primary-blue)] focus:outline-none"
                     />
                 </div>
                 <div className="relative w-64">
@@ -156,7 +156,7 @@ export default function RecruiterMarketplacePage() {
                         placeholder="Location..."
                         value={locationFilter}
                         onChange={(e) => setLocationFilter(e.target.value)}
-                        className="w-full pl-10 pr-4 py-3 bg-[#15171e] border border-gray-800 rounded-lg focus:border-[var(--primary-blue)] focus:outline-none"
+                        className="w-full pl-10 pr-4 py-3 bg-[var(--background)] border border-[var(--border)] rounded-lg focus:border-[var(--primary-blue)] focus:outline-none"
                     />
                 </div>
             </div>
@@ -166,7 +166,7 @@ export default function RecruiterMarketplacePage() {
                 {filteredJobs.map((job) => {
                     const isSourcing = sourcingJobs.includes(job.id);
                     return (
-                        <div key={job.id} className="bg-[#15171e] border border-gray-800 rounded-xl p-6 hover:border-gray-700 transition-colors">
+                        <div key={job.id} className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6 hover:border-gray-700 transition-colors">
                             <div className="flex items-start gap-4 mb-4">
                                 <div className="w-12 h-12 rounded-xl bg-gray-800 flex items-center justify-center overflow-hidden flex-shrink-0">
                                     {job.organization?.logo_url ? (
@@ -221,7 +221,7 @@ export default function RecruiterMarketplacePage() {
             </div>
 
             {filteredJobs.length === 0 && (
-                <div className="bg-[#15171e] border border-gray-800 rounded-xl">
+                <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl">
                     <EmptyState
                         icon={Briefcase}
                         title="No Jobs Available"

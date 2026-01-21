@@ -198,7 +198,7 @@ export default function SemanticSearchTool() {
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                                 onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-                                className="w-full bg-[#15171e] border border-gray-800 rounded-xl p-4 text-sm focus:border-[var(--primary-blue)] focus:outline-none"
+                                className="w-full bg-[var(--background)] border border-[var(--border)] rounded-xl p-4 text-sm focus:border-[var(--primary-blue)] focus:outline-none"
                                 placeholder="e.g., React developers in London with fintech experience"
                             />
                         </div>
@@ -230,7 +230,7 @@ export default function SemanticSearchTool() {
 
                 {/* Search Examples */}
                 {results.length === 0 && !isLoading && (
-                    <div className="mb-8 p-6 bg-[#15171e] border border-gray-800 rounded-xl">
+                    <div className="mb-8 p-6 bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl">
                         <p className="text-sm text-gray-400 mb-3">Try searches like:</p>
                         <div className="flex flex-wrap gap-2">
                             {[
@@ -261,7 +261,7 @@ export default function SemanticSearchTool() {
                         {results.map((candidate) => (
                             <div
                                 key={candidate.id}
-                                className="p-5 bg-[#15171e] border border-gray-800 rounded-xl hover:border-gray-700 transition-colors"
+                                className="p-5 bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl hover:border-gray-700 transition-colors"
                             >
                                 <div className="flex items-start justify-between">
                                     <div className="flex items-start gap-4">

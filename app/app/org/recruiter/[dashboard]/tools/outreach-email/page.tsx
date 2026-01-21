@@ -183,7 +183,7 @@ export default function OutreachEmailTool() {
                     {/* Input Section */}
                     <div className="space-y-6">
                         {/* Candidate Selection */}
-                        <div className="card p-6 border border-gray-800 bg-[#15171e]">
+                        <div className="card p-6 border border-[var(--border)] bg-[var(--background-secondary)]">
                             <label className="block text-sm font-medium mb-2 text-gray-300">
                                 Select Candidate
                             </label>
@@ -201,8 +201,8 @@ export default function OutreachEmailTool() {
                                                 key={profile.id}
                                                 onClick={() => setSelectedProfile(profile)}
                                                 className={`w-full text-left p-3 rounded-lg border transition-all ${selectedProfile?.id === profile.id
-                                                        ? 'border-[var(--primary-blue)] bg-[var(--primary-blue)]/10'
-                                                        : 'border-gray-800 bg-[#0b0c0f] hover:border-gray-700'
+                                                    ? 'border-[var(--primary-blue)] bg-[var(--primary-blue)]/10'
+                                                    : 'border-gray-800 bg-[#0b0c0f] hover:border-gray-700'
                                                     }`}
                                             >
                                                 <div className="flex items-center gap-2">
@@ -238,7 +238,7 @@ export default function OutreachEmailTool() {
                         )}
 
                         {/* Job Selection */}
-                        <div className="card p-6 border border-gray-800 bg-[#15171e]">
+                        <div className="card p-6 border border-[var(--border)] bg-[var(--background-secondary)]">
                             <label className="block text-sm font-medium mb-2 text-gray-300">
                                 Target Job (Optional)
                             </label>
@@ -260,7 +260,7 @@ export default function OutreachEmailTool() {
                         </div>
 
                         {/* Personal Hook */}
-                        <div className="card p-6 border border-gray-800 bg-[#15171e]">
+                        <div className="card p-6 border border-[var(--border)] bg-[var(--background-secondary)]">
                             <label className="block text-sm font-medium mb-2 text-gray-300">
                                 Personal Hook / Context
                             </label>
@@ -293,7 +293,7 @@ export default function OutreachEmailTool() {
 
                     {/* Output Section */}
                     <div className="relative">
-                        <div className="h-full min-h-[500px] bg-[#15171e] border border-gray-800 rounded-xl p-8 relative">
+                        <div className="h-full min-h-[500px] bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-8 relative">
                             {generatedContent ? (
                                 <>
                                     <button

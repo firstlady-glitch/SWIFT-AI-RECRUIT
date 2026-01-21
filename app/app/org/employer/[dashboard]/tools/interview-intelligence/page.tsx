@@ -283,7 +283,7 @@ export default function InterviewIntelligenceTool() {
                     {/* Input Section */}
                     <div className="space-y-6">
                         {/* Interview Selection */}
-                        <div className="card p-6 border border-gray-800 bg-[#15171e]">
+                        <div className="card p-6 border border-[var(--border)] bg-[var(--background-secondary)]">
                             <label className="block text-sm font-medium mb-2 text-gray-300">
                                 Select Interview (Optional)
                             </label>
@@ -313,7 +313,7 @@ export default function InterviewIntelligenceTool() {
                         </div>
 
                         {/* Transcript Input */}
-                        <div className="card p-6 border border-gray-800 bg-[#15171e]">
+                        <div className="card p-6 border border-[var(--border)] bg-[var(--background-secondary)]">
                             <label className="block text-sm font-medium mb-2 text-gray-300">
                                 Interview Transcript
                             </label>
@@ -352,7 +352,7 @@ Interviewer: What's the most challenging project you've worked on?"
                     </div>
 
                     {/* Feedback Draft */}
-                    <div className="bg-[#15171e] border border-gray-800 rounded-xl p-6">
+                    <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6">
                         <h2 className="text-lg font-semibold mb-4">AI-Generated Feedback</h2>
 
                         {feedbackDraft ? (

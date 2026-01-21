@@ -114,7 +114,7 @@ export default function Sidebar({ role, dashboardId }: SidebarProps) {
             {/* Mobile Menu Button */}
             <button
                 onClick={toggleMobile}
-                className="md:hidden fixed top-4 left-4 z-50 p-2 bg-[#15171e] border border-gray-800 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800 transition-all"
+                className="md:hidden fixed top-4 left-4 z-50 p-2 bg-[var(--background-secondary)] border border-[var(--border)] rounded-lg text-[var(--foreground-secondary)] hover:text-[var(--foreground)] hover:bg-[var(--border)] transition-all"
                 aria-label="Toggle menu"
             >
                 {isMobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -131,7 +131,7 @@ export default function Sidebar({ role, dashboardId }: SidebarProps) {
             {/* Sidebar */}
             <aside
                 className={`
-                    bg-[#15171e] border-r border-gray-800 flex flex-col h-screen fixed left-0 top-0 z-40
+                    bg-[var(--background-secondary)] border-r border-[var(--border)] flex flex-col h-screen fixed left-0 top-0 z-40
                     transition-all duration-300 ease-in-out
                     ${isCollapsed ? 'w-16' : 'w-64'}
                     ${isMobileOpen ? 'translate-x-0' : '-translate-x-full'}
@@ -139,7 +139,7 @@ export default function Sidebar({ role, dashboardId }: SidebarProps) {
                 `}
             >
                 {/* Logo Area */}
-                <div className={`p-4 border-b border-gray-800 flex items-center gap-3 ${isCollapsed ? 'justify-center' : ''}`}>
+                <div className={`p-4 border-b border-[var(--border)] flex items-center gap-3 ${isCollapsed ? 'justify-center' : ''}`}>
                     <div className="w-8 h-8 shrink-0">
                         <img
                             src="/icon.png"
@@ -147,7 +147,7 @@ export default function Sidebar({ role, dashboardId }: SidebarProps) {
                             className="w-full h-full object-contain"
                         />
                     </div>
-                    <span className={`text-white font-bold text-lg tracking-tight whitespace-nowrap transition-opacity duration-300 ${isCollapsed ? 'opacity-0 hidden' : 'opacity-100'}`}>
+                    <span className={`text-[var(--foreground)] font-bold text-lg tracking-tight whitespace-nowrap transition-opacity duration-300 ${isCollapsed ? 'opacity-0 hidden' : 'opacity-100'}`}>
                         SwiftAI Recruit
                     </span>
                 </div>
@@ -167,7 +167,7 @@ export default function Sidebar({ role, dashboardId }: SidebarProps) {
                                     ${isCollapsed ? 'justify-center' : ''}
                                     ${isActive
                                         ? 'bg-[var(--primary-blue)]/10 text-[var(--primary-blue)] font-medium border border-[var(--primary-blue)]/20'
-                                        : 'text-gray-400 hover:bg-gray-800 hover:text-white'
+                                        : 'text-[var(--foreground-secondary)] hover:bg-[var(--border)] hover:text-[var(--foreground)]'
                                     }
                                 `}
                             >
@@ -181,10 +181,10 @@ export default function Sidebar({ role, dashboardId }: SidebarProps) {
                 </nav>
 
                 {/* Collapse Toggle (Desktop only) */}
-                <div className="hidden md:block p-2 border-t border-gray-800">
+                <div className="hidden md:block p-2 border-t border-[var(--border)]">
                     <button
                         onClick={toggleCollapsed}
-                        className={`flex items-center gap-3 px-3 py-3 rounded-xl w-full text-left text-gray-400 hover:bg-gray-800 hover:text-white transition-all ${isCollapsed ? 'justify-center' : ''}`}
+                        className={`flex items-center gap-3 px-3 py-3 rounded-xl w-full text-left text-[var(--foreground-secondary)] hover:bg-[var(--border)] hover:text-[var(--foreground)] transition-all ${isCollapsed ? 'justify-center' : ''}`}
                         title={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
                     >
                         {isCollapsed ? <PanelLeft className="w-5 h-5 shrink-0" /> : <PanelLeftClose className="w-5 h-5 shrink-0" />}
@@ -195,10 +195,10 @@ export default function Sidebar({ role, dashboardId }: SidebarProps) {
                 </div>
 
                 {/* User/Logout Area */}
-                <div className="p-2 border-t border-gray-800">
+                <div className="p-2 border-t border-[var(--border)]">
                     <button
                         onClick={handleLogout}
-                        className={`flex items-center gap-3 px-3 py-3 rounded-xl w-full text-left text-gray-400 hover:bg-red-500/10 hover:text-red-400 transition-all ${isCollapsed ? 'justify-center' : ''}`}
+                        className={`flex items-center gap-3 px-3 py-3 rounded-xl w-full text-left text-[var(--foreground-secondary)] hover:bg-red-500/10 hover:text-red-400 transition-all ${isCollapsed ? 'justify-center' : ''}`}
                         title={isCollapsed ? 'Sign Out' : undefined}
                     >
                         <LogOut className="w-5 h-5 shrink-0" />

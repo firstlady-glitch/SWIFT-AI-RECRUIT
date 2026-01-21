@@ -128,22 +128,22 @@ export default function RecruiterSubmissionsPage() {
 
             {/* Stats Grid */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-                <div className="bg-[#15171e] border border-gray-800 rounded-xl p-4 text-center">
+                <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-4 text-center">
                     <Eye className="w-6 h-6 mx-auto mb-2 text-blue-500" />
                     <p className="text-2xl font-bold">{stats.clicks}</p>
                     <p className="text-sm text-gray-500">Link Clicks</p>
                 </div>
-                <div className="bg-[#15171e] border border-gray-800 rounded-xl p-4 text-center">
+                <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-4 text-center">
                     <Users className="w-6 h-6 mx-auto mb-2 text-green-500" />
                     <p className="text-2xl font-bold">{stats.signups}</p>
                     <p className="text-sm text-gray-500">Sign Ups</p>
                 </div>
-                <div className="bg-[#15171e] border border-gray-800 rounded-xl p-4 text-center">
+                <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-4 text-center">
                     <Briefcase className="w-6 h-6 mx-auto mb-2 text-orange-500" />
                     <p className="text-2xl font-bold">{stats.applications}</p>
                     <p className="text-sm text-gray-500">Submissions</p>
                 </div>
-                <div className="bg-[#15171e] border border-gray-800 rounded-xl p-4 text-center">
+                <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-4 text-center">
                     <Award className="w-6 h-6 mx-auto mb-2 text-yellow-500" />
                     <p className="text-2xl font-bold">{stats.hires}</p>
                     <p className="text-sm text-gray-500">Placements</p>
@@ -151,7 +151,7 @@ export default function RecruiterSubmissionsPage() {
             </div>
 
             {/* Submissions Table */}
-            <div className="bg-[#15171e] border border-gray-800 rounded-xl overflow-hidden">
+            <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl overflow-hidden">
                 <div className="p-4 border-b border-gray-800">
                     <h3 className="font-semibold">Recent Submissions</h3>
                 </div>

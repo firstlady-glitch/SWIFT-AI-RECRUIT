@@ -96,7 +96,7 @@ export default function AdminJobsPage() {
                 <h1 className="text-3xl font-bold">Jobs</h1>
                 <div className="space-y-4">
                     {[...Array(5)].map((_, i) => (
-                        <div key={i} className="bg-[#15171e] border border-gray-800 rounded-xl p-4 animate-pulse h-20" />
+                        <div key={i} className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-4 animate-pulse h-20" />
                     ))}
                 </div>
             </div>
@@ -121,13 +121,13 @@ export default function AdminJobsPage() {
                         placeholder="Search jobs..."
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full pl-10 pr-4 py-3 bg-[#15171e] border border-gray-800 rounded-lg focus:outline-none"
+                        className="w-full pl-10 pr-4 py-3 bg-[var(--background)] border border-[var(--border)] rounded-lg focus:outline-none text-[var(--foreground)] placeholder-[var(--foreground-secondary)]"
                     />
                 </div>
                 <select
                     value={statusFilter}
                     onChange={(e) => setStatusFilter(e.target.value as JobStatus | 'all')}
-                    className="px-4 py-3 bg-[#15171e] border border-gray-800 rounded-lg"
+                    className="px-4 py-3 bg-[var(--background)] border border-[var(--border)] rounded-lg text-[var(--foreground)]"
                 >
                     <option value="all">All Status</option>
                     <option value="draft">Draft</option>
@@ -140,16 +140,16 @@ export default function AdminJobsPage() {
             {/* Jobs List */}
             <div className="space-y-3">
                 {filteredJobs.map((job) => (
-                    <div key={job.id} className="bg-[#15171e] border border-gray-800 rounded-xl p-4">
+                    <div key={job.id} className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-4">
                         <div className="flex items-center justify-between">
                             <div className="flex-1">
                                 <div className="flex items-center gap-3 mb-1">
-                                    <h3 className="font-medium text-white">{job.title}</h3>
+                                    <h3 className="font-medium text-[var(--foreground)]">{job.title}</h3>
                                     <span className={`px-2 py-0.5 rounded text-xs ${getStatusColor(job.status)}`}>
                                         {job.status}
                                     </span>
                                 </div>
-                                <div className="flex items-center gap-4 text-sm text-gray-400">
+                                <div className="flex items-center gap-4 text-sm text-[var(--foreground-secondary)]">
                                     <span className="flex items-center gap-1">
                                         <Building2 className="w-3 h-3" /> {job.organization?.name || 'Unknown'}
                                     </span>
@@ -198,7 +198,7 @@ export default function AdminJobsPage() {
                 ))}
 
                 {filteredJobs.length === 0 && (
-                    <div className="bg-[#15171e] border border-gray-800 rounded-xl">
+                    <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl">
                         <EmptyState
                             icon={Briefcase}
                             title="No Jobs Found"

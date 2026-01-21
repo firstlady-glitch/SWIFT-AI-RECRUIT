@@ -179,7 +179,7 @@ export default function JobDetailsPage() {
                     Back to Jobs
                 </Link>
 
-                <div className="bg-[#15171e] border border-gray-800 rounded-xl p-8 mb-6">
+                <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-8 mb-6">
                     <div className="flex items-start gap-6 mb-6">
                         {job.organization?.logo_url ? (
                             <img
@@ -242,7 +242,7 @@ export default function JobDetailsPage() {
                     </div>
                 </div>
 
-                <div className="bg-[#15171e] border border-gray-800 rounded-xl p-8 mb-6">
+                <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-8 mb-6">
                     <h2 className="text-xl font-bold mb-4">Job Description</h2>
                     <div className="text-gray-300 whitespace-pre-line leading-relaxed">
                         {job.description}
@@ -250,7 +250,7 @@ export default function JobDetailsPage() {
                 </div>
 
                 {job.requirements && job.requirements.length > 0 && (
-                    <div className="bg-[#15171e] border border-gray-800 rounded-xl p-8">
+                    <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-8">
                         <h2 className="text-xl font-bold mb-4">Requirements</h2>
                         <ul className="space-y-2">
                             {job.requirements.map((req, idx) => (
@@ -266,7 +266,7 @@ export default function JobDetailsPage() {
                 {/* Apply Modal */}
                 {showApplyModal && (
                     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-                        <div className="bg-[#15171e] border border-gray-800 rounded-xl max-w-2xl w-full p-8">
+                        <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl max-w-2xl w-full p-8">
                             <div className="flex justify-between items-center mb-6">
                                 <h3 className="text-2xl font-bold">Apply for {job.title}</h3>
                                 <button onClick={() => setShowApplyModal(false)} className="text-gray-400 hover:text-white">

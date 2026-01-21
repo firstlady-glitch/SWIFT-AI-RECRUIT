@@ -136,12 +136,13 @@ export default function AdminUsersPage() {
                 <h1 className="text-3xl font-bold">Users</h1>
                 <div className="space-y-4">
                     {[...Array(5)].map((_, i) => (
-                        <div key={i} className="bg-[#15171e] border border-gray-800 rounded-xl p-4 animate-pulse">
+
+                        <div key={i} className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-4 animate-pulse">
                             <div className="flex items-center gap-4">
-                                <div className="w-12 h-12 bg-gray-800 rounded-full" />
+                                <div className="w-12 h-12 bg-[var(--border)] rounded-full" />
                                 <div className="flex-1">
-                                    <div className="h-4 bg-gray-800 rounded w-1/4 mb-2" />
-                                    <div className="h-3 bg-gray-800 rounded w-1/3" />
+                                    <div className="h-4 bg-[var(--border)] rounded w-1/4 mb-2" />
+                                    <div className="h-3 bg-[var(--border)] rounded w-1/3" />
                                 </div>
                             </div>
                         </div>
@@ -173,7 +174,7 @@ export default function AdminUsersPage() {
                         placeholder="Search users..."
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full pl-10 pr-4 py-3 bg-[#15171e] border border-gray-800 rounded-lg focus:border-[var(--primary-blue)] focus:outline-none"
+                        className="w-full pl-10 pr-4 py-3 bg-[var(--background)] border border-[var(--border)] rounded-lg focus:border-[var(--primary-blue)] focus:outline-none text-[var(--foreground)] placeholder-[var(--foreground-secondary)]"
                     />
                 </div>
                 <div className="flex items-center gap-2">
@@ -181,7 +182,7 @@ export default function AdminUsersPage() {
                     <select
                         value={roleFilter}
                         onChange={(e) => setRoleFilter(e.target.value as UserRole | 'all')}
-                        className="px-4 py-3 bg-[#15171e] border border-gray-800 rounded-lg focus:border-[var(--primary-blue)] focus:outline-none"
+                        className="px-4 py-3 bg-[var(--background)] border border-[var(--border)] rounded-lg focus:border-[var(--primary-blue)] focus:outline-none text-[var(--foreground)]"
                     >
                         <option value="all">All Roles</option>
                         <option value="admin">Admin</option>
@@ -197,25 +198,25 @@ export default function AdminUsersPage() {
                 {filteredUsers.map((user) => {
                     const RoleIcon = getRoleIcon(user.role);
                     return (
-                        <div key={user.id} className="bg-[#15171e] border border-gray-800 rounded-xl p-4 hover:border-gray-700 transition-colors">
+                        <div key={user.id} className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-4 hover:border-[var(--foreground-secondary)]/30 transition-colors">
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center gap-4">
-                                    <div className="w-12 h-12 rounded-full bg-gray-800 flex items-center justify-center overflow-hidden">
+                                    <div className="w-12 h-12 rounded-full bg-[var(--border)] flex items-center justify-center overflow-hidden">
                                         {user.profile_image_url ? (
                                             <img src={user.profile_image_url} alt="" className="w-full h-full object-cover" />
                                         ) : (
-                                            <User className="w-6 h-6 text-gray-500" />
+                                            <User className="w-6 h-6 text-[var(--foreground-secondary)]" />
                                         )}
                                     </div>
                                     <div>
-                                        <p className="font-medium text-white">{user.full_name || 'Unnamed User'}</p>
-                                        <p className="text-sm text-gray-400">{user.email}</p>
+                                        <p className="font-medium text-[var(--foreground)]">{user.full_name || 'Unnamed User'}</p>
+                                        <p className="text-sm text-[var(--foreground-secondary)]">{user.email}</p>
                                         <div className="flex items-center gap-2 mt-1">
                                             <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${getRoleColor(user.role)}`}>
                                                 <RoleIcon className="w-3 h-3" />
                                                 {user.role}
                                             </span>
-                                            <span className="text-xs text-gray-500">
+                                            <span className="text-xs text-[var(--foreground-secondary)]">
                                                 {user.plan}
                                             </span>
                                             {user.onboarding_completed && (
@@ -228,31 +229,31 @@ export default function AdminUsersPage() {
                                 <div className="relative">
                                     <button
                                         onClick={() => setSelectedUser(selectedUser === user.id ? null : user.id)}
-                                        className="p-2 text-gray-400 hover:text-white hover:bg-gray-800 rounded-lg transition-colors"
+                                        className="p-2 text-[var(--foreground-secondary)] hover:text-[var(--foreground)] hover:bg-[var(--border)] rounded-lg transition-colors"
                                         disabled={actionLoading === user.id}
                                     >
                                         {actionLoading === user.id ? (
-                                            <div className="w-5 h-5 animate-spin rounded-full border-2 border-gray-500 border-t-white" />
+                                            <div className="w-5 h-5 animate-spin rounded-full border-2 border-[var(--foreground-secondary)] border-t-[var(--foreground)]" />
                                         ) : (
                                             <MoreVertical className="w-5 h-5" />
                                         )}
                                     </button>
 
                                     {selectedUser === user.id && (
-                                        <div className="absolute right-0 top-full mt-2 w-48 bg-[#0b0c0f] border border-gray-800 rounded-lg shadow-xl z-10">
+                                        <div className="absolute right-0 top-full mt-2 w-48 bg-[var(--background-secondary)] border border-[var(--border)] rounded-lg shadow-xl z-10">
                                             <div className="p-2">
-                                                <p className="text-xs text-gray-500 px-2 mb-2">Change Role</p>
+                                                <p className="text-xs text-[var(--foreground-secondary)] px-2 mb-2">Change Role</p>
                                                 {(['admin', 'employer', 'recruiter', 'applicant'] as UserRole[]).map((role) => (
                                                     <button
                                                         key={role}
                                                         onClick={() => updateUserRole(user.id, role)}
                                                         disabled={user.role === role}
-                                                        className={`w-full text-left px-3 py-2 text-sm rounded-lg capitalize ${user.role === role ? 'text-gray-500 cursor-not-allowed' : 'text-gray-300 hover:bg-gray-800'}`}
+                                                        className={`w-full text-left px-3 py-2 text-sm rounded-lg capitalize ${user.role === role ? 'text-[var(--foreground-secondary)] cursor-not-allowed' : 'text-[var(--foreground)] hover:bg-[var(--border)]'}`}
                                                     >
                                                         {role}
                                                     </button>
                                                 ))}
-                                                <hr className="my-2 border-gray-800" />
+                                                <hr className="my-2 border-[var(--border)]" />
                                                 <button
                                                     onClick={() => deleteUser(user.id)}
                                                     className="w-full text-left px-3 py-2 text-sm text-red-400 hover:bg-red-500/10 rounded-lg flex items-center gap-2"
@@ -270,7 +271,7 @@ export default function AdminUsersPage() {
                 })}
 
                 {filteredUsers.length === 0 && (
-                    <div className="bg-[#15171e] border border-gray-800 rounded-xl">
+                    <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl">
                         <EmptyState
                             icon={Users}
                             title="No Users Found"

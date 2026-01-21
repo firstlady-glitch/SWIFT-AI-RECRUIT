@@ -565,13 +565,13 @@ function ApplicantSetupContent() {
                     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
                         <div
                             ref={modalRef}
-                            className="bg-[#15171e] w-full max-w-2xl rounded-2xl shadow-2xl border border-gray-800 flex flex-col max-h-[85vh]"
+                            className="bg-[var(--background)] w-full max-w-2xl rounded-2xl shadow-2xl border border-[var(--border)] flex flex-col max-h-[85vh]"
                         >
-                            <div className="p-6 border-b border-gray-800 flex items-center justify-between">
-                                <h2 className="text-2xl font-bold text-white">Select Skills</h2>
+                            <div className="p-6 border-b border-[var(--border)] flex items-center justify-between">
+                                <h2 className="text-2xl font-bold text-[var(--foreground)]">Select Skills</h2>
                                 <button
                                     onClick={() => setIsSkillsModalOpen(false)}
-                                    className="p-2 hover:bg-gray-800 rounded-full transition-colors text-gray-400 hover:text-white"
+                                    className="p-2 hover:bg-[var(--background-secondary)] rounded-full transition-colors text-[var(--foreground-secondary)] hover:text-[var(--foreground)]"
                                 >
                                     <X className="w-6 h-6" />
                                 </button>
@@ -580,9 +580,9 @@ function ApplicantSetupContent() {
                             <div className="p-6 overflow-y-auto flex-1 custom-scrollbar">
                                 {/* Selected Skills Area */}
                                 <div className="mb-6">
-                                    <h3 className="text-sm font-medium text-gray-400 mb-3 flex justify-between">
+                                    <h3 className="text-sm font-medium text-[var(--foreground-secondary)] mb-3 flex justify-between">
                                         <span>Selected Skills</span>
-                                        <span className={selectedSkills.length >= 15 ? 'text-red-400' : 'text-gray-500'}>
+                                        <span className={selectedSkills.length >= 15 ? 'text-red-400' : 'text-[var(--foreground-secondary)]'}>
                                             {selectedSkills.length}/15
                                         </span>
                                     </h3>
@@ -597,7 +597,7 @@ function ApplicantSetupContent() {
                                             </span>
                                         ))}
                                         {selectedSkills.length === 0 && (
-                                            <span className="text-gray-600 italic text-sm py-1.5">No skills selected yet</span>
+                                            <span className="text-[var(--foreground-secondary)] italic text-sm py-1.5">No skills selected yet</span>
                                         )}
                                     </div>
                                 </div>
@@ -612,7 +612,7 @@ function ApplicantSetupContent() {
                                         value={skillSearchQuery}
                                         onChange={(e) => setSkillSearchQuery(e.target.value)}
                                         placeholder="Search skills (e.g. React, Marketing, Design)..."
-                                        className="w-full pl-12 pr-4 py-4 rounded-xl border border-gray-700 bg-[#0b0c0f] text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-[var(--primary-blue)] focus:border-transparent transition-all"
+                                        className="w-full pl-12 pr-4 py-4 rounded-xl border border-[var(--border)] bg-[var(--background-secondary)] text-[var(--foreground)] placeholder-[var(--foreground-secondary)] focus:outline-none focus:ring-2 focus:ring-[var(--primary-blue)] focus:border-transparent transition-all"
                                         autoFocus
                                     />
                                     {skillSearchQuery && !filteredSkills.find(s => s.toLowerCase() === skillSearchQuery.toLowerCase()) && (
@@ -622,7 +622,7 @@ function ApplicantSetupContent() {
                                                 setSkillSearchQuery(''); // Optional: clear search after adding
                                             }}
                                             disabled={selectedSkills.length >= 15}
-                                            className="absolute inset-y-2 right-2 px-4 bg-gray-800 hover:bg-gray-700 text-white rounded-lg text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                                            className="absolute inset-y-2 right-2 px-4 bg-[var(--background)] hover:bg-[var(--border)] text-[var(--foreground)] border border-[var(--border)] rounded-lg text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                                         >
                                             <Plus className="w-4 h-4" /> Add "{skillSearchQuery}"
                                         </button>
@@ -631,7 +631,7 @@ function ApplicantSetupContent() {
 
                                 {/* Skills Grid */}
                                 <div>
-                                    <h3 className="text-sm font-medium text-gray-400 mb-3">Suggested Skills</h3>
+                                    <h3 className="text-sm font-medium text-[var(--foreground-secondary)] mb-3">Suggested Skills</h3>
                                     <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                                         {filteredSkills.map(skill => (
                                             <button
@@ -641,8 +641,8 @@ function ApplicantSetupContent() {
                                                 className={`
                                                     px-4 py-3 rounded-xl text-left text-sm transition-all border
                                                     ${selectedSkills.includes(skill)
-                                                        ? 'bg-[var(--primary-blue)]/20 border-[var(--primary-blue)] text-blue-100 ring-1 ring-[var(--primary-blue)]'
-                                                        : 'bg-[#0b0c0f] border-gray-800 text-gray-300 hover:border-gray-600 hover:bg-gray-900'
+                                                        ? 'bg-[var(--primary-blue)]/20 border-[var(--primary-blue)] text-[var(--primary-blue)] ring-1 ring-[var(--primary-blue)]'
+                                                        : 'bg-[var(--background-secondary)] border-[var(--border)] text-[var(--foreground-secondary)] hover:border-[var(--foreground-secondary)] hover:text-[var(--foreground)]'
                                                     }
                                                     disabled:opacity-40 disabled:cursor-not-allowed
                                                 `}
@@ -669,7 +669,7 @@ function ApplicantSetupContent() {
                                 </div>
                             </div>
 
-                            <div className="p-6 border-t border-gray-800 bg-[#0b0c0f]/50 flex justify-end">
+                            <div className="p-6 border-t border-[var(--border)] bg-[var(--background-secondary)]/50 flex justify-end">
                                 <button
                                     onClick={() => setIsSkillsModalOpen(false)}
                                     className="btn btn-primary px-8 py-3"

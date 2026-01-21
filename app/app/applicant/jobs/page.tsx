@@ -115,7 +115,7 @@ export default function ApplicantJobsPage() {
     return (
         <div className="min-h-screen bg-[var(--background)]">
             {/* Comprehensive Navbar */}
-            <nav className="sticky top-0 z-50 bg-[#15171e]/95 backdrop-blur-sm border-b border-gray-800">
+            <nav className="sticky top-0 z-50 bg-[var(--background)]/95 backdrop-blur-sm border-b border-[var(--border)]">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex items-center justify-between h-16">
                         {/* Logo */}
@@ -186,7 +186,7 @@ export default function ApplicantJobsPage() {
                                                 className="fixed inset-0 z-40"
                                                 onClick={() => setShowUserMenu(false)}
                                             />
-                                            <div className="absolute right-0 top-full mt-2 w-48 bg-[#15171e] border border-gray-800 rounded-xl shadow-xl z-50 overflow-hidden">
+                                            <div className="absolute right-0 top-full mt-2 w-48 bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl shadow-xl z-50 overflow-hidden">
                                                 <div className="p-3 border-b border-gray-800">
                                                     <p className="text-sm font-medium text-white truncate">{user.email}</p>
                                                 </div>
@@ -226,7 +226,7 @@ export default function ApplicantJobsPage() {
                     </div>
 
                     {/* Search & Filters */}
-                    <div className="bg-[#15171e] border border-gray-800 rounded-xl p-6 mb-8">
+                    <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6 mb-8">
                         <div className="grid md:grid-cols-4 gap-4">
                             <div className="md:col-span-2">
                                 <label className="block text-sm font-medium mb-2">Search</label>
@@ -280,7 +280,7 @@ export default function ApplicantJobsPage() {
                                     <Link
                                         key={job.id}
                                         href={`/app/applicant/jobs/${job.id}`}
-                                        className="bg-[#15171e] border border-gray-800 rounded-xl p-6 hover:border-[var(--primary-blue)] transition-all group"
+                                        className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6 hover:border-[var(--primary-blue)] transition-all group"
                                     >
                                         <div className="flex items-start gap-4 mb-4">
                                             {job.organization?.logo_url ? (
@@ -330,7 +330,7 @@ export default function ApplicantJobsPage() {
                             </div>
 
                             {pagination.data.length === 0 && (
-                                <div className="bg-[#15171e] border border-gray-800 rounded-xl">
+                                <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl">
                                     <EmptyState
                                         icon={Briefcase}
                                         title="No Jobs Available"

@@ -182,7 +182,7 @@ export default function ResourcesPage() {
                         {tools.map((tool, idx) => (
                             <div
                                 key={idx}
-                                className="card p-8 hover:border-[var(--primary-blue)] transition-all group border border-[var(--border)] bg-[#15171e] flex flex-col items-start"
+                                className="card p-8 hover:border-[var(--primary-blue)] transition-all group border border-[var(--border)] bg-[var(--background-secondary)] flex flex-col items-start"
                             >
                                 <div className="mb-6 p-4 rounded-2xl bg-[#0b0c0f] border border-[var(--border)] group-hover:scale-110 transition-transform duration-300">
                                     {tool.icon}

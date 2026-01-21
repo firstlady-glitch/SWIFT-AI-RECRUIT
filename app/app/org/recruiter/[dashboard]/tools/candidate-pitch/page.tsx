@@ -203,7 +203,7 @@ Skills: ${profile.skills?.join(', ') || 'Various'}
                 <div className="grid lg:grid-cols-2 gap-8">
                     <div className="space-y-6">
                         {/* Candidate Selection */}
-                        <div className="card p-6 border border-gray-800 bg-[#15171e]">
+                        <div className="card p-6 border border-[var(--border)] bg-[var(--background-secondary)]">
                             <label className="block text-sm font-medium mb-2 text-gray-300">Select Candidate</label>
                             {isLoadingData ? (
                                 <div className="flex items-center justify-center py-3">
@@ -218,8 +218,8 @@ Skills: ${profile.skills?.join(', ') || 'Various'}
                                             key={profile.id}
                                             onClick={() => handleSelectProfile(profile)}
                                             className={`w-full text-left p-3 rounded-lg border transition-all ${selectedProfile?.id === profile.id
-                                                    ? 'border-orange-500 bg-orange-500/10'
-                                                    : 'border-gray-800 bg-[#0b0c0f] hover:border-gray-700'
+                                                ? 'border-orange-500 bg-orange-500/10'
+                                                : 'border-gray-800 bg-[#0b0c0f] hover:border-gray-700'
                                                 }`}
                                         >
                                             <div className="flex items-center gap-2">
@@ -236,7 +236,7 @@ Skills: ${profile.skills?.join(', ') || 'Various'}
                         </div>
 
                         {/* Target Job */}
-                        <div className="card p-6 border border-gray-800 bg-[#15171e]">
+                        <div className="card p-6 border border-[var(--border)] bg-[var(--background-secondary)]">
                             <label className="block text-sm font-medium mb-2 text-gray-300">Target Job (Optional)</label>
                             <select
                                 value={selectedJob?.id || ''}
@@ -255,7 +255,7 @@ Skills: ${profile.skills?.join(', ') || 'Various'}
                             </select>
                         </div>
 
-                        <div className="card p-6 border border-gray-800 bg-[#15171e]">
+                        <div className="card p-6 border border-[var(--border)] bg-[var(--background-secondary)]">
                             <label className="block text-sm font-medium mb-2 text-gray-300">Candidate Name</label>
                             <input
                                 type="text"
@@ -266,7 +266,7 @@ Skills: ${profile.skills?.join(', ') || 'Various'}
                             />
                         </div>
 
-                        <div className="card p-6 border border-gray-800 bg-[#15171e]">
+                        <div className="card p-6 border border-[var(--border)] bg-[var(--background-secondary)]">
                             <label className="block text-sm font-medium mb-2 text-gray-300">Key Skills & Experience</label>
                             <textarea
                                 value={keySkills}
@@ -277,7 +277,7 @@ Skills: ${profile.skills?.join(', ') || 'Various'}
                         </div>
 
                         {/* Pitch Style */}
-                        <div className="card p-6 border border-gray-800 bg-[#15171e]">
+                        <div className="card p-6 border border-[var(--border)] bg-[var(--background-secondary)]">
                             <label className="block text-sm font-medium mb-3 text-gray-300">Pitch Style</label>
                             <div className="grid grid-cols-3 gap-2">
                                 <button
@@ -327,7 +327,7 @@ Skills: ${profile.skills?.join(', ') || 'Various'}
                     </div>
 
                     <div className="relative">
-                        <div className="h-full min-h-[600px] bg-[#15171e] border border-gray-800 rounded-xl p-8 relative overflow-auto">
+                        <div className="h-full min-h-[600px] bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-8 relative overflow-auto">
                             {generatedContent ? (
                                 <>
                                     <button

@@ -115,8 +115,8 @@ export default function ApplicantApplicationsPage() {
                         </div>
                     )}
                     <div>
-                        <div className="font-medium text-white">{row.job?.title || 'Unknown Role'}</div>
-                        <div className="text-xs text-gray-400">{row.job?.organization?.name || 'Unknown Company'}</div>
+                        <div className="font-medium text-[var(--foreground)]">{row.job?.title || 'Unknown Role'}</div>
+                        <div className="text-xs text-[var(--foreground-secondary)]">{row.job?.organization?.name || 'Unknown Company'}</div>
                     </div>
                 </div>
             )
@@ -153,7 +153,7 @@ export default function ApplicantApplicationsPage() {
             render: (row) => (
                 <Link
                     href={`/app/applicant/jobs/${row.job_id}`}
-                    className="p-2 hover:bg-gray-800 rounded-lg inline-flex text-gray-400 hover:text-white transition-colors"
+                    className="p-2 hover:bg-[var(--border)] rounded-lg inline-flex text-[var(--foreground-secondary)] hover:text-[var(--foreground)] transition-colors"
                 >
                     <ArrowRight className="w-4 h-4" />
                 </Link>
@@ -177,7 +177,7 @@ export default function ApplicantApplicationsPage() {
                             onClick={() => setStatusFilter(status)}
                             className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all ${statusFilter === status
                                 ? 'bg-[var(--primary-blue)] text-white'
-                                : 'bg-[#15171e] border border-gray-800 text-gray-400 hover:text-white hover:border-gray-700'
+                                : 'bg-[var(--background-secondary)] border border-[var(--border)] text-[var(--foreground-secondary)] hover:text-[var(--foreground)] hover:border-[var(--foreground-secondary)]'
                                 }`}
                         >
                             {status.charAt(0).toUpperCase() + status.slice(1)}

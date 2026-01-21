@@ -228,7 +228,7 @@ export default function JobFitPredictorTool() {
                 <div className="grid lg:grid-cols-2 gap-8">
                     {/* Job Selection */}
                     <div className="space-y-6">
-                        <div className="card p-6 border border-gray-800 bg-[#15171e]">
+                        <div className="card p-6 border border-[var(--border)] bg-[var(--background-secondary)]">
                             <label className="block text-sm font-medium mb-2 text-gray-300">
                                 Select a Job to Analyze
                             </label>
@@ -245,8 +245,8 @@ export default function JobFitPredictorTool() {
                                             key={job.id}
                                             onClick={() => setSelectedJob(job)}
                                             className={`w-full text-left p-4 rounded-lg border transition-all ${selectedJob?.id === job.id
-                                                    ? 'border-[var(--primary-blue)] bg-[var(--primary-blue)]/10'
-                                                    : 'border-gray-800 bg-[#0b0c0f] hover:border-gray-700'
+                                                ? 'border-[var(--primary-blue)] bg-[var(--primary-blue)]/10'
+                                                : 'border-gray-800 bg-[#0b0c0f] hover:border-gray-700'
                                                 }`}
                                         >
                                             <div className="flex items-start gap-3">
@@ -285,7 +285,7 @@ export default function JobFitPredictorTool() {
                     </div>
 
                     {/* Analysis Results */}
-                    <div className="bg-[#15171e] border border-gray-800 rounded-xl p-6">
+                    <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6">
                         <h2 className="text-lg font-semibold mb-4">Fit Analysis</h2>
 
                         {analysis ? (

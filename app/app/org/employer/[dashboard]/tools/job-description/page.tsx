@@ -176,7 +176,7 @@ export default function JobDescriptionTool() {
                 <div className="grid lg:grid-cols-2 gap-8">
                     {/* Input Section */}
                     <div className="space-y-6">
-                        <div className="card p-6 border border-gray-800 bg-[#15171e]">
+                        <div className="card p-6 border border-[var(--border)] bg-[var(--background-secondary)]">
                             <label className="block text-sm font-medium mb-2 text-gray-300">Job Title *</label>
                             <input
                                 type="text"
@@ -187,7 +187,7 @@ export default function JobDescriptionTool() {
                             />
                         </div>
 
-                        <div className="card p-6 border border-gray-800 bg-[#15171e]">
+                        <div className="card p-6 border border-[var(--border)] bg-[var(--background-secondary)]">
                             <label className="block text-sm font-medium mb-2 text-gray-300">Location</label>
                             <input
                                 type="text"
@@ -198,7 +198,7 @@ export default function JobDescriptionTool() {
                             />
                         </div>
 
-                        <div className="card p-6 border border-gray-800 bg-[#15171e]">
+                        <div className="card p-6 border border-[var(--border)] bg-[var(--background-secondary)]">
                             <label className="block text-sm font-medium mb-2 text-gray-300">Job Type</label>
                             <select
                                 value={jobType}
@@ -213,7 +213,7 @@ export default function JobDescriptionTool() {
                             </select>
                         </div>
 
-                        <div className="card p-6 border border-gray-800 bg-[#15171e]">
+                        <div className="card p-6 border border-[var(--border)] bg-[var(--background-secondary)]">
                             <label className="block text-sm font-medium mb-2 text-gray-300">Key Requirements / Keywords</label>
                             <textarea
                                 value={keywords}
@@ -261,7 +261,7 @@ export default function JobDescriptionTool() {
                                 </div>
 
                                 {/* Requirements Pills */}
-                                <div className="p-4 bg-[#15171e] border border-gray-800 rounded-lg">
+                                <div className="p-4 bg-[var(--background-secondary)] border border-[var(--border)] rounded-lg">
                                     <p className="text-sm text-gray-400 mb-2">Extracted Requirements</p>
                                     <div className="flex flex-wrap gap-2">
                                         {generatedJD.requirements.slice(0, 10).map((req, idx) => (
@@ -273,7 +273,7 @@ export default function JobDescriptionTool() {
                                 </div>
 
                                 {/* Description */}
-                                <div className="relative bg-[#15171e] border border-gray-800 rounded-xl p-6">
+                                <div className="relative bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6">
                                     <button
                                         onClick={copyToClipboard}
                                         className="absolute top-4 right-4 p-2 bg-gray-800 hover:bg-gray-700 rounded-lg text-gray-400 hover:text-white transition-colors"
@@ -311,7 +311,7 @@ export default function JobDescriptionTool() {
                                 )}
                             </>
                         ) : (
-                            <div className="h-full min-h-[500px] bg-[#15171e] border border-gray-800 rounded-xl p-8 flex flex-col items-center justify-center text-gray-500 opacity-50">
+                            <div className="h-full min-h-[500px] bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-8 flex flex-col items-center justify-center text-[var(--foreground-secondary)] opacity-50">
                                 <Sparkles className="w-16 h-16 mb-4" />
                                 <p className="text-lg">Generated JD will appear here.</p>
                             </div>

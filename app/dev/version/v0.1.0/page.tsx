@@ -27,7 +27,7 @@ export default function Version010Page() {
                 {/* Feature Highlights */}
                 <div className="space-y-6">
                     {/* Core Application Structure */}
-                    <div className="bg-[#15171e] border border-gray-800 rounded-xl p-6">
+                    <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6">
                         <div className="flex items-center gap-3 mb-4">
                             <div className="w-10 h-10 bg-blue-500/20 rounded-lg flex items-center justify-center">
                                 <svg className="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -56,7 +56,7 @@ export default function Version010Page() {
                     </div>
 
                     {/* Authentication */}
-                    <div className="bg-[#15171e] border border-gray-800 rounded-xl p-6">
+                    <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6">
                         <div className="flex items-center gap-3 mb-4">
                             <div className="w-10 h-10 bg-emerald-500/20 rounded-lg flex items-center justify-center">
                                 <svg className="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -82,7 +82,7 @@ export default function Version010Page() {
                     </div>
 
                     {/* Stripe Integration */}
-                    <div className="bg-[#15171e] border border-gray-800 rounded-xl p-6">
+                    <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6">
                         <div className="flex items-center gap-3 mb-4">
                             <div className="w-10 h-10 bg-purple-500/20 rounded-lg flex items-center justify-center">
                                 <svg className="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -108,7 +108,7 @@ export default function Version010Page() {
                     </div>
 
                     {/* AI Features */}
-                    <div className="bg-[#15171e] border border-gray-800 rounded-xl p-6">
+                    <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6">
                         <div className="flex items-center gap-3 mb-4">
                             <div className="w-10 h-10 bg-amber-500/20 rounded-lg flex items-center justify-center">
                                 <svg className="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -134,7 +134,7 @@ export default function Version010Page() {
                     </div>
 
                     {/* UI/UX */}
-                    <div className="bg-[#15171e] border border-gray-800 rounded-xl p-6">
+                    <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6">
                         <div className="flex items-center gap-3 mb-4">
                             <div className="w-10 h-10 bg-pink-500/20 rounded-lg flex items-center justify-center">
                                 <svg className="w-5 h-5 text-pink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -161,7 +161,7 @@ export default function Version010Page() {
                 </div>
 
                 {/* Technical Details */}
-                <div className="mt-8 bg-[#15171e]/50 border border-gray-800/50 rounded-xl p-6">
+                <div className="mt-8 bg-[var(--background-secondary)]/50 border border-[var(--border)]/50 rounded-xl p-6">
                     <h3 className="text-lg font-semibold mb-4 text-gray-300">Technical Stack</h3>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                         <div>

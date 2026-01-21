@@ -139,7 +139,7 @@ export default function EditJobPage() {
             <div className="max-w-4xl mx-auto">
                 <Link
                     href={`/app/org/employer/jobs/${jobId}`}
-                    className="inline-flex items-center text-gray-400 hover:text-white mb-6 transition-colors"
+                    className="inline-flex items-center text-[var(--foreground-secondary)] hover:text-[var(--foreground)] mb-6 transition-colors"
                 >
                     <ArrowLeft className="w-4 h-4 mr-2" />
                     Back to Job
@@ -147,7 +147,7 @@ export default function EditJobPage() {
 
                 <div className="mb-8">
                     <h1 className="text-3xl font-bold mb-2">Edit Job Posting</h1>
-                    <p className="text-gray-400">Update the job details below.</p>
+                    <p className="text-[var(--foreground-secondary)]">Update the job details below.</p>
                 </div>
 
                 {error && (
@@ -157,7 +157,7 @@ export default function EditJobPage() {
                 )}
 
                 <form onSubmit={handleSubmit} className="space-y-6">
-                    <div className="bg-[#15171e] border border-gray-800 rounded-xl p-6">
+                    <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6">
                         <h2 className="text-xl font-bold mb-4">Basic Information</h2>
 
                         <div className="space-y-4">
@@ -169,7 +169,7 @@ export default function EditJobPage() {
                                     value={formData.title}
                                     onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
                                     placeholder="e.g. Senior Frontend Developer"
-                                    className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg px-4 py-2 focus:border-[var(--primary-blue)] focus:outline-none"
+                                    className="w-full bg-[var(--background)] border border-[var(--border)] rounded-lg px-4 py-2 focus:border-[var(--primary-blue)] focus:outline-none"
                                 />
                             </div>
 
@@ -181,7 +181,7 @@ export default function EditJobPage() {
                                         value={formData.location}
                                         onChange={(e) => setFormData(prev => ({ ...prev, location: e.target.value }))}
                                         placeholder="e.g. San Francisco, CA or Remote"
-                                        className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg px-4 py-2 focus:border-[var(--primary-blue)] focus:outline-none"
+                                        className="w-full bg-[var(--background)] border border-[var(--border)] rounded-lg px-4 py-2 focus:border-[var(--primary-blue)] focus:outline-none"
                                     />
                                 </div>
                                 <div>
@@ -190,7 +190,7 @@ export default function EditJobPage() {
                                         required
                                         value={formData.type}
                                         onChange={(e) => setFormData(prev => ({ ...prev, type: e.target.value }))}
-                                        className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg px-4 py-2 focus:border-[var(--primary-blue)] focus:outline-none"
+                                        className="w-full bg-[var(--background)] border border-[var(--border)] rounded-lg px-4 py-2 focus:border-[var(--primary-blue)] focus:outline-none"
                                     >
                                         <option>Full-time</option>
                                         <option>Part-time</option>
@@ -208,7 +208,7 @@ export default function EditJobPage() {
                                         value={formData.salary_range_min}
                                         onChange={(e) => setFormData(prev => ({ ...prev, salary_range_min: e.target.value }))}
                                         placeholder="80000"
-                                        className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg px-4 py-2 focus:border-[var(--primary-blue)] focus:outline-none"
+                                        className="w-full bg-[var(--background)] border border-[var(--border)] rounded-lg px-4 py-2 focus:border-[var(--primary-blue)] focus:outline-none"
                                     />
                                 </div>
                                 <div>
@@ -218,7 +218,7 @@ export default function EditJobPage() {
                                         value={formData.salary_range_max}
                                         onChange={(e) => setFormData(prev => ({ ...prev, salary_range_max: e.target.value }))}
                                         placeholder="120000"
-                                        className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg px-4 py-2 focus:border-[var(--primary-blue)] focus:outline-none"
+                                        className="w-full bg-[var(--background)] border border-[var(--border)] rounded-lg px-4 py-2 focus:border-[var(--primary-blue)] focus:outline-none"
                                     />
                                 </div>
                             </div>
@@ -231,13 +231,13 @@ export default function EditJobPage() {
                                     onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
                                     placeholder="Describe the role, responsibilities, and what you're looking for..."
                                     rows={8}
-                                    className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg px-4 py-2 focus:border-[var(--primary-blue)] focus:outline-none"
+                                    className="w-full bg-[var(--background)] border border-[var(--border)] rounded-lg px-4 py-2 focus:border-[var(--primary-blue)] focus:outline-none"
                                 />
                             </div>
                         </div>
                     </div>
 
-                    <div className="bg-[#15171e] border border-gray-800 rounded-xl p-6">
+                    <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6">
                         <h2 className="text-xl font-bold mb-4">Requirements</h2>
 
                         <div className="space-y-3">
@@ -248,7 +248,7 @@ export default function EditJobPage() {
                                         value={req}
                                         onChange={(e) => updateRequirement(index, e.target.value)}
                                         placeholder="e.g. 5+ years of React experience"
-                                        className="flex-1 bg-[#0b0c0f] border border-gray-800 rounded-lg px-4 py-2 focus:border-[var(--primary-blue)] focus:outline-none"
+                                        className="flex-1 bg-[var(--background)] border border-[var(--border)] rounded-lg px-4 py-2 focus:border-[var(--primary-blue)] focus:outline-none"
                                     />
                                     {formData.requirements.length > 1 && (
                                         <button
@@ -276,7 +276,7 @@ export default function EditJobPage() {
                     <div className="flex justify-end gap-4">
                         <Link
                             href={`/app/org/employer/jobs/${jobId}`}
-                            className="btn border border-gray-700 hover:bg-gray-800 px-6 py-3"
+                            className="btn border border-[var(--border)] hover:bg-[var(--border)] px-6 py-3"
                         >
                             Cancel
                         </Link>

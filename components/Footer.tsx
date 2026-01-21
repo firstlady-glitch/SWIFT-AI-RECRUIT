@@ -65,26 +65,7 @@ export default function Footer() {
                     <p className="text-sm text-[var(--foreground-secondary)]">
                         © 2024 SwiftAI Recruit. All rights reserved.
                     </p>
-                    <div className="flex items-center gap-4 text-sm text-[var(--foreground-secondary)]">
-                        <span>Crafted with ❤️ by</span>
-                        <a
-                            href="https://github.com/kingjethro999"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="font-semibold text-[var(--primary-blue)] hover:text-[var(--primary-blue-light)] transition-colors"
-                        >
-                            King Jethro
-                        </a>
-                        <span>•</span>
-                        <a
-                            href="https://jethroportfolio.vercel.app"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-[var(--primary-blue)] hover:text-[var(--primary-blue-light)] transition-colors"
-                        >
-                            Portfolio
-                        </a>
-                    </div>
+
                 </div>
             </div>
         </footer>

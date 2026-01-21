@@ -110,7 +110,7 @@ export default function RecruiterCreateJobPage() {
                 )}
 
                 <form onSubmit={handleSubmit} className="space-y-6">
-                    <div className="bg-[#15171e] border border-gray-800 rounded-xl p-6">
+                    <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6">
                         <h2 className="text-xl font-bold mb-4">Basic Information</h2>
 
                         <div className="space-y-4">
@@ -200,7 +200,7 @@ export default function RecruiterCreateJobPage() {
                     </div>
 
                     {/* Application Type */}
-                    <div className="bg-[#15171e] border border-gray-800 rounded-xl p-6">
+                    <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6">
                         <h2 className="text-xl font-bold mb-4">Application Method</h2>
                         <p className="text-gray-400 text-sm mb-4">
                             Choose how candidates will apply for this position.
@@ -257,7 +257,7 @@ export default function RecruiterCreateJobPage() {
                         )}
                     </div>
 
-                    <div className="bg-[#15171e] border border-gray-800 rounded-xl p-6">
+                    <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6">
                         <h2 className="text-xl font-bold mb-4">Requirements</h2>
 
                         <div className="space-y-3">

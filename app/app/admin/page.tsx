@@ -126,9 +126,9 @@ export default function AdminDashboard() {
                 <h1 className="text-3xl font-bold">Dashboard</h1>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     {[...Array(8)].map((_, i) => (
-                        <div key={i} className="bg-[#15171e] border border-gray-800 rounded-xl p-6 animate-pulse">
-                            <div className="h-4 bg-gray-800 rounded w-1/2 mb-4" />
-                            <div className="h-8 bg-gray-800 rounded w-1/3" />
+                        <div key={i} className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6 animate-pulse">
+                            <div className="h-4 bg-[var(--border)] rounded w-1/2 mb-4" />
+                            <div className="h-8 bg-[var(--border)] rounded w-1/3" />
                         </div>
                     ))}
                 </div>
@@ -155,13 +155,13 @@ export default function AdminDashboard() {
         <div className="space-y-8">
             <div>
                 <h1 className="text-3xl font-bold mb-2">Admin Dashboard</h1>
-                <p className="text-gray-400">Platform overview and key metrics</p>
+                <p className="text-[var(--foreground-secondary)]">Platform overview and key metrics</p>
             </div>
 
             {/* Stats Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {statCards.map((stat) => (
-                    <div key={stat.label} className="bg-[#15171e] border border-gray-800 rounded-xl p-6">
+                    <div key={stat.label} className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6">
                         <div className="flex items-center justify-between mb-4">
                             <div className={`p-3 rounded-lg ${stat.bg}`}>
                                 <stat.icon className={`w-5 h-5 ${stat.color}`} />
@@ -172,27 +172,27 @@ export default function AdminDashboard() {
                                 </div>
                             )}
                         </div>
-                        <p className="text-gray-400 text-sm mb-1">{stat.label}</p>
-                        <p className="text-2xl font-bold text-white">{stat.value}</p>
+                        <p className="text-[var(--foreground-secondary)] text-sm mb-1">{stat.label}</p>
+                        <p className="text-2xl font-bold text-[var(--foreground)]">{stat.value}</p>
                     </div>
                 ))}
             </div>
 
             {/* Recent Activity */}
-            <div className="bg-[#15171e] border border-gray-800 rounded-xl p-6">
+            <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6">
                 <h2 className="text-xl font-bold mb-4">Recent Activity</h2>
                 {recentActivity.length > 0 ? (
                     <div className="space-y-3">
                         {recentActivity.map((activity) => (
-                            <div key={activity.id} className="flex items-center justify-between py-3 border-b border-gray-800 last:border-0">
+                            <div key={activity.id} className="flex items-center justify-between py-3 border-b border-[var(--border)] last:border-0">
                                 <div className="flex items-center gap-3">
                                     <div className="w-2 h-2 rounded-full bg-[var(--primary-blue)]" />
                                     <div>
-                                        <p className="text-white text-sm capitalize">{activity.description}</p>
-                                        <p className="text-xs text-gray-500">{activity.type}</p>
+                                        <p className="text-[var(--foreground)] text-sm capitalize">{activity.description}</p>
+                                        <p className="text-xs text-[var(--foreground-secondary)]">{activity.type}</p>
                                     </div>
                                 </div>
-                                <p className="text-xs text-gray-500">
+                                <p className="text-xs text-[var(--foreground-secondary)]">
                                     {new Date(activity.timestamp).toLocaleString()}
                                 </p>
                             </div>

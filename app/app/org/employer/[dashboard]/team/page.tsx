@@ -133,7 +133,8 @@ export default function TeamPage() {
                 <h1 className="text-2xl font-bold mb-6">Team</h1>
                 <div className="space-y-4">
                     {[...Array(3)].map((_, i) => (
-                        <div key={i} className="bg-[#15171e] border border-gray-800 rounded-xl p-4 animate-pulse h-20" />
+                        <div key={i}
+                            className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-4 animate-pulse h-20" />
                     ))}
                 </div>
             </div>
@@ -160,7 +161,7 @@ export default function TeamPage() {
             {/* Invite Modal */}
             {showInvite && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-                    <div className="bg-[#15171e] border border-gray-800 rounded-xl p-6 w-full max-w-md">
+                    <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6 w-full max-w-md">
                         <div className="flex justify-between mb-4">
                             <h3 className="text-lg font-semibold">Invite Team Member</h3>
                             <button onClick={() => setShowInvite(false)} className="text-gray-400 hover:text-white">
@@ -219,7 +220,7 @@ export default function TeamPage() {
             {/* Members List */}
             <div className="space-y-3">
                 {members.map((member) => (
-                    <div key={member.id} className="bg-[#15171e] border border-gray-800 rounded-xl p-4">
+                    <div key={member.id} className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-4">
                         <div className="flex items-center justify-between">
                             <div className="flex items-center gap-4">
                                 <div className="w-12 h-12 rounded-full bg-gray-800 flex items-center justify-center overflow-hidden">
@@ -257,7 +258,7 @@ export default function TeamPage() {
                 ))}
 
                 {members.length === 0 && (
-                    <div className="text-center py-12 bg-[#15171e] border border-gray-800 rounded-xl">
+                    <div className="text-center py-12 bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl">
                         <Users className="w-12 h-12 text-gray-600 mx-auto mb-4" />
                         <p className="text-gray-500">No team members yet</p>
                         <button

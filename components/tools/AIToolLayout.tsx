@@ -43,7 +43,7 @@ export function AIToolLayout({
             <div className="max-w-4xl mx-auto">
                 <Link
                     href={backHref}
-                    className="inline-flex items-center text-gray-400 hover:text-white mb-6 transition-colors"
+                    className="inline-flex items-center text-[var(--foreground-secondary)] hover:text-[var(--foreground)] mb-6 transition-colors"
                 >
                     <ArrowLeft className="w-4 h-4 mr-2" />
                     Back to Tools
@@ -55,7 +55,7 @@ export function AIToolLayout({
                     </div>
                     <div>
                         <h1 className="text-3xl font-bold mb-1">{title}</h1>
-                        <p className="text-gray-400">{description}</p>
+                        <p className="text-[var(--foreground-secondary)]">{description}</p>
                     </div>
                 </div>
 
@@ -67,12 +67,12 @@ export function AIToolLayout({
 
                     {/* Output Section */}
                     <div className="relative">
-                        <div className="h-full min-h-[500px] bg-[#15171e] border border-gray-800 rounded-xl p-8 relative">
+                        <div className="h-full min-h-[500px] bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-8 relative">
                             {outputContent ? (
                                 <>
                                     <button
                                         onClick={copyToClipboard}
-                                        className="absolute top-4 right-4 p-2 bg-gray-800 hover:bg-gray-700 rounded-lg text-gray-400 hover:text-white transition-colors"
+                                        className="absolute top-4 right-4 p-2 bg-[var(--border)] hover:bg-[var(--border)]/80 rounded-lg text-[var(--foreground-secondary)] hover:text-[var(--foreground)] transition-colors"
                                         title="Copy to clipboard"
                                     >
                                         {isCopied ? (
@@ -86,7 +86,7 @@ export function AIToolLayout({
                                     </div>
                                 </>
                             ) : (
-                                <div className="absolute inset-0 flex flex-col items-center justify-center text-gray-500 opacity-50 p-6 text-center">
+                                <div className="absolute inset-0 flex flex-col items-center justify-center text-[var(--foreground-secondary)] opacity-50 p-6 text-center">
                                     {outputIcon || <Sparkles className="w-16 h-16 mb-4" />}
                                     <p className="text-lg">{outputPlaceholder}</p>
                                 </div>
@@ -107,8 +107,8 @@ interface InputCardProps {
 
 export function InputCard({ label, children }: InputCardProps) {
     return (
-        <div className="card p-6 border border-gray-800 bg-[#15171e]">
-            <label className="block text-sm font-medium mb-2 text-gray-300">
+        <div className="card p-6 border border-[var(--border)] bg-[var(--background-secondary)]">
+            <label className="block text-sm font-medium mb-2 text-[var(--foreground-secondary)]">
                 {label}
             </label>
             {children}

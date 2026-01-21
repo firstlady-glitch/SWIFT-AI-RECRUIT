@@ -222,7 +222,7 @@ export default function BooleanSearchTool() {
                     <div className="space-y-6">
                         {/* Job Selection */}
                         {jobs.length > 0 && (
-                            <div className="card p-6 border border-gray-800 bg-[#15171e]">
+                            <div className="card p-6 border border-[var(--border)] bg-[var(--background-secondary)]">
                                 <label className="block text-sm font-medium mb-2 text-gray-300">Select from Your Jobs</label>
                                 {isLoadingJobs ? (
                                     <div className="flex items-center justify-center py-3">
@@ -235,8 +235,8 @@ export default function BooleanSearchTool() {
                                                 key={job.id}
                                                 onClick={() => handleSelectJob(job)}
                                                 className={`w-full text-left p-3 rounded-lg border transition-all ${selectedJob?.id === job.id
-                                                        ? 'border-indigo-500 bg-indigo-500/10'
-                                                        : 'border-gray-800 bg-[#0b0c0f] hover:border-gray-700'
+                                                    ? 'border-indigo-500 bg-indigo-500/10'
+                                                    : 'border-gray-800 bg-[#0b0c0f] hover:border-gray-700'
                                                     }`}
                                             >
                                                 <div className="flex items-center gap-2">
@@ -250,7 +250,7 @@ export default function BooleanSearchTool() {
                             </div>
                         )}
 
-                        <div className="card p-6 border border-gray-800 bg-[#15171e]">
+                        <div className="card p-6 border border-[var(--border)] bg-[var(--background-secondary)]">
                             <label className="block text-sm font-medium mb-2 text-gray-300">Target Role</label>
                             <input
                                 type="text"
@@ -261,7 +261,7 @@ export default function BooleanSearchTool() {
                             />
                         </div>
 
-                        <div className="card p-6 border border-gray-800 bg-[#15171e]">
+                        <div className="card p-6 border border-[var(--border)] bg-[var(--background-secondary)]">
                             <label className="block text-sm font-medium mb-2 text-gray-300">Must-Have Skills/Keywords</label>
                             <textarea
                                 value={requirements}
@@ -272,7 +272,7 @@ export default function BooleanSearchTool() {
                         </div>
 
                         <div className="grid grid-cols-2 gap-4">
-                            <div className="card p-6 border border-gray-800 bg-[#15171e]">
+                            <div className="card p-6 border border-[var(--border)] bg-[var(--background-secondary)]">
                                 <label className="block text-sm font-medium mb-2 text-gray-300">Location</label>
                                 <input
                                     type="text"
@@ -283,7 +283,7 @@ export default function BooleanSearchTool() {
                                 />
                             </div>
 
-                            <div className="card p-6 border border-gray-800 bg-[#15171e]">
+                            <div className="card p-6 border border-[var(--border)] bg-[var(--background-secondary)]">
                                 <label className="block text-sm font-medium mb-2 text-gray-300">Platform</label>
                                 <div className="flex gap-2">
                                     <button
@@ -324,7 +324,7 @@ export default function BooleanSearchTool() {
                     </div>
 
                     <div className="relative">
-                        <div className="h-full min-h-[600px] max-h-[800px] bg-[#15171e] border border-gray-800 rounded-xl p-8 relative overflow-auto">
+                        <div className="h-full min-h-[600px] max-h-[800px] bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-8 relative overflow-auto">
                             {generatedContent ? (
                                 <div className="prose prose-invert max-w-none whitespace-pre-wrap text-sm">
                                     {generatedContent}

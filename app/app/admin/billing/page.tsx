@@ -71,7 +71,7 @@ export default function AdminBillingPage() {
                 <h1 className="text-3xl font-bold">Billing</h1>
                 <div className="grid md:grid-cols-4 gap-4">
                     {[...Array(4)].map((_, i) => (
-                        <div key={i} className="bg-[#15171e] border border-gray-800 rounded-xl p-6 h-32 animate-pulse" />
+                        <div key={i} className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6 h-32 animate-pulse" />
                     ))}
                 </div>
             </div>
@@ -82,61 +82,61 @@ export default function AdminBillingPage() {
         <div className="space-y-6">
             <div>
                 <h1 className="text-3xl font-bold">Billing & Revenue</h1>
-                <p className="text-gray-400">Payment tracking and revenue analytics</p>
+                <p className="text-[var(--foreground-secondary)]">Payment tracking and revenue analytics</p>
             </div>
 
             {/* Stats */}
             <div className="grid md:grid-cols-4 gap-4">
-                <div className="bg-[#15171e] border border-gray-800 rounded-xl p-6">
+                <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6">
                     <div className="flex items-center gap-3 mb-3">
                         <div className="p-2 bg-green-500/10 rounded-lg">
                             <DollarSign className="w-5 h-5 text-green-500" />
                         </div>
                     </div>
-                    <p className="text-gray-400 text-sm">Total Revenue</p>
-                    <p className="text-2xl font-bold">${stats.totalRevenue.toLocaleString()}</p>
+                    <p className="text-[var(--foreground-secondary)] text-sm">Total Revenue</p>
+                    <p className="text-2xl font-bold text-[var(--foreground)]">${stats.totalRevenue.toLocaleString()}</p>
                 </div>
 
-                <div className="bg-[#15171e] border border-gray-800 rounded-xl p-6">
+                <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6">
                     <div className="flex items-center gap-3 mb-3">
                         <div className="p-2 bg-blue-500/10 rounded-lg">
                             <TrendingUp className="w-5 h-5 text-blue-500" />
                         </div>
                     </div>
-                    <p className="text-gray-400 text-sm">This Month</p>
-                    <p className="text-2xl font-bold">${stats.thisMonth.toLocaleString()}</p>
+                    <p className="text-[var(--foreground-secondary)] text-sm">This Month</p>
+                    <p className="text-2xl font-bold text-[var(--foreground)]">${stats.thisMonth.toLocaleString()}</p>
                 </div>
 
-                <div className="bg-[#15171e] border border-gray-800 rounded-xl p-6">
+                <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6">
                     <div className="flex items-center gap-3 mb-3">
                         <div className="p-2 bg-emerald-500/10 rounded-lg">
                             <CreditCard className="w-5 h-5 text-emerald-500" />
                         </div>
                     </div>
-                    <p className="text-gray-400 text-sm">Successful</p>
-                    <p className="text-2xl font-bold">{stats.successfulPayments}</p>
+                    <p className="text-[var(--foreground-secondary)] text-sm">Successful</p>
+                    <p className="text-2xl font-bold text-[var(--foreground)]">{stats.successfulPayments}</p>
                 </div>
 
-                <div className="bg-[#15171e] border border-gray-800 rounded-xl p-6">
+                <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6">
                     <div className="flex items-center gap-3 mb-3">
                         <div className="p-2 bg-red-500/10 rounded-lg">
                             <CreditCard className="w-5 h-5 text-red-500" />
                         </div>
                     </div>
-                    <p className="text-gray-400 text-sm">Failed</p>
-                    <p className="text-2xl font-bold">{stats.failedPayments}</p>
+                    <p className="text-[var(--foreground-secondary)] text-sm">Failed</p>
+                    <p className="text-2xl font-bold text-[var(--foreground)]">{stats.failedPayments}</p>
                 </div>
             </div>
 
             {/* Transactions */}
-            <div className="bg-[#15171e] border border-gray-800 rounded-xl p-6">
+            <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6">
                 <h3 className="font-semibold mb-4">Recent Transactions</h3>
 
                 {billings.length > 0 ? (
                     <div className="overflow-x-auto">
                         <table className="w-full">
                             <thead>
-                                <tr className="text-left text-sm text-gray-400 border-b border-gray-800">
+                                <tr className="text-left text-sm text-[var(--foreground-secondary)] border-b border-[var(--border)]">
                                     <th className="pb-3">Date</th>
                                     <th className="pb-3">Amount</th>
                                     <th className="pb-3">Plan</th>
@@ -146,14 +146,14 @@ export default function AdminBillingPage() {
                             </thead>
                             <tbody>
                                 {billings.slice(0, 20).map((billing) => (
-                                    <tr key={billing.id} className="border-b border-gray-800 last:border-0">
-                                        <td className="py-3 text-sm text-gray-300">
+                                    <tr key={billing.id} className="border-b border-[var(--border)] last:border-0">
+                                        <td className="py-3 text-sm text-[var(--foreground-secondary)]">
                                             {new Date(billing.created_at).toLocaleDateString()}
                                         </td>
-                                        <td className="py-3 text-white font-medium">
+                                        <td className="py-3 text-[var(--foreground)] font-medium">
                                             ${(billing.amount / 100).toFixed(2)} {billing.currency.toUpperCase()}
                                         </td>
-                                        <td className="py-3 text-sm text-gray-400 capitalize">
+                                        <td className="py-3 text-sm text-[var(--foreground-secondary)] capitalize">
                                             {billing.plan_type || '-'}
                                         </td>
                                         <td className="py-3">

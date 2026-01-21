@@ -260,22 +260,22 @@ export default function RecruiterSettings() {
 
             <div className="grid md:grid-cols-4 gap-8">
                 {/* Sidebar */}
-                <div className="bg-[#15171e] rounded-xl border border-gray-800 h-fit">
+                <div className="bg-[var(--background-secondary)] rounded-xl border border-[var(--border)] h-fit">
                     <button
                         onClick={() => setActiveTab('profile')}
-                        className={`w-full flex items-center gap-3 p-4 border-b border-gray-800 transition-colors ${activeTab === 'profile' ? 'bg-purple-500/10 text-purple-400' : 'hover:bg-gray-800 text-gray-400'}`}
+                        className={`w-full flex items-center gap-3 p-4 border-b border-[var(--border)] transition-colors ${activeTab === 'profile' ? 'bg-[var(--primary-blue)]/10 text-[var(--primary-blue)]' : 'hover:bg-[var(--border)] text-[var(--foreground-secondary)]'}`}
                     >
                         <User className="w-5 h-5" /> My Profile
                     </button>
                     <button
                         onClick={() => setActiveTab('agency')}
-                        className={`w-full flex items-center gap-3 p-4 border-b border-gray-800 transition-colors ${activeTab === 'agency' ? 'bg-purple-500/10 text-purple-400' : 'hover:bg-gray-800 text-gray-400'}`}
+                        className={`w-full flex items-center gap-3 p-4 border-b border-[var(--border)] transition-colors ${activeTab === 'agency' ? 'bg-[var(--primary-blue)]/10 text-[var(--primary-blue)]' : 'hover:bg-[var(--border)] text-[var(--foreground-secondary)]'}`}
                     >
                         <Briefcase className="w-5 h-5" /> Agency Details
                     </button>
                     <button
                         onClick={() => setActiveTab('billing')}
-                        className={`w-full flex items-center gap-3 p-4 transition-colors ${activeTab === 'billing' ? 'bg-purple-500/10 text-purple-400' : 'hover:bg-gray-800 text-gray-400'}`}
+                        className={`w-full flex items-center gap-3 p-4 transition-colors ${activeTab === 'billing' ? 'bg-[var(--primary-blue)]/10 text-[var(--primary-blue)]' : 'hover:bg-[var(--border)] text-[var(--foreground-secondary)]'}`}
                     >
                         <CreditCard className="w-5 h-5" /> Subscription
                     </button>
@@ -285,61 +285,61 @@ export default function RecruiterSettings() {
                 <div className="md:col-span-3">
                     {activeTab === 'profile' && (
                         <div className="space-y-6">
-                            <div className="card p-6 border border-gray-800 bg-[#15171e]">
+                            <div className="card p-6 border border-[var(--border)] bg-[var(--background-secondary)]">
                                 <h3 className="text-xl font-bold mb-6">Your Profile</h3>
                                 <div className="grid md:grid-cols-2 gap-6">
                                     <div>
-                                        <label className="block text-sm text-gray-400 mb-2">Full Name</label>
+                                        <label className="block text-sm text-[var(--foreground-secondary)] mb-2">Full Name</label>
                                         <input
                                             type="text"
                                             value={formData.full_name}
                                             onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
-                                            className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm"
+                                            className="w-full bg-[var(--background)] border border-[var(--border)] rounded-lg p-3 text-sm text-[var(--foreground)]"
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-sm text-gray-400 mb-2">Email</label>
+                                        <label className="block text-sm text-[var(--foreground-secondary)] mb-2">Email</label>
                                         <input
                                             type="email"
                                             value={formData.email}
                                             disabled
-                                            className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm opacity-50"
+                                            className="w-full bg-[var(--background)] border border-[var(--border)] rounded-lg p-3 text-sm opacity-50 text-[var(--foreground)]"
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-sm text-gray-400 mb-2">Phone</label>
+                                        <label className="block text-sm text-[var(--foreground-secondary)] mb-2">Phone</label>
                                         <input
                                             type="tel"
                                             value={formData.phone}
                                             onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                                            className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm"
+                                            className="w-full bg-[var(--background)] border border-[var(--border)] rounded-lg p-3 text-sm text-[var(--foreground)]"
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-sm text-gray-400 mb-2">Location</label>
+                                        <label className="block text-sm text-[var(--foreground-secondary)] mb-2">Location</label>
                                         <input
                                             type="text"
                                             value={formData.location}
                                             onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                                            className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm"
+                                            className="w-full bg-[var(--background)] border border-[var(--border)] rounded-lg p-3 text-sm text-[var(--foreground)]"
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-sm text-gray-400 mb-2">LinkedIn</label>
+                                        <label className="block text-sm text-[var(--foreground-secondary)] mb-2">LinkedIn</label>
                                         <input
                                             type="url"
                                             value={formData.linkedin_url}
                                             onChange={(e) => setFormData({ ...formData, linkedin_url: e.target.value })}
-                                            className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm"
+                                            className="w-full bg-[var(--background)] border border-[var(--border)] rounded-lg p-3 text-sm text-[var(--foreground)]"
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-sm text-gray-400 mb-2">Experience (years)</label>
+                                        <label className="block text-sm text-[var(--foreground-secondary)] mb-2">Experience (years)</label>
                                         <input
                                             type="number"
                                             value={formData.experience_years}
                                             onChange={(e) => setFormData({ ...formData, experience_years: parseInt(e.target.value) || 0 })}
-                                            className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm"
+                                            className="w-full bg-[var(--background)] border border-[var(--border)] rounded-lg p-3 text-sm text-[var(--foreground)]"
                                         />
                                     </div>
                                 </div>
@@ -358,14 +358,14 @@ export default function RecruiterSettings() {
 
                     {activeTab === 'agency' && (
                         <div className="space-y-6">
-                            <div className="card p-6 border border-gray-800 bg-[#15171e]">
+                            <div className="card p-6 border border-[var(--border)] bg-[var(--background-secondary)]">
                                 <h3 className="text-xl font-bold mb-6">Agency Details</h3>
 
                                 {/* Logo Section */}
                                 <div className="mb-6">
-                                    <label className="block text-sm text-gray-400 mb-2">Agency Logo</label>
+                                    <label className="block text-sm text-[var(--foreground-secondary)] mb-2">Agency Logo</label>
                                     <div className="flex items-center gap-6">
-                                        <div className="w-24 h-24 rounded-xl bg-[#0b0c0f] border border-gray-800 overflow-hidden flex items-center justify-center">
+                                        <div className="w-24 h-24 rounded-xl bg-[var(--background)] border border-[var(--border)] overflow-hidden flex items-center justify-center">
                                             {logoPreview ? (
                                                 <img src={logoPreview} alt="Agency Logo" className="w-full h-full object-cover" />
                                             ) : (
@@ -399,30 +399,30 @@ export default function RecruiterSettings() {
 
                                 <div className="grid md:grid-cols-2 gap-6">
                                     <div>
-                                        <label className="block text-sm text-gray-400 mb-2">Agency Name</label>
+                                        <label className="block text-sm text-[var(--foreground-secondary)] mb-2">Agency Name</label>
                                         <input
                                             type="text"
                                             value={orgData.name}
                                             onChange={(e) => setOrgData({ ...orgData, name: e.target.value })}
-                                            className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm"
+                                            className="w-full bg-[var(--background)] border border-[var(--border)] rounded-lg p-3 text-sm text-[var(--foreground)]"
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-sm text-gray-400 mb-2">Industry</label>
+                                        <label className="block text-sm text-[var(--foreground-secondary)] mb-2">Industry</label>
                                         <input
                                             type="text"
                                             value={orgData.industry}
                                             onChange={(e) => setOrgData({ ...orgData, industry: e.target.value })}
-                                            className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm"
+                                            className="w-full bg-[var(--background)] border border-[var(--border)] rounded-lg p-3 text-sm text-[var(--foreground)]"
                                             placeholder="Technology, Healthcare, etc."
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-sm text-gray-400 mb-2">Team Size</label>
+                                        <label className="block text-sm text-[var(--foreground-secondary)] mb-2">Team Size</label>
                                         <select
                                             value={orgData.size}
                                             onChange={(e) => setOrgData({ ...orgData, size: e.target.value })}
-                                            className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm"
+                                            className="w-full bg-[var(--background)] border border-[var(--border)] rounded-lg p-3 text-sm text-[var(--foreground)]"
                                         >
                                             <option value="">Select size</option>
                                             <option value="1-5">1-5 recruiters</option>
@@ -433,58 +433,58 @@ export default function RecruiterSettings() {
                                         </select>
                                     </div>
                                     <div>
-                                        <label className="block text-sm text-gray-400 mb-2">Years in Business</label>
+                                        <label className="block text-sm text-[var(--foreground-secondary)] mb-2">Years in Business</label>
                                         <input
                                             type="number"
                                             min="0"
                                             value={orgData.years_in_business}
                                             onChange={(e) => setOrgData({ ...orgData, years_in_business: parseInt(e.target.value) || 0 })}
-                                            className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm"
+                                            className="w-full bg-[var(--background)] border border-[var(--border)] rounded-lg p-3 text-sm text-[var(--foreground)]"
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-sm text-gray-400 mb-2">Website</label>
+                                        <label className="block text-sm text-[var(--foreground-secondary)] mb-2">Website</label>
                                         <input
                                             type="url"
                                             value={orgData.website}
                                             onChange={(e) => setOrgData({ ...orgData, website: e.target.value })}
-                                            className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm"
+                                            className="w-full bg-[var(--background)] border border-[var(--border)] rounded-lg p-3 text-sm text-[var(--foreground)]"
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-sm text-gray-400 mb-2">Phone</label>
+                                        <label className="block text-sm text-[var(--foreground-secondary)] mb-2">Phone</label>
                                         <input
                                             type="tel"
                                             value={orgData.phone}
                                             onChange={(e) => setOrgData({ ...orgData, phone: e.target.value })}
-                                            className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm"
+                                            className="w-full bg-[var(--background)] border border-[var(--border)] rounded-lg p-3 text-sm text-[var(--foreground)]"
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-sm text-gray-400 mb-2">Location</label>
+                                        <label className="block text-sm text-[var(--foreground-secondary)] mb-2">Location</label>
                                         <input
                                             type="text"
                                             value={orgData.location}
                                             onChange={(e) => setOrgData({ ...orgData, location: e.target.value })}
-                                            className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm"
+                                            className="w-full bg-[var(--background)] border border-[var(--border)] rounded-lg p-3 text-sm text-[var(--foreground)]"
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-sm text-gray-400 mb-2">Specializations</label>
+                                        <label className="block text-sm text-[var(--foreground-secondary)] mb-2">Specializations</label>
                                         <input
                                             type="text"
                                             value={orgData.specializations.join(', ')}
                                             onChange={(e) => setOrgData({ ...orgData, specializations: e.target.value.split(',').map(s => s.trim()).filter(Boolean) })}
                                             placeholder="Full Stack, DevOps, Data Science"
-                                            className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm"
+                                            className="w-full bg-[var(--background)] border border-[var(--border)] rounded-lg p-3 text-sm text-[var(--foreground)]"
                                         />
                                     </div>
                                     <div className="md:col-span-2">
-                                        <label className="block text-sm text-gray-400 mb-2">Description</label>
+                                        <label className="block text-sm text-[var(--foreground-secondary)] mb-2">Description</label>
                                         <textarea
                                             value={orgData.description}
                                             onChange={(e) => setOrgData({ ...orgData, description: e.target.value })}
-                                            className="w-full h-32 bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm resize-none"
+                                            className="w-full h-32 bg-[var(--background)] border border-[var(--border)] rounded-lg p-3 text-sm resize-none text-[var(--foreground)]"
                                             placeholder="Tell us about your agency..."
                                         />
                                     </div>
@@ -500,9 +500,9 @@ export default function RecruiterSettings() {
                     )}
 
                     {activeTab === 'billing' && (
-                        <div className="card p-6 border border-gray-800 bg-[#15171e]">
+                        <div className="card p-6 border border-[var(--border)] bg-[var(--background-secondary)]">
                             <h3 className="text-xl font-bold mb-4">Subscription</h3>
-                            <p className="text-gray-400 mb-6">Manage your subscription and billing through Stripe.</p>
+                            <p className="text-[var(--foreground-secondary)] mb-6">Manage your subscription and billing through Stripe.</p>
                             <button onClick={openStripePortal} className="btn btn-primary flex items-center gap-2">
                                 <CreditCard className="w-4 h-4" /> Manage Billing
                             </button>

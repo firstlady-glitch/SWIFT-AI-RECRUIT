@@ -186,7 +186,7 @@ Skills: ${userProfile.skills?.join(', ') || 'Not specified'}`
 
                 {/* Profile Status */}
                 {userProfile && (
-                    <div className="mb-6 p-4 bg-[#15171e] border border-gray-800 rounded-lg">
+                    <div className="mb-6 p-4 bg-[var(--background-secondary)] border border-[var(--border)] rounded-lg">
                         <p className="text-sm text-gray-400 mb-1">Generating as:</p>
                         <p className="font-medium text-white">
                             {userProfile.full_name || 'Anonymous'}
@@ -217,8 +217,8 @@ Skills: ${userProfile.skills?.join(', ') || 'Not specified'}`
                             <button
                                 onClick={() => setUseManualInput(false)}
                                 className={`flex-1 py-2 px-4 rounded-lg text-sm font-medium transition-colors ${!useManualInput
-                                        ? 'bg-[var(--primary-blue)] text-white'
-                                        : 'bg-gray-800 text-gray-400 hover:text-white'
+                                    ? 'bg-[var(--primary-blue)] text-white'
+                                    : 'bg-gray-800 text-gray-400 hover:text-white'
                                     }`}
                             >
                                 Select from Jobs
@@ -226,8 +226,8 @@ Skills: ${userProfile.skills?.join(', ') || 'Not specified'}`
                             <button
                                 onClick={() => setUseManualInput(true)}
                                 className={`flex-1 py-2 px-4 rounded-lg text-sm font-medium transition-colors ${useManualInput
-                                        ? 'bg-[var(--primary-blue)] text-white'
-                                        : 'bg-gray-800 text-gray-400 hover:text-white'
+                                    ? 'bg-[var(--primary-blue)] text-white'
+                                    : 'bg-gray-800 text-gray-400 hover:text-white'
                                     }`}
                             >
                                 Paste Description
@@ -235,7 +235,7 @@ Skills: ${userProfile.skills?.join(', ') || 'Not specified'}`
                         </div>
 
                         {useManualInput ? (
-                            <div className="card p-6 border border-gray-800 bg-[#15171e]">
+                            <div className="card p-6 border border-[var(--border)] bg-[var(--background-secondary)]">
                                 <label className="block text-sm font-medium mb-2 text-gray-300">
                                     Job Description
                                 </label>
@@ -247,7 +247,7 @@ Skills: ${userProfile.skills?.join(', ') || 'Not specified'}`
                                 />
                             </div>
                         ) : (
-                            <div className="card p-6 border border-gray-800 bg-[#15171e]">
+                            <div className="card p-6 border border-[var(--border)] bg-[var(--background-secondary)]">
                                 <label className="block text-sm font-medium mb-2 text-gray-300">
                                     Select a Job
                                 </label>
@@ -272,8 +272,8 @@ Skills: ${userProfile.skills?.join(', ') || 'Not specified'}`
                                                 key={job.id}
                                                 onClick={() => setSelectedJob(job)}
                                                 className={`w-full text-left p-3 rounded-lg border transition-all ${selectedJob?.id === job.id
-                                                        ? 'border-[var(--primary-blue)] bg-[var(--primary-blue)]/10'
-                                                        : 'border-gray-800 bg-[#0b0c0f] hover:border-gray-700'
+                                                    ? 'border-[var(--primary-blue)] bg-[var(--primary-blue)]/10'
+                                                    : 'border-gray-800 bg-[#0b0c0f] hover:border-gray-700'
                                                     }`}
                                             >
                                                 <div className="flex items-center gap-2">
@@ -311,7 +311,7 @@ Skills: ${userProfile.skills?.join(', ') || 'Not specified'}`
 
                     {/* Output Section */}
                     <div className="relative">
-                        <div className="h-full min-h-[500px] bg-[#15171e] border border-gray-800 rounded-xl p-8 relative">
+                        <div className="h-full min-h-[500px] bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-8 relative">
                             {generatedContent ? (
                                 <>
                                     <button

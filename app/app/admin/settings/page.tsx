@@ -35,15 +35,15 @@ export default function AdminSettingsPage() {
 
             <div className="grid gap-6">
                 {/* Payment Settings */}
-                <div className="bg-[#15171e] border border-gray-800 rounded-xl p-6">
+                <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6">
                     <h3 className="font-semibold mb-4 flex items-center gap-2">
                         <Key className="w-5 h-5 text-green-500" /> Payment Configuration
                     </h3>
                     <div className="space-y-4">
                         <div className="flex items-center justify-between">
                             <div>
-                                <p className="text-white">Accept Payments</p>
-                                <p className="text-sm text-gray-500">Enable Stripe payment processing</p>
+                                <p className="text-[var(--foreground)]">Accept Payments</p>
+                                <p className="text-sm text-[var(--foreground-secondary)]">Enable Stripe payment processing</p>
                             </div>
                             <label className="relative inline-flex items-center cursor-pointer">
                                 <input
@@ -67,15 +67,15 @@ export default function AdminSettingsPage() {
                 </div>
 
                 {/* User Settings */}
-                <div className="bg-[#15171e] border border-gray-800 rounded-xl p-6">
+                <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6">
                     <h3 className="font-semibold mb-4 flex items-center gap-2">
                         <Shield className="w-5 h-5 text-purple-500" /> User Management
                     </h3>
                     <div className="space-y-4">
                         <div className="flex items-center justify-between">
                             <div>
-                                <p className="text-white">Allow Registration</p>
-                                <p className="text-sm text-gray-500">Allow new users to register</p>
+                                <p className="text-[var(--foreground)]">Allow Registration</p>
+                                <p className="text-sm text-[var(--foreground-secondary)]">Allow new users to register</p>
                             </div>
                             <label className="relative inline-flex items-center cursor-pointer">
                                 <input
@@ -90,8 +90,8 @@ export default function AdminSettingsPage() {
 
                         <div className="flex items-center justify-between">
                             <div>
-                                <p className="text-white">Require Approval</p>
-                                <p className="text-sm text-gray-500">Manually approve employer/recruiter accounts</p>
+                                <p className="text-[var(--foreground)]">Require Approval</p>
+                                <p className="text-sm text-[var(--foreground-secondary)]">Manually approve employer/recruiter accounts</p>
                             </div>
                             <label className="relative inline-flex items-center cursor-pointer">
                                 <input
@@ -107,15 +107,15 @@ export default function AdminSettingsPage() {
                 </div>
 
                 {/* Notification Settings */}
-                <div className="bg-[#15171e] border border-gray-800 rounded-xl p-6">
+                <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6">
                     <h3 className="font-semibold mb-4 flex items-center gap-2">
                         <Bell className="w-5 h-5 text-blue-500" /> Notifications
                     </h3>
                     <div className="space-y-4">
                         <div className="flex items-center justify-between">
                             <div>
-                                <p className="text-white">Email Notifications</p>
-                                <p className="text-sm text-gray-500">Send email notifications to users</p>
+                                <p className="text-[var(--foreground)]">Email Notifications</p>
+                                <p className="text-sm text-[var(--foreground-secondary)]">Send email notifications to users</p>
                             </div>
                             <label className="relative inline-flex items-center cursor-pointer">
                                 <input
@@ -131,14 +131,14 @@ export default function AdminSettingsPage() {
                 </div>
 
                 {/* Maintenance */}
-                <div className="bg-[#15171e] border border-gray-800 rounded-xl p-6">
+                <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6">
                     <h3 className="font-semibold mb-4 flex items-center gap-2">
                         <Database className="w-5 h-5 text-orange-500" /> Maintenance
                     </h3>
                     <div className="flex items-center justify-between">
                         <div>
-                            <p className="text-white">Maintenance Mode</p>
-                            <p className="text-sm text-gray-500">Temporarily disable the platform for maintenance</p>
+                            <p className="text-[var(--foreground)]">Maintenance Mode</p>
+                            <p className="text-sm text-[var(--foreground-secondary)]">Temporarily disable the platform for maintenance</p>
                         </div>
                         <label className="relative inline-flex items-center cursor-pointer">
                             <input

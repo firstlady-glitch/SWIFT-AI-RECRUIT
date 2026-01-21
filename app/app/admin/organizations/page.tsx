@@ -66,10 +66,10 @@ export default function AdminOrganizationsPage() {
                 <h1 className="text-3xl font-bold">Organizations</h1>
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {[...Array(6)].map((_, i) => (
-                        <div key={i} className="bg-[#15171e] border border-gray-800 rounded-xl p-6 animate-pulse">
-                            <div className="w-16 h-16 bg-gray-800 rounded-xl mb-4" />
-                            <div className="h-4 bg-gray-800 rounded w-3/4 mb-2" />
-                            <div className="h-3 bg-gray-800 rounded w-1/2" />
+                        <div key={i} className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6 animate-pulse">
+                            <div className="w-16 h-16 bg-[var(--border)] rounded-xl mb-4" />
+                            <div className="h-4 bg-[var(--border)] rounded w-3/4 mb-2" />
+                            <div className="h-3 bg-[var(--border)] rounded w-1/2" />
                         </div>
                     ))}
                 </div>
@@ -95,13 +95,13 @@ export default function AdminOrganizationsPage() {
                         placeholder="Search organizations..."
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full pl-10 pr-4 py-3 bg-[#15171e] border border-gray-800 rounded-lg focus:border-[var(--primary-blue)] focus:outline-none"
+                        className="w-full pl-10 pr-4 py-3 bg-[var(--background)] border border-[var(--border)] rounded-lg focus:border-[var(--primary-blue)] focus:outline-none text-[var(--foreground)] placeholder-[var(--foreground-secondary)]"
                     />
                 </div>
                 <select
                     value={typeFilter}
                     onChange={(e) => setTypeFilter(e.target.value as OrgType | 'all')}
-                    className="px-4 py-3 bg-[#15171e] border border-gray-800 rounded-lg"
+                    className="px-4 py-3 bg-[var(--background)] border border-[var(--border)] rounded-lg text-[var(--foreground)]"
                 >
                     <option value="all">All Types</option>
                     <option value="employer">Employer</option>
@@ -112,7 +112,7 @@ export default function AdminOrganizationsPage() {
             {/* Grid */}
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {filteredOrgs.map((org) => (
-                    <div key={org.id} className="bg-[#15171e] border border-gray-800 rounded-xl p-6 relative group">
+                    <div key={org.id} className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6 relative group">
                         <button
                             onClick={() => setSelectedOrg(selectedOrg === org.id ? null : org.id)}
                             className="absolute top-4 right-4 p-2 text-gray-500 hover:text-white opacity-0 group-hover:opacity-100 transition-opacity"
@@ -121,7 +121,7 @@ export default function AdminOrganizationsPage() {
                         </button>
 
                         {selectedOrg === org.id && (
-                            <div className="absolute top-12 right-4 bg-[#0b0c0f] border border-gray-800 rounded-lg p-2 z-10">
+                            <div className="absolute top-12 right-4 bg-[var(--background-secondary)] border border-[var(--border)] rounded-lg p-2 z-10">
                                 <button
                                     onClick={() => deleteOrganization(org.id)}
                                     className="flex items-center gap-2 px-3 py-2 text-red-400 hover:bg-red-500/10 rounded-lg text-sm"
@@ -131,15 +131,15 @@ export default function AdminOrganizationsPage() {
                             </div>
                         )}
 
-                        <div className="w-16 h-16 rounded-xl bg-gray-800 flex items-center justify-center overflow-hidden mb-4">
+                        <div className="w-16 h-16 rounded-xl bg-[var(--border)] flex items-center justify-center overflow-hidden mb-4">
                             {org.logo_url ? (
                                 <img src={org.logo_url} alt="" className="w-full h-full object-cover" />
                             ) : (
-                                <Building2 className="w-8 h-8 text-gray-500" />
+                                <Building2 className="w-8 h-8 text-[var(--foreground-secondary)]" />
                             )}
                         </div>
 
-                        <h3 className="font-semibold text-white mb-1">{org.name}</h3>
+                        <h3 className="font-semibold text-[var(--foreground)] mb-1">{org.name}</h3>
                         <span className={`inline-block px-2 py-0.5 rounded text-xs font-medium mb-3 ${org.type === 'employer' ? 'bg-purple-500/10 text-purple-400' : 'bg-orange-500/10 text-orange-400'}`}>
                             {org.type}
                         </span>
@@ -166,7 +166,7 @@ export default function AdminOrganizationsPage() {
             </div>
 
             {filteredOrgs.length === 0 && (
-                <div className="bg-[#15171e] border border-gray-800 rounded-xl">
+                <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl">
                     <EmptyState
                         icon={Building2}
                         title="No Organizations Found"

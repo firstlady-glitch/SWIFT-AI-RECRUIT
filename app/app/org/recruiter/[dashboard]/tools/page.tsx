@@ -61,7 +61,7 @@ export default function RecruiterToolsPage() {
                         <Link
                             key={tool.name}
                             href={`/app/org/recruiter/${params.dashboard}/tools/${tool.href}`}
-                            className="card p-6 border border-gray-800 bg-[#15171e] hover:border-[var(--primary-blue)] transition-all group"
+                            className="card p-6 border border-[var(--border)] bg-[var(--background-secondary)] hover:border-[var(--primary-blue)] transition-all group"
                         >
                             <div className={`p-3 rounded-xl ${tool.bgColor} ${tool.color} w-fit mb-4 group-hover:scale-110 transition-transform`}>
                                 <tool.icon className="w-6 h-6" />

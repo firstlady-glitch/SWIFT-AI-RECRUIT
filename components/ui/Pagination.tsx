@@ -62,7 +62,7 @@ export function Pagination({
     return (
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 py-4">
             {/* Info */}
-            <div className="text-sm text-gray-400">
+            <div className="text-sm text-[var(--foreground-secondary)]">
                 Showing {startItem}-{endItem} of {totalCount}
             </div>
 
@@ -72,7 +72,7 @@ export function Pagination({
                 <button
                     onClick={() => onGoToPage(1)}
                     disabled={!hasPrevPage}
-                    className="p-2 rounded-lg border border-gray-800 bg-[#15171e] text-gray-400 hover:text-white hover:border-gray-700 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+                    className="p-2 rounded-lg border border-[var(--border)] bg-[var(--background-secondary)] text-[var(--foreground-secondary)] hover:text-[var(--foreground)] hover:border-[var(--foreground-secondary)] disabled:opacity-30 disabled:cursor-not-allowed transition-all"
                     title="First page"
                 >
                     <ChevronsLeft className="w-4 h-4" />
@@ -82,7 +82,7 @@ export function Pagination({
                 <button
                     onClick={onPrevPage}
                     disabled={!hasPrevPage}
-                    className="p-2 rounded-lg border border-gray-800 bg-[#15171e] text-gray-400 hover:text-white hover:border-gray-700 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+                    className="p-2 rounded-lg border border-[var(--border)] bg-[var(--background-secondary)] text-[var(--foreground-secondary)] hover:text-[var(--foreground)] hover:border-[var(--foreground-secondary)] disabled:opacity-30 disabled:cursor-not-allowed transition-all"
                     title="Previous page"
                 >
                     <ChevronLeft className="w-4 h-4" />
@@ -98,8 +98,8 @@ export function Pagination({
                                 key={p}
                                 onClick={() => onGoToPage(p)}
                                 className={`w-8 h-8 rounded-lg text-sm font-medium transition-all ${page === p
-                                        ? 'bg-[var(--primary-blue)] text-white'
-                                        : 'border border-gray-800 bg-[#15171e] text-gray-400 hover:text-white hover:border-gray-700'
+                                    ? 'bg-[var(--primary-blue)] text-white'
+                                    : 'border border-[var(--border)] bg-[var(--background-secondary)] text-[var(--foreground-secondary)] hover:text-[var(--foreground)] hover:border-[var(--foreground-secondary)]'
                                     }`}
                             >
                                 {p}
@@ -109,7 +109,7 @@ export function Pagination({
                 </div>
 
                 {/* Mobile page indicator */}
-                <span className="sm:hidden text-sm text-gray-400 px-2">
+                <span className="sm:hidden text-sm text-[var(--foreground-secondary)] px-2">
                     {page} / {totalPages}
                 </span>
 
@@ -117,7 +117,7 @@ export function Pagination({
                 <button
                     onClick={onNextPage}
                     disabled={!hasNextPage}
-                    className="p-2 rounded-lg border border-gray-800 bg-[#15171e] text-gray-400 hover:text-white hover:border-gray-700 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+                    className="p-2 rounded-lg border border-[var(--border)] bg-[var(--background-secondary)] text-[var(--foreground-secondary)] hover:text-[var(--foreground)] hover:border-[var(--foreground-secondary)] disabled:opacity-30 disabled:cursor-not-allowed transition-all"
                     title="Next page"
                 >
                     <ChevronRight className="w-4 h-4" />
@@ -127,7 +127,7 @@ export function Pagination({
                 <button
                     onClick={() => onGoToPage(totalPages)}
                     disabled={!hasNextPage}
-                    className="p-2 rounded-lg border border-gray-800 bg-[#15171e] text-gray-400 hover:text-white hover:border-gray-700 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+                    className="p-2 rounded-lg border border-[var(--border)] bg-[var(--background-secondary)] text-[var(--foreground-secondary)] hover:text-[var(--foreground)] hover:border-[var(--foreground-secondary)] disabled:opacity-30 disabled:cursor-not-allowed transition-all"
                     title="Last page"
                 >
                     <ChevronsRight className="w-4 h-4" />
@@ -137,11 +137,11 @@ export function Pagination({
             {/* Page size selector */}
             {showPageSize && onPageSizeChange && (
                 <div className="flex items-center gap-2">
-                    <span className="text-sm text-gray-400">Per page:</span>
+                    <span className="text-sm text-[var(--foreground-secondary)]">Per page:</span>
                     <select
                         value={pageSize}
                         onChange={(e) => onPageSizeChange(Number(e.target.value))}
-                        className="bg-[#15171e] border border-gray-800 rounded-lg px-2 py-1 text-sm text-white focus:border-[var(--primary-blue)] focus:outline-none"
+                        className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-lg px-2 py-1 text-sm text-[var(--foreground)] focus:border-[var(--primary-blue)] focus:outline-none"
                     >
                         {pageSizeOptions.map(size => (
                             <option key={size} value={size}>{size}</option>

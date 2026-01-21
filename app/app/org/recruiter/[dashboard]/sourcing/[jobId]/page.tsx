@@ -144,10 +144,10 @@ export default function SourcingPage() {
     if (isLoading) {
         return (
             <div className="max-w-4xl mx-auto">
-                <div className="h-32 bg-[#15171e] border border-gray-800 rounded-xl animate-pulse mb-6" />
+                <div className="h-32 bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl animate-pulse mb-6" />
                 <div className="space-y-4">
                     {[...Array(5)].map((_, i) => (
-                        <div key={i} className="h-24 bg-[#15171e] border border-gray-800 rounded-xl animate-pulse" />
+                        <div key={i} className="h-24 bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl animate-pulse" />
                     ))}
                 </div>
             </div>
@@ -168,7 +168,7 @@ export default function SourcingPage() {
             </Link>
 
             {/* Job Header */}
-            <div className="bg-[#15171e] border border-gray-800 rounded-xl p-6 mb-6">
+            <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6 mb-6">
                 <div className="flex items-start gap-4">
                     <div className="w-16 h-16 rounded-xl bg-gray-800 flex items-center justify-center overflow-hidden flex-shrink-0">
                         {job.organization?.logo_url ? (
@@ -209,7 +209,7 @@ export default function SourcingPage() {
                     placeholder="Search candidates by name, title, or skills..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full pl-10 pr-4 py-3 bg-[#15171e] border border-gray-800 rounded-lg focus:border-[var(--primary-blue)] focus:outline-none"
+                    className="w-full pl-10 pr-4 py-3 bg-[var(--background)] border border-[var(--border)] rounded-lg focus:border-[var(--primary-blue)] focus:outline-none"
                 />
             </div>
 
@@ -217,7 +217,7 @@ export default function SourcingPage() {
             <h2 className="text-lg font-semibold mb-4">Available Candidates</h2>
             <div className="space-y-3">
                 {filteredCandidates.map((candidate) => (
-                    <div key={candidate.id} className="bg-[#15171e] border border-gray-800 rounded-xl p-4">
+                    <div key={candidate.id} className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-4">
                         <div className="flex items-center justify-between">
                             <div className="flex items-center gap-4">
                                 <div className="w-12 h-12 rounded-full bg-gray-800 flex items-center justify-center overflow-hidden">
@@ -269,7 +269,7 @@ export default function SourcingPage() {
                 ))}
 
                 {filteredCandidates.length === 0 && (
-                    <div className="text-center py-12 bg-[#15171e] border border-gray-800 rounded-xl">
+                    <div className="text-center py-12 bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl">
                         <User className="w-12 h-12 text-gray-600 mx-auto mb-4" />
                         <p className="text-gray-500">No candidates found</p>
                     </div>

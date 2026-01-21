@@ -294,7 +294,7 @@ export default function CandidateRankingTool() {
                 <div className="grid lg:grid-cols-3 gap-8">
                     {/* Job Selection */}
                     <div className="lg:col-span-1">
-                        <div className="card p-6 border border-gray-800 bg-[#15171e] sticky top-8">
+                        <div className="card p-6 border border-[var(--border)] bg-[var(--background-secondary)] sticky top-8">
                             <h2 className="text-lg font-semibold mb-4">Select a Job</h2>
 
                             {isLoadingJobs ? (
@@ -344,7 +344,7 @@ export default function CandidateRankingTool() {
 
                     {/* Candidates List */}
                     <div className="lg:col-span-2">
-                        <div className="bg-[#15171e] border border-gray-800 rounded-xl p-6">
+                        <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6">
                             <h2 className="text-lg font-semibold mb-4">
                                 Candidates
                                 {applications.length > 0 && (

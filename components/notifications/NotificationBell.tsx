@@ -89,7 +89,7 @@ export function NotificationBell() {
         <div className="relative">
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="relative p-2 text-gray-400 hover:text-white hover:bg-gray-800 rounded-lg transition-colors"
+                className="relative p-2 text-[var(--foreground-secondary)] hover:text-[var(--foreground)] hover:bg-[var(--border)] rounded-lg transition-colors"
             >
                 <Bell className="w-5 h-5" />
                 {unreadCount > 0 && (
@@ -102,8 +102,8 @@ export function NotificationBell() {
             {isOpen && (
                 <>
                     <div className="fixed inset-0 z-40" onClick={() => setIsOpen(false)} />
-                    <div className="absolute right-0 top-full mt-2 w-80 bg-[#15171e] border border-gray-800 rounded-xl shadow-xl z-50 overflow-hidden">
-                        <div className="px-4 py-3 border-b border-gray-800 flex items-center justify-between">
+                    <div className="absolute right-0 top-full mt-2 w-80 bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl shadow-xl z-50 overflow-hidden">
+                        <div className="px-4 py-3 border-b border-[var(--border)] flex items-center justify-between">
                             <h3 className="font-semibold">Notifications</h3>
                             {unreadCount > 0 && (
                                 <button
@@ -126,20 +126,20 @@ export function NotificationBell() {
                                                 if (!notif.read_at) markAsRead(notif.id);
                                                 if (notif.link) window.location.href = notif.link;
                                             }}
-                                            className={`px-4 py-3 border-b border-gray-800 cursor-pointer hover:bg-gray-800/50 transition-colors ${!notif.read_at ? 'bg-blue-500/5' : ''}`}
+                                            className={`px-4 py-3 border-b border-[var(--border)] cursor-pointer hover:bg-[var(--border)]/50 transition-colors ${!notif.read_at ? 'bg-blue-500/5' : ''}`}
                                         >
                                             <div className="flex gap-3">
-                                                <div className={`p-2 rounded-lg ${!notif.read_at ? 'bg-blue-500/10 text-blue-400' : 'bg-gray-800 text-gray-500'}`}>
+                                                <div className={`p-2 rounded-lg ${!notif.read_at ? 'bg-blue-500/10 text-blue-400' : 'bg-[var(--border)] text-[var(--foreground-secondary)]'}`}>
                                                     <Icon className="w-4 h-4" />
                                                 </div>
                                                 <div className="flex-1 min-w-0">
-                                                    <p className={`text-sm ${!notif.read_at ? 'text-white font-medium' : 'text-gray-300'}`}>
+                                                    <p className={`text-sm ${!notif.read_at ? 'text-[var(--foreground)] font-medium' : 'text-[var(--foreground-secondary)]'}`}>
                                                         {notif.title}
                                                     </p>
                                                     {notif.message && (
-                                                        <p className="text-xs text-gray-500 truncate">{notif.message}</p>
+                                                        <p className="text-xs text-[var(--foreground-secondary)] truncate">{notif.message}</p>
                                                     )}
-                                                    <p className="text-xs text-gray-600 mt-1">
+                                                    <p className="text-xs text-[var(--foreground-secondary)] mt-1">
                                                         {new Date(notif.created_at).toLocaleString()}
                                                     </p>
                                                 </div>
@@ -151,7 +151,7 @@ export function NotificationBell() {
                                     );
                                 })
                             ) : (
-                                <div className="px-4 py-8 text-center text-gray-500">
+                                <div className="px-4 py-8 text-center text-[var(--foreground-secondary)]">
                                     <Bell className="w-8 h-8 mx-auto mb-2 opacity-50" />
                                     <p className="text-sm">No notifications</p>
                                 </div>

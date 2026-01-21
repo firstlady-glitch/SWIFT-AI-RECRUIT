@@ -332,11 +332,11 @@ export default function PipelineAnalyticsTool() {
                     <div className="space-y-8">
                         {/* Overview Cards */}
                         <div className="grid md:grid-cols-4 gap-4">
-                            <div className="p-6 bg-[#15171e] border border-gray-800 rounded-xl">
+                            <div className="p-6 bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl">
                                 <p className="text-sm text-gray-400 mb-1">Total Applications</p>
                                 <p className="text-3xl font-bold text-white">{metrics?.totalApplications || 0}</p>
                             </div>
-                            <div className="p-6 bg-[#15171e] border border-gray-800 rounded-xl">
+                            <div className="p-6 bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl">
                                 <p className="text-sm text-gray-400 mb-1">Active in Pipeline</p>
                                 <p className="text-3xl font-bold text-[var(--primary-blue)]">
                                     {Object.entries(metrics?.statusBreakdown || {})
@@ -344,11 +344,11 @@ export default function PipelineAnalyticsTool() {
                                         .reduce((sum, [, count]) => sum + count, 0)}
                                 </p>
                             </div>
-                            <div className="p-6 bg-[#15171e] border border-gray-800 rounded-xl">
+                            <div className="p-6 bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl">
                                 <p className="text-sm text-gray-400 mb-1">Stalled Candidates</p>
                                 <p className="text-3xl font-bold text-orange-400">{stalledCandidates.length}</p>
                             </div>
-                            <div className="p-6 bg-[#15171e] border border-gray-800 rounded-xl">
+                            <div className="p-6 bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl">
                                 <p className="text-sm text-gray-400 mb-1">Health Score</p>
                                 <p className={`text-3xl font-bold ${(metrics as PipelineMetrics & { healthScore?: number })?.healthScore
                                     ? (metrics as PipelineMetrics & { healthScore: number }).healthScore >= 70
@@ -366,7 +366,7 @@ export default function PipelineAnalyticsTool() {
                         </div>
 
                         {/* Pipeline Status Breakdown */}
-                        <div className="p-6 bg-[#15171e] border border-gray-800 rounded-xl">
+                        <div className="p-6 bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl">
                             <h2 className="text-lg font-semibold mb-4">Pipeline Status Distribution</h2>
                             <div className="flex gap-2 mb-4">
                                 {Object.entries(metrics?.statusBreakdown || {}).map(([status, count]) => (
@@ -415,7 +415,7 @@ export default function PipelineAnalyticsTool() {
 
                         {/* AI Insights */}
                         {(metrics as PipelineMetrics & { insights?: string[] })?.insights && (
-                            <div className="p-6 bg-[#15171e] border border-gray-800 rounded-xl">
+                            <div className="p-6 bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl">
                                 <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
                                     <TrendingUp className="w-5 h-5 text-[var(--primary-blue)]" />
                                     AI Insights

@@ -148,28 +148,28 @@ export default function ApplicantSettings() {
 
             <div className="grid md:grid-cols-4 gap-8">
                 {/* Settings Sidebar */}
-                <div className="bg-[#15171e] rounded-xl border border-gray-800 h-fit">
+                <div className="bg-[var(--background-secondary)] rounded-xl border border-[var(--border)] h-fit">
                     <button
                         onClick={() => setActiveTab('profile')}
-                        className={`w-full flex items-center gap-3 p-4 border-b border-gray-800 transition-colors ${activeTab === 'profile' ? 'bg-[var(--primary-blue)]/10 text-[var(--primary-blue)]' : 'hover:bg-gray-800 text-gray-400'}`}
+                        className={`w-full flex items-center gap-3 p-4 border-b border-[var(--border)] transition-colors ${activeTab === 'profile' ? 'bg-[var(--primary-blue)]/10 text-[var(--primary-blue)]' : 'hover:bg-[var(--border)] text-[var(--foreground-secondary)]'}`}
                     >
                         <User className="w-5 h-5" /> Profile Settings
                     </button>
                     <button
                         onClick={() => setActiveTab('notifications')}
-                        className={`w-full flex items-center gap-3 p-4 border-b border-gray-800 transition-colors ${activeTab === 'notifications' ? 'bg-[var(--primary-blue)]/10 text-[var(--primary-blue)]' : 'hover:bg-gray-800 text-gray-400'}`}
+                        className={`w-full flex items-center gap-3 p-4 border-b border-[var(--border)] transition-colors ${activeTab === 'notifications' ? 'bg-[var(--primary-blue)]/10 text-[var(--primary-blue)]' : 'hover:bg-[var(--border)] text-[var(--foreground-secondary)]'}`}
                     >
                         <Bell className="w-5 h-5" /> Notifications
                     </button>
                     <button
                         onClick={() => setActiveTab('security')}
-                        className={`w-full flex items-center gap-3 p-4 border-b border-gray-800 transition-colors ${activeTab === 'security' ? 'bg-[var(--primary-blue)]/10 text-[var(--primary-blue)]' : 'hover:bg-gray-800 text-gray-400'}`}
+                        className={`w-full flex items-center gap-3 p-4 border-b border-[var(--border)] transition-colors ${activeTab === 'security' ? 'bg-[var(--primary-blue)]/10 text-[var(--primary-blue)]' : 'hover:bg-[var(--border)] text-[var(--foreground-secondary)]'}`}
                     >
                         <Shield className="w-5 h-5" /> Login & Security
                     </button>
                     <button
                         onClick={() => setActiveTab('billing')}
-                        className={`w-full flex items-center gap-3 p-4 transition-colors ${activeTab === 'billing' ? 'bg-[var(--primary-blue)]/10 text-[var(--primary-blue)]' : 'hover:bg-gray-800 text-gray-400'}`}
+                        className={`w-full flex items-center gap-3 p-4 transition-colors ${activeTab === 'billing' ? 'bg-[var(--primary-blue)]/10 text-[var(--primary-blue)]' : 'hover:bg-[var(--border)] text-[var(--foreground-secondary)]'}`}
                     >
                         <Wallet className="w-5 h-5" /> Subscription
                     </button>
@@ -179,76 +179,76 @@ export default function ApplicantSettings() {
                 <div className="md:col-span-3">
                     {activeTab === 'profile' && (
                         <div className="space-y-6">
-                            <div className="card p-6 border border-gray-800 bg-[#15171e]">
+                            <div className="card p-6 border border-[var(--border)] bg-[var(--background-secondary)]">
                                 <h3 className="text-xl font-bold mb-6">Personal Information</h3>
                                 <div className="grid md:grid-cols-2 gap-6">
                                     <div>
-                                        <label className="block text-sm font-medium mb-2 text-gray-400">
+                                        <label className="block text-sm font-medium mb-2 text-[var(--foreground-secondary)]">
                                             <User className="w-4 h-4 inline mr-1" /> Full Name
                                         </label>
                                         <input
                                             type="text"
                                             value={formData.full_name}
                                             onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
-                                            className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm"
+                                            className="w-full bg-[var(--background)] border border-[var(--border)] rounded-lg p-3 text-sm text-[var(--foreground)]"
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-medium mb-2 text-gray-400">
+                                        <label className="block text-sm font-medium mb-2 text-[var(--foreground-secondary)]">
                                             <Briefcase className="w-4 h-4 inline mr-1" /> Job Title
                                         </label>
                                         <input
                                             type="text"
                                             value={formData.job_title}
                                             onChange={(e) => setFormData({ ...formData, job_title: e.target.value })}
-                                            className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm"
+                                            className="w-full bg-[var(--background)] border border-[var(--border)] rounded-lg p-3 text-sm text-[var(--foreground)]"
                                             placeholder="e.g., Senior React Developer"
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-medium mb-2 text-gray-400">
+                                        <label className="block text-sm font-medium mb-2 text-[var(--foreground-secondary)]">
                                             <MapPin className="w-4 h-4 inline mr-1" /> Location
                                         </label>
                                         <input
                                             type="text"
                                             value={formData.location}
                                             onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                                            className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm"
+                                            className="w-full bg-[var(--background)] border border-[var(--border)] rounded-lg p-3 text-sm text-[var(--foreground)]"
                                             placeholder="City, Country"
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-medium mb-2 text-gray-400">
+                                        <label className="block text-sm font-medium mb-2 text-[var(--foreground-secondary)]">
                                             Phone
                                         </label>
                                         <input
                                             type="tel"
                                             value={formData.phone}
                                             onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                                            className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm"
+                                            className="w-full bg-[var(--background)] border border-[var(--border)] rounded-lg p-3 text-sm text-[var(--foreground)]"
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-medium mb-2 text-gray-400">
+                                        <label className="block text-sm font-medium mb-2 text-[var(--foreground-secondary)]">
                                             <LinkIcon className="w-4 h-4 inline mr-1" /> LinkedIn URL
                                         </label>
                                         <input
                                             type="url"
                                             value={formData.linkedin_url}
                                             onChange={(e) => setFormData({ ...formData, linkedin_url: e.target.value })}
-                                            className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm"
+                                            className="w-full bg-[var(--background)] border border-[var(--border)] rounded-lg p-3 text-sm text-[var(--foreground)]"
                                             placeholder="https://linkedin.com/in/..."
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-medium mb-2 text-gray-400">
+                                        <label className="block text-sm font-medium mb-2 text-[var(--foreground-secondary)]">
                                             Years of Experience
                                         </label>
                                         <input
                                             type="number"
                                             value={formData.experience_years}
                                             onChange={(e) => setFormData({ ...formData, experience_years: parseInt(e.target.value) || 0 })}
-                                            className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm"
+                                            className="w-full bg-[var(--background)] border border-[var(--border)] rounded-lg p-3 text-sm text-[var(--foreground)]"
                                             min={0}
                                         />
                                     </div>
@@ -284,13 +284,13 @@ export default function ApplicantSettings() {
                     )}
 
                     {activeTab === 'notifications' && (
-                        <div className="card p-6 border border-gray-800 bg-[#15171e]">
+                        <div className="card p-6 border border-[var(--border)] bg-[var(--background-secondary)]">
                             <h3 className="text-xl font-bold mb-6">Notification Preferences</h3>
                             <div className="space-y-4">
-                                <div className="flex items-center justify-between p-4 border border-gray-800 rounded-lg bg-[#0b0c0f]">
+                                <div className="flex items-center justify-between p-4 border border-[var(--border)] rounded-lg bg-[var(--background)]">
                                     <div>
-                                        <div className="font-medium text-white">Application Status Updates</div>
-                                        <div className="text-sm text-gray-400">Get notified when your application status changes</div>
+                                        <div className="font-medium text-[var(--foreground)]">Application Status Updates</div>
+                                        <div className="text-sm text-[var(--foreground-secondary)]">Get notified when your application status changes</div>
                                     </div>
                                     <input
                                         type="checkbox"
@@ -299,10 +299,10 @@ export default function ApplicantSettings() {
                                         className="w-5 h-5"
                                     />
                                 </div>
-                                <div className="flex items-center justify-between p-4 border border-gray-800 rounded-lg bg-[#0b0c0f]">
+                                <div className="flex items-center justify-between p-4 border border-[var(--border)] rounded-lg bg-[var(--background)]">
                                     <div>
-                                        <div className="font-medium text-white">Job Recommendations</div>
-                                        <div className="text-sm text-gray-400">Weekly AI curated job suggestions</div>
+                                        <div className="font-medium text-[var(--foreground)]">Job Recommendations</div>
+                                        <div className="text-sm text-[var(--foreground-secondary)]">Weekly AI curated job suggestions</div>
                                     </div>
                                     <input
                                         type="checkbox"
@@ -311,10 +311,10 @@ export default function ApplicantSettings() {
                                         className="w-5 h-5"
                                     />
                                 </div>
-                                <div className="flex items-center justify-between p-4 border border-gray-800 rounded-lg bg-[#0b0c0f]">
+                                <div className="flex items-center justify-between p-4 border border-[var(--border)] rounded-lg bg-[var(--background)]">
                                     <div>
-                                        <div className="font-medium text-white">Interview Reminders</div>
-                                        <div className="text-sm text-gray-400">Get reminded before scheduled interviews</div>
+                                        <div className="font-medium text-[var(--foreground)]">Interview Reminders</div>
+                                        <div className="text-sm text-[var(--foreground-secondary)]">Get reminded before scheduled interviews</div>
                                     </div>
                                     <input
                                         type="checkbox"
@@ -328,20 +328,20 @@ export default function ApplicantSettings() {
                     )}
 
                     {activeTab === 'security' && (
-                        <div className="card p-6 border border-gray-800 bg-[#15171e]">
+                        <div className="card p-6 border border-[var(--border)] bg-[var(--background-secondary)]">
                             <h3 className="text-xl font-bold mb-6">Security Settings</h3>
                             <div className="space-y-6">
                                 <div>
-                                    <label className="block text-sm font-medium mb-2 text-gray-400">Email Address</label>
+                                    <label className="block text-sm font-medium mb-2 text-[var(--foreground-secondary)]">Email Address</label>
                                     <input
                                         type="email"
                                         value={formData.email}
                                         disabled
-                                        className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm opacity-50"
+                                        className="w-full bg-[var(--background)] border border-[var(--border)] rounded-lg p-3 text-sm opacity-50 text-[var(--foreground)]"
                                     />
                                     <p className="text-xs text-gray-500 mt-1">Contact support to change your email</p>
                                 </div>
-                                <div className="pt-4 border-t border-gray-800">
+                                <div className="pt-4 border-t border-[var(--border)]">
                                     <button className="text-[var(--primary-blue)] hover:underline text-sm">
                                         Change Password
                                     </button>
@@ -351,9 +351,9 @@ export default function ApplicantSettings() {
                     )}
 
                     {activeTab === 'billing' && (
-                        <div className="card p-6 border border-gray-800 bg-[#15171e]">
+                        <div className="card p-6 border border-[var(--border)] bg-[var(--background-secondary)]">
                             <h3 className="text-xl font-bold mb-4">Subscription</h3>
-                            <p className="text-gray-400 mb-6">
+                            <p className="text-[var(--foreground-secondary)] mb-6">
                                 Manage your subscription and billing through our secure payment portal.
                             </p>
 

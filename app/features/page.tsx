@@ -135,8 +135,8 @@ function ApplicantContent() {
             {/* AI Tools Section */}
             <div className="bg-gradient-to-r from-blue-600 to-blue-800 rounded-2xl p-8 md:p-12 text-white">
                 <div className="max-w-3xl">
-                    <h2 className="text-3xl font-bold mb-4">5 Powerful AI Tools</h2>
-                    <p className="text-white/80 mb-6">
+                    <h2 className="text-3xl font-bold mb-4 !text-white">5 Powerful AI Tools</h2>
+                    <p className="!text-white/90 mb-6">
                         Our AI suite helps you stand out from the competition and land your dream job faster.
                     </p>
                     <div className="grid md:grid-cols-2 gap-4 mb-8">
@@ -235,8 +235,8 @@ function EmployerContent() {
             {/* AI Tools Section */}
             <div className="bg-gradient-to-r from-orange-500 to-orange-700 rounded-2xl p-8 md:p-12 text-white">
                 <div className="max-w-3xl">
-                    <h2 className="text-3xl font-bold mb-4">5 Powerful AI Hiring Tools</h2>
-                    <p className="text-white/80 mb-6">
+                    <h2 className="text-3xl font-bold mb-4 !text-white">5 Powerful AI Hiring Tools</h2>
+                    <p className="!text-white/90 mb-6">
                         Hire faster and smarter with AI that screens, ranks, and helps you make better decisions.
                     </p>
                     <div className="grid md:grid-cols-2 gap-4 mb-8">

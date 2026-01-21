@@ -89,17 +89,17 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
     return (
         <div className="min-h-screen bg-[var(--background)] flex">
             {/* Sidebar */}
-            <aside className={`fixed inset-y-0 left-0 z-50 w-64 bg-[#0b0c0f] border-r border-gray-800 transform transition-transform duration-200 lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+            <aside className={`fixed inset-y-0 left-0 z-50 w-64 bg-[var(--background-secondary)] border-r border-[var(--border)] transform transition-transform duration-200 lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
                 <div className="flex flex-col h-full">
                     {/* Logo */}
-                    <div className="p-6 border-b border-gray-800">
+                    <div className="p-6 border-b border-[var(--border)]">
                         <div className="flex items-center gap-3">
                             <div className="p-2 bg-red-500/10 rounded-lg">
                                 <Shield className="w-6 h-6 text-red-500" />
                             </div>
                             <div>
-                                <h1 className="font-bold text-white">SwiftAI Admin</h1>
-                                <p className="text-xs text-gray-500">Control Center</p>
+                                <h1 className="font-bold text-[var(--foreground)]">SwiftAI Admin</h1>
+                                <p className="text-xs text-[var(--foreground-secondary)]">Control Center</p>
                             </div>
                         </div>
                     </div>
@@ -110,7 +110,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                             <Link
                                 key={item.href}
                                 href={item.href}
-                                className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800/50 transition-colors"
+                                className="flex items-center gap-3 px-4 py-3 rounded-lg text-[var(--foreground-secondary)] hover:text-[var(--foreground)] hover:bg-[var(--border)] transition-colors"
                             >
                                 <item.icon className="w-5 h-5" />
                                 {item.label}
@@ -119,19 +119,19 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                     </nav>
 
                     {/* User */}
-                    <div className="p-4 border-t border-gray-800">
+                    <div className="p-4 border-t border-[var(--border)]">
                         <div className="flex items-center gap-3 mb-3">
                             <div className="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center">
                                 <Shield className="w-5 h-5 text-red-500" />
                             </div>
                             <div>
-                                <p className="font-medium text-white text-sm">{adminName}</p>
+                                <p className="font-medium text-[var(--foreground)] text-sm">{adminName}</p>
                                 <p className="text-xs text-red-400">Administrator</p>
                             </div>
                         </div>
                         <button
                             onClick={handleLogout}
-                            className="flex items-center gap-2 w-full px-4 py-2 text-gray-400 hover:text-white hover:bg-gray-800/50 rounded-lg transition-colors"
+                            className="flex items-center gap-2 w-full px-4 py-2 text-[var(--foreground-secondary)] hover:text-[var(--foreground)] hover:bg-[var(--border)] rounded-lg transition-colors"
                         >
                             <LogOut className="w-4 h-4" />
                             Sign Out
@@ -151,17 +151,17 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
             {/* Main content */}
             <div className="flex-1 lg:ml-64">
                 {/* Mobile header */}
-                <header className="sticky top-0 z-30 bg-[#0b0c0f]/80 backdrop-blur-sm border-b border-gray-800 lg:hidden">
+                <header className="sticky top-0 z-30 bg-[var(--background)]/80 backdrop-blur-sm border-b border-[var(--border)] lg:hidden">
                     <div className="flex items-center justify-between p-4">
                         <button
                             onClick={() => setSidebarOpen(!sidebarOpen)}
-                            className="p-2 text-gray-400 hover:text-white"
+                            className="p-2 text-[var(--foreground-secondary)] hover:text-[var(--foreground)]"
                         >
                             {sidebarOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
                         </button>
                         <div className="flex items-center gap-2">
                             <Shield className="w-5 h-5 text-red-500" />
-                            <span className="font-bold text-white">Admin</span>
+                            <span className="font-bold text-[var(--foreground)]">Admin</span>
                         </div>
                     </div>
                 </header>

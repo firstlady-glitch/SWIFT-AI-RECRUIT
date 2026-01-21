@@ -96,7 +96,7 @@ export default function AdminAnalyticsPage() {
                 <h1 className="text-3xl font-bold">Analytics</h1>
                 <div className="grid md:grid-cols-2 gap-6">
                     {[...Array(4)].map((_, i) => (
-                        <div key={i} className="bg-[#15171e] border border-gray-800 rounded-xl p-6 h-64 animate-pulse" />
+                        <div key={i} className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6 h-64 animate-pulse" />
                     ))}
                 </div>
             </div>
@@ -114,12 +114,12 @@ export default function AdminAnalyticsPage() {
                     <h1 className="text-3xl font-bold">Analytics</h1>
                     <p className="text-gray-400">Platform insights and metrics</p>
                 </div>
-                <div className="flex items-center gap-2 bg-[#15171e] border border-gray-800 rounded-lg p-1">
+                <div className="flex items-center gap-2 bg-[var(--background-secondary)] border border-[var(--border)] rounded-lg p-1">
                     {(['7d', '30d', '90d'] as const).map((range) => (
                         <button
                             key={range}
                             onClick={() => setTimeRange(range)}
-                            className={`px-3 py-1 rounded text-sm ${timeRange === range ? 'bg-[var(--primary-blue)] text-white' : 'text-gray-400 hover:text-white'}`}
+                            className={`px-3 py-1 rounded text-sm ${timeRange === range ? 'bg-[var(--primary-blue)] text-white' : 'text-[var(--foreground-secondary)] hover:text-[var(--foreground)]'}`}
                         >
                             {range}
                         </button>
@@ -129,7 +129,7 @@ export default function AdminAnalyticsPage() {
 
             <div className="grid md:grid-cols-2 gap-6">
                 {/* Users by Role */}
-                <div className="bg-[#15171e] border border-gray-800 rounded-xl p-6">
+                <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6">
                     <h3 className="font-semibold mb-4 flex items-center gap-2">
                         <Users className="w-5 h-5 text-blue-500" /> Users by Role
                     </h3>
@@ -137,10 +137,10 @@ export default function AdminAnalyticsPage() {
                         {data?.usersByRole.map((item) => (
                             <div key={item.role}>
                                 <div className="flex justify-between text-sm mb-1">
-                                    <span className="capitalize text-gray-400">{item.role}</span>
-                                    <span className="text-white">{item.count}</span>
+                                    <span className="capitalize text-[var(--foreground-secondary)]">{item.role}</span>
+                                    <span className="text-[var(--foreground)]">{item.count}</span>
                                 </div>
-                                <div className="h-2 bg-gray-800 rounded-full overflow-hidden">
+                                <div className="h-2 bg-[var(--border)] rounded-full overflow-hidden">
                                     <div
                                         className="h-full bg-blue-500 rounded-full transition-all"
                                         style={{ width: getBarWidth(item.count, maxUserCount) }}
@@ -152,7 +152,7 @@ export default function AdminAnalyticsPage() {
                 </div>
 
                 {/* Jobs by Status */}
-                <div className="bg-[#15171e] border border-gray-800 rounded-xl p-6">
+                <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6">
                     <h3 className="font-semibold mb-4 flex items-center gap-2">
                         <Briefcase className="w-5 h-5 text-orange-500" /> Jobs by Status
                     </h3>
@@ -160,10 +160,10 @@ export default function AdminAnalyticsPage() {
                         {data?.jobsByStatus.map((item) => (
                             <div key={item.status}>
                                 <div className="flex justify-between text-sm mb-1">
-                                    <span className="capitalize text-gray-400">{item.status}</span>
-                                    <span className="text-white">{item.count}</span>
+                                    <span className="capitalize text-[var(--foreground-secondary)]">{item.status}</span>
+                                    <span className="text-[var(--foreground)]">{item.count}</span>
                                 </div>
-                                <div className="h-2 bg-gray-800 rounded-full overflow-hidden">
+                                <div className="h-2 bg-[var(--border)] rounded-full overflow-hidden">
                                     <div
                                         className="h-full bg-orange-500 rounded-full transition-all"
                                         style={{ width: getBarWidth(item.count, maxJobCount) }}
@@ -175,7 +175,7 @@ export default function AdminAnalyticsPage() {
                 </div>
 
                 {/* Applications by Status */}
-                <div className="bg-[#15171e] border border-gray-800 rounded-xl p-6">
+                <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6">
                     <h3 className="font-semibold mb-4 flex items-center gap-2">
                         <FileText className="w-5 h-5 text-green-500" /> Applications by Status
                     </h3>
@@ -183,10 +183,10 @@ export default function AdminAnalyticsPage() {
                         {data?.applicationsByStatus.map((item) => (
                             <div key={item.status}>
                                 <div className="flex justify-between text-sm mb-1">
-                                    <span className="capitalize text-gray-400">{item.status}</span>
-                                    <span className="text-white">{item.count}</span>
+                                    <span className="capitalize text-[var(--foreground-secondary)]">{item.status}</span>
+                                    <span className="text-[var(--foreground)]">{item.count}</span>
                                 </div>
-                                <div className="h-2 bg-gray-800 rounded-full overflow-hidden">
+                                <div className="h-2 bg-[var(--border)] rounded-full overflow-hidden">
                                     <div
                                         className="h-full bg-green-500 rounded-full transition-all"
                                         style={{ width: getBarWidth(item.count, maxAppCount) }}
@@ -198,20 +198,20 @@ export default function AdminAnalyticsPage() {
                 </div>
 
                 {/* Top Organizations */}
-                <div className="bg-[#15171e] border border-gray-800 rounded-xl p-6">
+                <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6">
                     <h3 className="font-semibold mb-4 flex items-center gap-2">
                         <TrendingUp className="w-5 h-5 text-purple-500" /> Top Organizations
                     </h3>
                     <div className="space-y-3">
                         {data?.topOrganizations.map((org, i) => (
-                            <div key={org.name} className="flex items-center justify-between py-2 border-b border-gray-800 last:border-0">
+                            <div key={org.name} className="flex items-center justify-between py-2 border-b border-[var(--border)] last:border-0">
                                 <div className="flex items-center gap-3">
                                     <span className="w-6 h-6 rounded-full bg-purple-500/10 text-purple-500 flex items-center justify-center text-xs font-bold">
                                         {i + 1}
                                     </span>
-                                    <span className="text-white">{org.name}</span>
+                                    <span className="text-[var(--foreground)]">{org.name}</span>
                                 </div>
-                                <span className="text-gray-400">{org.jobCount} jobs</span>
+                                <span className="text-[var(--foreground-secondary)]">{org.jobCount} jobs</span>
                             </div>
                         ))}
                         {(!data?.topOrganizations || data.topOrganizations.length === 0) && (

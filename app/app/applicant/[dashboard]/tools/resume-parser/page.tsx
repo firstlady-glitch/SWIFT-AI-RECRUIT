@@ -238,8 +238,8 @@ export default function ResumeParserTool() {
                             onClick={handleUseExisting}
                             disabled={!hasExistingData}
                             className={`p-8 border rounded-xl text-left transition-all ${hasExistingData
-                                    ? 'border-gray-700 bg-[#15171e] hover:border-[var(--primary-blue)] cursor-pointer'
-                                    : 'border-gray-800 bg-[#0b0c0f] opacity-50 cursor-not-allowed'
+                                ? 'border-[var(--border)] bg-[var(--background-secondary)] hover:border-[var(--primary-blue)] cursor-pointer'
+                                : 'border-gray-800 bg-[#0b0c0f] opacity-50 cursor-not-allowed'
                                 }`}
                         >
                             <div className="flex items-center gap-3 mb-4">
@@ -266,7 +266,7 @@ export default function ResumeParserTool() {
                         {/* Upload New Resume */}
                         <button
                             onClick={() => setMode('new')}
-                            className="p-8 border border-gray-700 bg-[#15171e] rounded-xl text-left hover:border-emerald-500 transition-all"
+                            className="p-8 border border-[var(--border)] bg-[var(--background-secondary)] rounded-xl text-left hover:border-emerald-500 transition-all"
                         >
                             <div className="flex items-center gap-3 mb-4">
                                 <div className="p-3 bg-emerald-500/10 rounded-xl">
@@ -305,7 +305,7 @@ export default function ResumeParserTool() {
                                         Back to options
                                     </button>
 
-                                    <div className="card p-6 border border-gray-800 bg-[#15171e]">
+                                    <div className="card p-6 border border-[var(--border)] bg-[var(--background-secondary)]">
                                         <label className="block text-sm font-medium mb-2 text-gray-300">
                                             Paste Your Resume Content
                                         </label>
@@ -362,7 +362,7 @@ JavaScript, TypeScript, React, Node.js, Python..."
 
                         {/* Output Section */}
                         <div className="space-y-6">
-                            <div className="bg-[#15171e] border border-gray-800 rounded-xl p-6">
+                            <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6">
                                 <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
                                     <User className="w-5 h-5 text-[var(--primary-blue)]" />
                                     Extracted Profile Data
