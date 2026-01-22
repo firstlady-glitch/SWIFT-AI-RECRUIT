@@ -14,6 +14,7 @@ export default function Home() {
   return (
     <div className="min-h-screen">
       <Navigation />
+      <div className="px-4">
       <Hero />
       <ProblemSection />
       <SolutionSection />
@@ -23,6 +24,7 @@ export default function Home() {
       <HowItWorks />
       <UserTypes />
       <FinalCTA />
+      </div>
       <Footer />
     </div>
   );

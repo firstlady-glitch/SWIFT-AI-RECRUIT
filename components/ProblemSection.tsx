@@ -2,7 +2,7 @@ import { Frown } from 'lucide-react';
 
 export default function ProblemSection() {
     return (
-        <section className="section py-20 bg-[var(--background-secondary)]">
+        <section className="section py-20">
             <div className="max-w-3xl">
                 <div className="flex mb-6 animate-float">
                     <Frown className="w-16 h-16 text-[var(--accent-orange)]" />

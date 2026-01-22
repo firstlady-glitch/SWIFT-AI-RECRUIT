@@ -3,7 +3,7 @@ import Image from 'next/image';
 
 export default function Footer() {
     return (
-        <footer id="contact" className="border-t border-[var(--border)] bg-[var(--background)]">
+        <footer id="contact" className="border-t border-[var(--border)] bg-[var(--background)] px-4">
             <div className="section py-12">
                 <div className="grid md:grid-cols-4 gap-8 md:gap-40 mb-8">
                     {/* Company Info */}
@@ -30,7 +30,9 @@ export default function Footer() {
                         <ul className="space-y-2 text-sm text-[var(--foreground-secondary)]">
                             <li><Link href="/#features" className="hover:text-[var(--primary-blue)] transition-colors">Features</Link></li>
                             <li><Link href="/#how-it-works" className="hover:text-[var(--primary-blue)] transition-colors">How It Works</Link></li>
-                            <li><Link href="/pricing" className="hover:text-[var(--primary-blue)] transition-colors">Pricing</Link></li>
+                            {process.env.NEXT_PUBLIC_ACCEPT_PAYMENTS !== 'false' && (
+                                <li><Link href="/pricing" className="hover:text-[var(--primary-blue)] transition-colors">Pricing</Link></li>
+                            )}
                             <li><Link href="/api" className="hover:text-[var(--primary-blue)] transition-colors">API</Link></li>
                         </ul>
                     </div>

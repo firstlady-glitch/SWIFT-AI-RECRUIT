@@ -16,7 +16,7 @@ function EmployerDashboardContent() {
     }, [searchParams, params.dashboard, router]);
 
     return (
-        <div className="min-h-screen bg-[var(--background)]">
+        <div className="min-h-screen bg-[var(--background)] px-4">
             <div className="section py-12">
                 <h1 className="text-4xl font-bold mb-6">Employer Dashboard</h1>
                 <p className="text-xl text-[var(--foreground-secondary)] mb-8">

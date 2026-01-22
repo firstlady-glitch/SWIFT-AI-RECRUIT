@@ -30,7 +30,7 @@ export default function HowItWorks() {
     ];
 
     return (
-        <section id="how-it-works" className="section py-20 bg-[var(--background-secondary)]">
+        <section id="how-it-works" className="section py-20">
             <div className="text-center mb-16">
                 <h2 className="mb-4">From Application to Offer in 5 Simple Steps</h2>
                 <p className="text-xl text-[var(--foreground-secondary)] max-w-2xl mx-auto">

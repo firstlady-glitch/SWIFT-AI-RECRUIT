@@ -1,10 +1,19 @@
 import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
 
 const versions = [
     {
+        version: "v1.11.2",
+        date: "January 22, 2026",
+        tag: "Latest",
+        tagColor: "purple",
+        summary: "Implemented conditional logic to hide pricing and subscription features via environment variable.",
+        href: "/dev/version/v1.11.2"
+    },
+    {
         version: "v1.11.1",
         date: "January 21, 2026",
-        tag: "Latest",
+        tag: "Patch",
         tagColor: "blue",
         summary: "UI Light Mode fixes and Recruiter Signup flow improvements.",
         href: "/dev/version/v1.11.1"
@@ -31,6 +40,13 @@ export default function VersionPage() {
     return (
         <div className="min-h-screen bg-[var(--background)] p-8">
             <div className="max-w-4xl mx-auto">
+                <Link
+                    href="/"
+                    className="inline-flex items-center gap-2 text-[var(--foreground-secondary)] hover:text-[var(--primary-blue)] transition-colors mb-8"
+                >
+                    <ArrowLeft className="w-4 h-4" />
+                    Back to Home
+                </Link>
                 <h1 className="text-3xl font-bold mb-2 text-[var(--foreground)]">Version History</h1>
                 <p className="text-[var(--foreground-secondary)] mb-8">Swift AI Recruit changelog and release notes.</p>
 

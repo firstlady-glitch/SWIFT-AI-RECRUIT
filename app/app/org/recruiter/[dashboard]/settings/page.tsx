@@ -273,12 +273,14 @@ export default function RecruiterSettings() {
                     >
                         <Briefcase className="w-5 h-5" /> Agency Details
                     </button>
-                    <button
-                        onClick={() => setActiveTab('billing')}
-                        className={`w-full flex items-center gap-3 p-4 transition-colors ${activeTab === 'billing' ? 'bg-[var(--primary-blue)]/10 text-[var(--primary-blue)]' : 'hover:bg-[var(--border)] text-[var(--foreground-secondary)]'}`}
-                    >
-                        <CreditCard className="w-5 h-5" /> Subscription
-                    </button>
+                    {process.env.NEXT_PUBLIC_ACCEPT_PAYMENTS !== 'false' && (
+                        <button
+                            onClick={() => setActiveTab('billing')}
+                            className={`w-full flex items-center gap-3 p-4 transition-colors ${activeTab === 'billing' ? 'bg-[var(--primary-blue)]/10 text-[var(--primary-blue)]' : 'hover:bg-[var(--border)] text-[var(--foreground-secondary)]'}`}
+                        >
+                            <CreditCard className="w-5 h-5" /> Subscription
+                        </button>
+                    )}
                 </div>
 
                 {/* Content */}

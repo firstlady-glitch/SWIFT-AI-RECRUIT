@@ -1,7 +1,7 @@
 import Stripe from 'stripe';
 
 // Check if payments are enabled
-export const ACCEPT_PAYMENTS = process.env.ACCEPT_PAYMENTS === 'true';
+export const ACCEPT_PAYMENTS = process.env.NEXT_PUBLIC_ACCEPT_PAYMENTS !== 'false';
 
 // Initialize Stripe client (only if we have a key)
 const stripeSecretKey = process.env.STRIPE_SECRET_KEY;

@@ -2,6 +2,9 @@ import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
 export async function proxy(request: NextRequest) {
+  // Check if payments are accepted (default to true if not set, or handle as string 'false')
+  const acceptPayments = process.env.NEXT_PUBLIC_ACCEPT_PAYMENTS !== 'false';
+
   // 1. Create an initial response
   let response = NextResponse.next({
     request: {
@@ -179,6 +182,11 @@ export async function proxy(request: NextRequest) {
   // For "org" role, this is their setup page so don't redirect
   if (currentPath === "/app/org" && userRole !== "org") {
     return NextResponse.redirect(new URL(roleDefaults[userRole], request.url));
+  }
+
+  // Redirect /pricing if payments are not accepted
+  if (!acceptPayments && currentPath.startsWith("/pricing")) {
+    return NextResponse.redirect(new URL("/auth/login", request.url));
   }
 
   // If all checks pass, allow the request to proceed

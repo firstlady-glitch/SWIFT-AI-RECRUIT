@@ -41,7 +41,7 @@ export default function Features() {
     ];
 
     return (
-        <section id="features" className="section py-20 bg-[var(--background-secondary)]">
+        <section id="features" className="section py-20">
             <div className="text-center mb-16">
                 <h2 className="mb-4">Everything You Need to Hire</h2>
                 <p className="text-xl text-[var(--foreground-secondary)] max-w-2xl mx-auto">

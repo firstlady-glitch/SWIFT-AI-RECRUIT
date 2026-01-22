@@ -157,32 +157,36 @@ function ApplicantContent() {
                             <span>Job Fit Analysis</span>
                         </div>
                     </div>
-                    <Link href="/pricing?role=applicant" className="inline-flex items-center gap-2 bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors">
-                        View Pricing <ArrowRight className="w-4 h-4" />
-                    </Link>
+                    {process.env.NEXT_PUBLIC_ACCEPT_PAYMENTS !== 'false' && (
+                        <Link href="/pricing?role=applicant" className="inline-flex items-center gap-2 bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors">
+                            View Pricing <ArrowRight className="w-4 h-4" />
+                        </Link>
+                    )}
                 </div>
             </div>
 
             {/* Quick Pricing */}
-            <div className="text-center">
-                <h2 className="text-3xl font-bold mb-4">Simple Pricing</h2>
-                <p className="text-[var(--foreground-secondary)] mb-8">Start for free, upgrade when you're ready.</p>
-                <div className="flex flex-wrap justify-center gap-6">
-                    {plans.map((plan) => (
-                        <Link
-                            key={plan.name}
-                            href={plan.href}
-                            className={`px-8 py-4 rounded-xl border transition-all hover:scale-105 ${plan.popular
-                                ? 'bg-[var(--primary-blue)] text-white border-[var(--primary-blue)]'
-                                : 'border-gray-200 hover:border-[var(--primary-blue)]'
-                                }`}
-                        >
-                            <div className="font-bold">{plan.name}</div>
-                            <div className="text-2xl font-bold">${plan.price}<span className="text-sm font-normal">/mo</span></div>
-                        </Link>
-                    ))}
+            {process.env.NEXT_PUBLIC_ACCEPT_PAYMENTS !== 'false' && (
+                <div className="text-center">
+                    <h2 className="text-3xl font-bold mb-4">Simple Pricing</h2>
+                    <p className="text-[var(--foreground-secondary)] mb-8">Start for free, upgrade when you're ready.</p>
+                    <div className="flex flex-wrap justify-center gap-6">
+                        {plans.map((plan) => (
+                            <Link
+                                key={plan.name}
+                                href={plan.href}
+                                className={`px-8 py-4 rounded-xl border transition-all hover:scale-105 ${plan.popular
+                                    ? 'bg-[var(--primary-blue)] text-white border-[var(--primary-blue)]'
+                                    : 'border-gray-200 hover:border-[var(--primary-blue)]'
+                                    }`}
+                            >
+                                <div className="font-bold">{plan.name}</div>
+                                <div className="text-2xl font-bold">${plan.price}<span className="text-sm font-normal">/mo</span></div>
+                            </Link>
+                        ))}
+                    </div>
                 </div>
-            </div>
+            )}
         </div>
     );
 }
@@ -257,32 +261,36 @@ function EmployerContent() {
                             <span>Offer Letter Generator</span>
                         </div>
                     </div>
-                    <Link href="/pricing?role=employer" className="inline-flex items-center gap-2 bg-white text-orange-600 px-6 py-3 rounded-lg font-semibold hover:bg-orange-50 transition-colors">
-                        View Pricing <ArrowRight className="w-4 h-4" />
-                    </Link>
+                    {process.env.NEXT_PUBLIC_ACCEPT_PAYMENTS !== 'false' && (
+                        <Link href="/pricing?role=employer" className="inline-flex items-center gap-2 bg-white text-orange-600 px-6 py-3 rounded-lg font-semibold hover:bg-orange-50 transition-colors">
+                            View Pricing <ArrowRight className="w-4 h-4" />
+                        </Link>
+                    )}
                 </div>
             </div>
 
             {/* Quick Pricing */}
-            <div className="text-center">
-                <h2 className="text-3xl font-bold mb-4">Plans for Every Team Size</h2>
-                <p className="text-[var(--foreground-secondary)] mb-8">Scale your hiring without scaling your budget.</p>
-                <div className="flex flex-wrap justify-center gap-6">
-                    {plans.map((plan) => (
-                        <Link
-                            key={plan.name}
-                            href={plan.href}
-                            className={`px-8 py-4 rounded-xl border transition-all hover:scale-105 ${plan.popular
-                                ? 'bg-[var(--accent-orange)] text-white border-[var(--accent-orange)]'
-                                : 'border-gray-200 hover:border-[var(--accent-orange)]'
-                                }`}
-                        >
-                            <div className="font-bold">{plan.name}</div>
-                            <div className="text-2xl font-bold">${plan.price}<span className="text-sm font-normal">/mo</span></div>
-                        </Link>
-                    ))}
+            {process.env.NEXT_PUBLIC_ACCEPT_PAYMENTS !== 'false' && (
+                <div className="text-center">
+                    <h2 className="text-3xl font-bold mb-4">Plans for Every Team Size</h2>
+                    <p className="text-[var(--foreground-secondary)] mb-8">Scale your hiring without scaling your budget.</p>
+                    <div className="flex flex-wrap justify-center gap-6">
+                        {plans.map((plan) => (
+                            <Link
+                                key={plan.name}
+                                href={plan.href}
+                                className={`px-8 py-4 rounded-xl border transition-all hover:scale-105 ${plan.popular
+                                    ? 'bg-[var(--accent-orange)] text-white border-[var(--accent-orange)]'
+                                    : 'border-gray-200 hover:border-[var(--accent-orange)]'
+                                    }`}
+                            >
+                                <div className="font-bold">{plan.name}</div>
+                                <div className="text-2xl font-bold">${plan.price}<span className="text-sm font-normal">/mo</span></div>
+                            </Link>
+                        ))}
+                    </div>
                 </div>
-            </div>
+            )}
         </div>
     );
 }
