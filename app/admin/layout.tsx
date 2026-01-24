@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import {
     LayoutDashboard,
@@ -23,28 +23,35 @@ interface AdminLayoutProps {
 }
 
 const navItems = [
-    { href: '/app/admin', icon: LayoutDashboard, label: 'Dashboard' },
-    { href: '/app/admin/users', icon: Users, label: 'Users' },
-    { href: '/app/admin/organizations', icon: Building2, label: 'Organizations' },
-    { href: '/app/admin/jobs', icon: Briefcase, label: 'Jobs' },
-    { href: '/app/admin/analytics', icon: BarChart3, label: 'Analytics' },
-    { href: '/app/admin/billing', icon: CreditCard, label: 'Billing' },
-    { href: '/app/admin/settings', icon: Settings, label: 'Settings' },
+    { href: '/admin', icon: LayoutDashboard, label: 'Dashboard' },
+    { href: '/admin/users', icon: Users, label: 'Users' },
+    { href: '/admin/organizations', icon: Building2, label: 'Organizations' },
+    { href: '/admin/jobs', icon: Briefcase, label: 'Jobs' },
+    { href: '/admin/analytics', icon: BarChart3, label: 'Analytics' },
+    { href: '/admin/billing', icon: CreditCard, label: 'Billing' },
+    { href: '/admin/settings', icon: Settings, label: 'Settings' },
 ];
 
 export default function AdminLayout({ children }: AdminLayoutProps) {
     const router = useRouter();
+    const pathname = usePathname();
+    const isLoginPage = pathname === '/admin/login';
     const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [adminName, setAdminName] = useState('');
 
     useEffect(() => {
+        // Skip auth check for login page
+        if (isLoginPage) {
+            return;
+        }
+
         const checkAdmin = async () => {
             const supabase = createClient();
             const { data: { user } } = await supabase.auth.getUser();
 
             if (!user) {
-                router.push('/auth/login');
+                router.push('/admin/login');
                 return;
             }
 
@@ -66,7 +73,12 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         };
 
         checkAdmin();
-    }, [router]);
+    }, [router, isLoginPage]);
+
+    // For login page, render children directly without layout
+    if (isLoginPage) {
+        return <>{children}</>;
+    }
 
     const handleLogout = async () => {
         const supabase = createClient();
@@ -98,7 +110,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                                 <Shield className="w-6 h-6 text-red-500" />
                             </div>
                             <div>
-                                <h1 className="font-bold text-[var(--foreground)]">SwiftAI Admin</h1>
+                                {/* <h1 className="text-xs font-bold text-[var(--foreground)]">SwiftAI Admin</h1> */}
                                 <p className="text-xs text-[var(--foreground-secondary)]">Control Center</p>
                             </div>
                         </div>

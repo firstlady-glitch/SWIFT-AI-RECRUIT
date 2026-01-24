@@ -1,7 +1,12 @@
+'use client';
+
 import Link from 'next/link';
 import Image from 'next/image';
+import { useSettings } from '@/hooks/use-site-settings';
 
 export default function Footer() {
+    const { settings } = useSettings();
+
     return (
         <footer id="contact" className="border-t border-[var(--border)] bg-[var(--background)] px-4">
             <div className="section py-12">
@@ -30,7 +35,7 @@ export default function Footer() {
                         <ul className="space-y-2 text-sm text-[var(--foreground-secondary)]">
                             <li><Link href="/#features" className="hover:text-[var(--primary-blue)] transition-colors">Features</Link></li>
                             <li><Link href="/#how-it-works" className="hover:text-[var(--primary-blue)] transition-colors">How It Works</Link></li>
-                            {process.env.NEXT_PUBLIC_ACCEPT_PAYMENTS !== 'false' && (
+                            {settings.payments_enabled && (
                                 <li><Link href="/pricing" className="hover:text-[var(--primary-blue)] transition-colors">Pricing</Link></li>
                             )}
                             <li><Link href="/api" className="hover:text-[var(--primary-blue)] transition-colors">API</Link></li>

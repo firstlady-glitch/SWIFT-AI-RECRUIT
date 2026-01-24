@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useParams } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import { usePagination } from '@/hooks/use-pagination';
 import { DataTable, StatusBadge, Column } from '@/components/ui/DataTable';
@@ -22,6 +23,8 @@ interface Job extends Record<string, unknown> {
 }
 
 export default function EmployerJobsPage() {
+    const params = useParams();
+    const dashboard = params.dashboard as string;
     const pagination = usePagination<Job>({ pageSize: 15 });
     const [statusFilter, setStatusFilter] = useState('all');
 
@@ -102,7 +105,7 @@ export default function EmployerJobsPage() {
             header: 'Job Title',
             width: '40%',
             render: (row) => (
-                <Link href={`/app/org/employer/jobs/${row.id}`} className="block">
+                <Link href={`/app/org/employer/${dashboard}/jobs/${row.id}`} className="block">
                     <div className="font-medium text-white hover:text-[var(--primary-blue)] transition-colors">
                         {row.title}
                     </div>
@@ -144,7 +147,7 @@ export default function EmployerJobsPage() {
             width: '100px',
             render: (row) => (
                 <Link
-                    href={`/app/org/employer/jobs/${row.id}`}
+                    href={`/app/org/employer/${dashboard}/jobs/${row.id}`}
                     className="p-2 hover:bg-gray-800 rounded-lg text-gray-400 hover:text-white inline-flex"
                     title="View Pipeline"
                 >
@@ -163,7 +166,7 @@ export default function EmployerJobsPage() {
                         <p className="text-gray-400">Manage your job postings and applicants.</p>
                     </div>
                     <Link
-                        href={`jobs/create`}
+                        href={`/app/org/employer/${dashboard}/jobs/create`}
                         className="btn btn-primary px-4 py-2 flex items-center gap-2 w-fit"
                     >
                         <Plus className="w-4 h-4" />
@@ -202,7 +205,7 @@ export default function EmployerJobsPage() {
                                     title="No Jobs Found"
                                     description="You haven't created any job postings yet. Start attracting top talent!"
                                     actionLabel="Create Your First Job"
-                                    actionHref="/app/org/employer/jobs/create"
+                                    actionHref={`/app/org/employer/${dashboard}/jobs/create`}
                                 />
                             }
                         />

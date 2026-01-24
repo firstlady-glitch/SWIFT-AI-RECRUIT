@@ -2,8 +2,6 @@ import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
 export async function proxy(request: NextRequest) {
-  // Check if payments are accepted (default to true if not set, or handle as string 'false')
-  const acceptPayments = process.env.NEXT_PUBLIC_ACCEPT_PAYMENTS !== 'false';
 
   // 1. Create an initial response
   let response = NextResponse.next({
@@ -48,6 +46,60 @@ export async function proxy(request: NextRequest) {
 
   const currentPath = request.nextUrl.pathname;
 
+  // Fetch site settings from database (with fallback to defaults)
+  let siteSettings = {
+    payments_enabled: true,
+    allow_registration: true,
+    maintenance_mode: false,
+    maintenance_message: 'We are currently performing maintenance. Please check back soon.',
+  };
+
+  try {
+    const { data: settings } = await supabase
+      .from('site_settings')
+      .select('payments_enabled, allow_registration, maintenance_mode, maintenance_message')
+      .limit(1)
+      .single();
+
+    if (settings) {
+      siteSettings = settings;
+    }
+  } catch (e) {
+    // Use defaults if settings table doesn't exist or error
+    console.log('[Proxy] Using default settings');
+  }
+
+  // ---------------------------------------------------------
+  // MAINTENANCE MODE CHECK
+  // ---------------------------------------------------------
+  // If maintenance mode is enabled, redirect all users EXCEPT admins to /maintenance
+  // Allow access to: /maintenance, /admin, /api, and static assets
+  const isMaintenanceExempt =
+    currentPath === "/maintenance" ||
+    currentPath.startsWith("/admin") ||
+    currentPath.startsWith("/api") ||
+    currentPath.startsWith("/_next");
+
+  if (siteSettings.maintenance_mode && !isMaintenanceExempt) {
+    // Check if user is admin - admins can still access the site
+    if (user) {
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('role')
+        .eq('id', user.id)
+        .single();
+
+      if (profile?.role !== 'admin') {
+        // Non-admin users get redirected to maintenance page
+        return NextResponse.redirect(new URL('/maintenance', request.url));
+      }
+      // Admin users can proceed normally
+    } else {
+      // Non-authenticated users go to maintenance
+      return NextResponse.redirect(new URL('/maintenance', request.url));
+    }
+  }
+
   // Public paths that don't require auth
   const isPublicPath =
     currentPath === "/" ||
@@ -66,7 +118,9 @@ export async function proxy(request: NextRequest) {
     currentPath.startsWith("/privacy") ||
     currentPath.startsWith("/cookies") ||
     currentPath.startsWith("/data-policy") ||
-    currentPath.startsWith("/dev");
+    currentPath.startsWith("/dev") ||
+    currentPath.startsWith("/admin") ||
+    currentPath.startsWith("/maintenance");
 
   // Role-Specific Landing Pages (Where they go on mount/login)
   const roleDefaults: Record<string, string> = {
@@ -74,7 +128,7 @@ export async function proxy(request: NextRequest) {
     employer: "/app/org/employer",     // Employer goes to /app/org/employer
     recruiter: "/app/org/recruiter",   // Recruiter goes to /app/org/recruiter
     org: "/app/org",                   // Generic org (pre-selection) goes to /app/org
-    admin: "/admin/dashboard",
+    admin: "/admin",
   };
 
   // ---------------------------------------------------------
@@ -151,10 +205,33 @@ export async function proxy(request: NextRequest) {
     }
   }
 
-  // 2. Handle Root/Auth Redirects (e.g. user goes to "/" or "/login" while authenticated)
+  // 2. Handle Auth Redirects - redirect authenticated users ONLY from login/auth pages
+  // Authenticated users SHOULD be able to visit public pages like /terms, /privacy, /contact, etc.
   if (isPublicPath) {
-    const targetUrl = roleDefaults[userRole] || "/dashboard";
-    return NextResponse.redirect(new URL(targetUrl, request.url));
+    // NEVER redirect API routes - they should always pass through
+    if (currentPath.startsWith("/api")) {
+      return response;
+    }
+
+    // For admin users accessing /admin routes, allow them through
+    if (userRole === "admin" && currentPath.startsWith("/admin")) {
+      return response;
+    }
+
+    // Only redirect from AUTH-RELATED pages (login/signup) - user is already logged in
+    const isAuthPage =
+      currentPath === "/" ||
+      currentPath.startsWith("/login") ||
+      currentPath.startsWith("/auth");
+
+    if (isAuthPage) {
+      const targetUrl = roleDefaults[userRole] || "/dashboard";
+      return NextResponse.redirect(new URL(targetUrl, request.url));
+    }
+
+    // For all other public pages (/terms, /privacy, /dev, /contact, /features, etc.)
+    // Allow authenticated users to browse freely
+    return response;
   }
 
   // 3. Role-Based Access Control (RBAC) Protection
@@ -184,8 +261,8 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(new URL(roleDefaults[userRole], request.url));
   }
 
-  // Redirect /pricing if payments are not accepted
-  if (!acceptPayments && currentPath.startsWith("/pricing")) {
+  // Redirect /pricing if payments are not enabled
+  if (!siteSettings.payments_enabled && currentPath.startsWith("/pricing")) {
     return NextResponse.redirect(new URL("/auth/login", request.url));
   }
 

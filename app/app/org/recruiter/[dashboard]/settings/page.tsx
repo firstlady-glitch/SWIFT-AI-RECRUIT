@@ -6,10 +6,12 @@ import { Building2, User, CreditCard, Save, Loader2, Globe, MapPin, Phone, FileT
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/client';
 import { ErrorState } from '@/components/ui/ErrorState';
+import { useSettings } from '@/hooks/use-site-settings';
 
 export default function RecruiterSettings() {
     const params = useParams();
     const router = useRouter();
+    const { settings: siteSettings } = useSettings();
     const [activeTab, setActiveTab] = useState('profile');
     const [isLoading, setIsLoading] = useState(true);
     const [isSaving, setIsSaving] = useState(false);
@@ -273,7 +275,7 @@ export default function RecruiterSettings() {
                     >
                         <Briefcase className="w-5 h-5" /> Agency Details
                     </button>
-                    {process.env.NEXT_PUBLIC_ACCEPT_PAYMENTS !== 'false' && (
+                    {siteSettings.payments_enabled && (
                         <button
                             onClick={() => setActiveTab('billing')}
                             className={`w-full flex items-center gap-3 p-4 transition-colors ${activeTab === 'billing' ? 'bg-[var(--primary-blue)]/10 text-[var(--primary-blue)]' : 'hover:bg-[var(--border)] text-[var(--foreground-secondary)]'}`}
@@ -281,6 +283,13 @@ export default function RecruiterSettings() {
                             <CreditCard className="w-5 h-5" /> Subscription
                         </button>
                     )}
+                    <Link
+                        href={`/app/org/recruiter/${params.dashboard}/profile`}
+                        className="w-full flex items-center gap-3 p-4 border-t border-[var(--border)] hover:bg-[var(--border)] text-[var(--foreground-secondary)] transition-colors mt-auto"
+                        target="_blank"
+                    >
+                        <User className="w-5 h-5" /> View Public Profile
+                    </Link>
                 </div>
 
                 {/* Content */}

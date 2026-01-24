@@ -24,6 +24,7 @@ export default function EditJobPage() {
     const params = useParams();
     const router = useRouter();
     const jobId = params.id as string;
+    const dashboard = params.dashboard as string;
 
     const [isLoading, setIsLoading] = useState(true);
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -96,7 +97,7 @@ export default function EditJobPage() {
             }
 
             console.log('[EditJob] Updated job:', jobId);
-            router.push(`/app/org/employer/jobs/${jobId}`);
+            router.push(`/app/org/employer/${dashboard}/jobs/${jobId}`);
 
         } catch (err: any) {
             console.error('[EditJob] Error:', err);
@@ -138,7 +139,7 @@ export default function EditJobPage() {
         <div className="min-h-screen bg-[var(--background)] p-8">
             <div className="max-w-4xl mx-auto">
                 <Link
-                    href={`/app/org/employer/jobs/${jobId}`}
+                    href={`/app/org/employer/${dashboard}/jobs/${jobId}`}
                     className="inline-flex items-center text-[var(--foreground-secondary)] hover:text-[var(--foreground)] mb-6 transition-colors"
                 >
                     <ArrowLeft className="w-4 h-4 mr-2" />
@@ -275,7 +276,7 @@ export default function EditJobPage() {
 
                     <div className="flex justify-end gap-4">
                         <Link
-                            href={`/app/org/employer/jobs/${jobId}`}
+                            href={`/app/org/employer/${dashboard}/jobs/${jobId}`}
                             className="btn border border-[var(--border)] hover:bg-[var(--border)] px-6 py-3"
                         >
                             Cancel

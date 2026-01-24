@@ -51,14 +51,14 @@ export function EmptyState({
 
     return (
         <div className={`flex flex-col items-center justify-center p-12 text-center ${className}`}>
-            <div className="w-16 h-16 rounded-full bg-gray-800/50 flex items-center justify-center mb-4">
-                <Icon className="w-8 h-8 text-gray-500" />
+            <div className="w-16 h-16 rounded-full bg-[var(--background-secondary)] border border-[var(--border)] flex items-center justify-center mb-4">
+                <Icon className="w-8 h-8 text-[var(--foreground-secondary)]" />
             </div>
 
-            <h3 className="text-lg font-semibold text-white mb-2">{title}</h3>
+            <h3 className="text-lg font-semibold text-[var(--foreground)] mb-2">{title}</h3>
 
             {description && (
-                <p className="text-gray-400 text-sm max-w-md">{description}</p>
+                <p className="text-[var(--foreground-secondary)] text-sm max-w-md">{description}</p>
             )}
 
             <ActionButton />

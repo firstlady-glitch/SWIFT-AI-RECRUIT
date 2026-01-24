@@ -3,9 +3,17 @@ import { ArrowLeft } from "lucide-react";
 
 const versions = [
     {
+        version: "v2.0.0",
+        date: "January 24, 2026",
+        tag: "Major",
+        tagColor: "green",
+        summary: "Admin Control Center with database-driven site settings, dedicated admin authentication, and maintenance mode.",
+        href: "/dev/version/v2.0.0"
+    },
+    {
         version: "v1.11.2",
         date: "January 22, 2026",
-        tag: "Latest",
+        tag: "Patch",
         tagColor: "purple",
         summary: "Implemented conditional logic to hide pricing and subscription features via environment variable.",
         href: "/dev/version/v1.11.2"

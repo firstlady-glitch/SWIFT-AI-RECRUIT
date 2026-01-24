@@ -6,11 +6,13 @@ import { Building2, Users, CreditCard, Save, Loader2, Globe, MapPin, Phone, File
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/client';
 import { ErrorState } from '@/components/ui/ErrorState';
+import { useSettings } from '@/hooks/use-site-settings';
 import type { Organization } from '@/types';
 
 export default function EmployerSettings() {
     const params = useParams();
     const router = useRouter();
+    const { settings: siteSettings } = useSettings();
     const [activeTab, setActiveTab] = useState('company');
     const [isLoading, setIsLoading] = useState(true);
     const [isSaving, setIsSaving] = useState(false);
@@ -207,7 +209,7 @@ export default function EmployerSettings() {
                     >
                         <Users className="w-5 h-5" /> Team Members
                     </Link>
-                    {process.env.NEXT_PUBLIC_ACCEPT_PAYMENTS !== 'false' && (
+                    {siteSettings.payments_enabled && (
                         <button
                             onClick={() => setActiveTab('billing')}
                             className={`w-full flex items-center gap-3 p-4 transition-colors ${activeTab === 'billing' ? 'bg-[var(--primary-blue)]/10 text-[var(--primary-blue)]' : 'hover:bg-[var(--border)] text-[var(--foreground-secondary)]'}`}
@@ -215,6 +217,13 @@ export default function EmployerSettings() {
                             <CreditCard className="w-5 h-5" /> Subscription
                         </button>
                     )}
+                    <Link
+                        href={`/app/org/employer/${params.dashboard}/profile`}
+                        className="w-full flex items-center gap-3 p-4 border-t border-[var(--border)] hover:bg-[var(--border)] text-[var(--foreground-secondary)] transition-colors mt-auto"
+                        target="_blank"
+                    >
+                        <Globe className="w-5 h-5" /> View Public Profile
+                    </Link>
                 </div>
 
                 {/* Content Area */}

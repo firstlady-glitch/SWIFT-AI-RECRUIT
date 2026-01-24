@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import { ErrorState } from '@/components/ui/ErrorState';
 import { Plus, X, ExternalLink, FileText, ArrowRight } from 'lucide-react';
@@ -9,6 +9,8 @@ import Link from 'next/link';
 
 export default function CreateJobPage() {
     const router = useRouter();
+    const params = useParams();
+    const dashboard = params.dashboard as string;
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -67,7 +69,7 @@ export default function CreateJobPage() {
             if (error) throw error;
 
             console.log('[CreateJob] Created job:', data.id);
-            router.push(`/app/org/employer/jobs/${data.id}`);
+            router.push(`/app/org/employer/${dashboard}/jobs/${data.id}`);
 
         } catch (err: any) {
             console.error('[CreateJob] Error:', err);
@@ -188,7 +190,7 @@ export default function CreateJobPage() {
                                 />
                                 <div className="mt-2">
                                     <Link
-                                        href="/app/org/employer/dashboard/tools/job-description"
+                                        href={`/app/org/employer/${dashboard}/tools/job-description`}
                                         className="text-sm text-[var(--primary-blue)] hover:underline flex items-center gap-1"
                                     >
                                         <ArrowRight className="w-4 h-4" />
@@ -295,7 +297,7 @@ export default function CreateJobPage() {
 
                     <div className="flex justify-end gap-4">
                         <Link
-                            href="/app/org/employer/jobs"
+                            href={`/app/org/employer/${dashboard}/jobs`}
                             className="btn border border-[var(--border)] hover:bg-[var(--border)] px-6 py-3"
                         >
                             Cancel

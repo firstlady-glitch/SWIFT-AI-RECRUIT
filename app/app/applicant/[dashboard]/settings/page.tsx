@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import { User, Bell, Shield, Wallet, Save, Loader2, CreditCard, MapPin, Briefcase, Link as LinkIcon } from 'lucide-react';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/client';
@@ -9,6 +9,7 @@ import { ErrorState } from '@/components/ui/ErrorState';
 
 export default function ApplicantSettings() {
     const router = useRouter();
+    const params = useParams();
     const [activeTab, setActiveTab] = useState('profile');
     const [isLoading, setIsLoading] = useState(true);
     const [isSaving, setIsSaving] = useState(false);
@@ -23,9 +24,13 @@ export default function ApplicantSettings() {
         phone: '',
         linkedin_url: '',
         website: '',
+        profile_image_url: '',
         experience_years: 0,
         skills: [] as string[],
     });
+
+    const [imageFile, setImageFile] = useState<File | null>(null);
+    const [imagePreview, setImagePreview] = useState<string | null>(null);
 
     const [notifications, setNotifications] = useState({
         application_status: true,
@@ -65,9 +70,13 @@ export default function ApplicantSettings() {
                 phone: profile.phone || '',
                 linkedin_url: profile.linkedin_url || '',
                 website: profile.website || '',
+                profile_image_url: profile.profile_image_url || '',
                 experience_years: profile.experience_years || 0,
                 skills: profile.skills || [],
             });
+            if (profile.profile_image_url) {
+                setImagePreview(profile.profile_image_url);
+            }
         } catch (err: any) {
             console.error('[Settings] Error:', err);
             setError('Failed to load profile');
@@ -87,6 +96,28 @@ export default function ApplicantSettings() {
             const { data: { user } } = await supabase.auth.getUser();
             if (!user) return;
 
+            // Upload image if selected
+            let newProfileImageUrl = formData.profile_image_url;
+            if (imageFile) {
+                const imageFormData = new FormData();
+                imageFormData.append('file', imageFile);
+                imageFormData.append('upload_preset', 'profiles');
+                imageFormData.append('folder', `user-avatars/${user.id}`);
+
+                const imageResponse = await fetch(
+                    'https://api.cloudinary.com/v1_1/drw5se2tr/image/upload',
+                    {
+                        method: 'POST',
+                        body: imageFormData
+                    }
+                );
+
+                if (!imageResponse.ok) throw new Error('Image upload failed');
+
+                const imageData = await imageResponse.json();
+                newProfileImageUrl = imageData.secure_url;
+            }
+
             const { error: updateError } = await supabase
                 .from('profiles')
                 .update({
@@ -96,6 +127,7 @@ export default function ApplicantSettings() {
                     phone: formData.phone,
                     linkedin_url: formData.linkedin_url,
                     website: formData.website,
+                    profile_image_url: newProfileImageUrl,
                     experience_years: formData.experience_years,
                     skills: formData.skills,
                     updated_at: new Date().toISOString(),
@@ -173,6 +205,13 @@ export default function ApplicantSettings() {
                     >
                         <Wallet className="w-5 h-5" /> Subscription
                     </button>
+                    <Link
+                        href={`/app/applicant/${params.dashboard}/profile/${params.dashboard}`} // Assuming profile/${id} works, and user ID is likely the dashboard ID for applicants
+                        className="w-full flex items-center gap-3 p-4 border-t border-[var(--border)] hover:bg-[var(--border)] text-[var(--foreground-secondary)] transition-colors mt-auto"
+                        target="_blank"
+                    >
+                        <User className="w-5 h-5" /> View Public Profile
+                    </Link>
                 </div>
 
                 {/* Content Area */}

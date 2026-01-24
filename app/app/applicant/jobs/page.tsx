@@ -237,7 +237,7 @@ export default function ApplicantJobsPage() {
                                         value={searchQuery}
                                         onChange={(e) => setSearchQuery(e.target.value)}
                                         placeholder="Job title, keywords..."
-                                        className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg pl-10 pr-4 py-2 focus:border-[var(--primary-blue)] focus:outline-none"
+                                        className="w-full bg-[var(--background)] border border-[var(--border)] rounded-lg pl-10 pr-4 py-2 focus:border-[var(--primary-blue)] focus:outline-none text-[var(--foreground)]"
                                     />
                                 </div>
                             </div>
@@ -248,7 +248,7 @@ export default function ApplicantJobsPage() {
                                     value={locationFilter}
                                     onChange={(e) => setLocationFilter(e.target.value)}
                                     placeholder="City, state, or remote"
-                                    className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg px-4 py-2 focus:border-[var(--primary-blue)] focus:outline-none"
+                                    className="w-full bg-[var(--background)] border border-[var(--border)] rounded-lg px-4 py-2 focus:border-[var(--primary-blue)] focus:outline-none text-[var(--foreground)]"
                                 />
                             </div>
                             <div>
@@ -256,7 +256,7 @@ export default function ApplicantJobsPage() {
                                 <select
                                     value={typeFilter}
                                     onChange={(e) => setTypeFilter(e.target.value)}
-                                    className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg px-4 py-2 focus:border-[var(--primary-blue)] focus:outline-none"
+                                    className="w-full bg-[var(--background)] border border-[var(--border)] rounded-lg px-4 py-2 focus:border-[var(--primary-blue)] focus:outline-none text-[var(--foreground)]"
                                 >
                                     <option value="all">All Types</option>
                                     <option value="Full-time">Full-time</option>
@@ -290,7 +290,7 @@ export default function ApplicantJobsPage() {
                                                     className="w-12 h-12 rounded-lg object-cover"
                                                 />
                                             ) : (
-                                                <div className="w-12 h-12 rounded-lg bg-gray-800 flex items-center justify-center">
+                                                <div className="w-12 h-12 rounded-lg bg-[var(--background)] border border-[var(--border)] flex items-center justify-center">
                                                     <Building2 className="w-6 h-6 text-gray-500" />
                                                 </div>
                                             )}

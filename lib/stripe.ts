@@ -1,7 +1,8 @@
 import Stripe from 'stripe';
 
-// Check if payments are enabled
-export const ACCEPT_PAYMENTS = process.env.NEXT_PUBLIC_ACCEPT_PAYMENTS !== 'false';
+// DEPRECATED: Use checkPaymentsEnabled() or useSettings hook instead
+// This is kept for backwards compatibility but defaults to true
+export const ACCEPT_PAYMENTS = true;
 
 // Initialize Stripe client (only if we have a key)
 const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
@@ -12,6 +13,20 @@ export const stripe = stripeSecretKey
         typescript: true,
     })
     : null;
+
+// Helper to check if payments are enabled from database (for server-side use)
+export async function checkPaymentsEnabled(): Promise<boolean> {
+    try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL || ''}/api/settings`);
+        if (response.ok) {
+            const settings = await response.json();
+            return settings.payments_enabled ?? true;
+        }
+    } catch (e) {
+        console.log('[Stripe] Could not fetch settings, defaulting to enabled');
+    }
+    return true;
+}
 
 // Subscription plan configurations
 export const SUBSCRIPTION_PLANS = {

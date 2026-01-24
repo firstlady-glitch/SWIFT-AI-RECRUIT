@@ -7,7 +7,7 @@ import { LoadingState } from '@/components/ui/LoadingState';
 import { ErrorState } from '@/components/ui/ErrorState';
 import {
     Building2, MapPin, DollarSign, Briefcase, Calendar,
-    ArrowLeft, FileText, X, Upload, ExternalLink
+    ArrowLeft, FileText, X, Upload, ExternalLink, MessageSquare
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -23,13 +23,15 @@ interface JobDetails {
     created_at: string;
     application_type: 'internal' | 'external';
     external_apply_url: string | null;
-    organization: { name: string; logo_url: string | null; description: string | null };
+    organization: { id: string; name: string; logo_url: string | null; description: string | null; created_by: string };
 }
 
 export default function JobDetailsPage() {
     const params = useParams();
     const router = useRouter();
     const jobId = params.id as string;
+    // params.dashboard is undefined here since we are not in a [dashboard] route
+    const [dashboardId, setDashboardId] = useState<string | null>(null);
 
     const [job, setJob] = useState<JobDetails | null>(null);
     const [isLoading, setIsLoading] = useState(true);
@@ -41,10 +43,24 @@ export default function JobDetailsPage() {
     const [userResume, setUserResume] = useState<string | null>(null);
 
     useEffect(() => {
+        fetchCurrentUser();
         fetchJobDetails();
         checkApplicationStatus();
         fetchUserResume();
     }, [jobId]);
+
+    const fetchCurrentUser = async () => {
+        const supabase = createClient();
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+            const { data: profile } = await supabase
+                .from('profiles')
+                .select('id')
+                .eq('id', user.id)
+                .single();
+            if (profile) setDashboardId(profile.id);
+        }
+    };
 
     const fetchJobDetails = async () => {
         const supabase = createClient();
@@ -65,7 +81,8 @@ export default function JobDetailsPage() {
                     created_at,
                     application_type,
                     external_apply_url,
-                    organization:organizations(name, logo_url, description)
+                    external_apply_url,
+                    organization:organizations(id, name, logo_url, description, created_by)
                 `)
                 .eq('id', jobId)
                 .single();
@@ -165,6 +182,29 @@ export default function JobDetailsPage() {
         }
     };
 
+    const handleMessage = async () => {
+        if (!job?.organization?.created_by) return;
+
+        try {
+            const res = await fetch('/api/conversations', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ recipientId: job.organization.created_by })
+            });
+
+            if (!res.ok) throw new Error('Failed to start conversation');
+
+            if (!dashboardId) {
+                alert('Please log in to message');
+                return;
+            }
+            router.push(`/app/applicant/${dashboardId}/messages`);
+        } catch (err) {
+            console.error('Error starting conversation:', err);
+            alert('Failed to start conversation');
+        }
+    };
+
     if (error) return <div className="p-8"><ErrorState message={error} /></div>;
     if (isLoading || !job) return <div className="p-8"><LoadingState type="card" count={1} className="h-96" /></div>;
 
@@ -194,7 +234,12 @@ export default function JobDetailsPage() {
                         )}
                         <div className="flex-1">
                             <h1 className="text-3xl font-bold mb-2">{job.title}</h1>
-                            <p className="text-xl text-gray-400 mb-4">{job.organization?.name}</p>
+                            <Link
+                                href={dashboardId ? `/app/applicant/${dashboardId}/profile/${job.organization?.id}` : '#'}
+                                className="text-xl text-gray-400 mb-4 hover:text-[var(--primary-blue)] transition-colors block w-fit"
+                            >
+                                {job.organization?.name}
+                            </Link>
 
                             <div className="flex flex-wrap gap-4 text-sm text-gray-400">
                                 <div className="flex items-center gap-2">
@@ -239,6 +284,13 @@ export default function JobDetailsPage() {
                                 {hasApplied ? 'Already Applied' : 'Apply Now'}
                             </button>
                         )}
+                        <button
+                            onClick={handleMessage}
+                            className="btn bg-[var(--background)] border border-[var(--border)] hover:bg-[var(--background-secondary)] px-4 py-3 text-gray-400 hover:text-white"
+                            title="Message Employer"
+                        >
+                            <MessageSquare className="w-5 h-5" />
+                        </button>
                     </div>
                 </div>
 

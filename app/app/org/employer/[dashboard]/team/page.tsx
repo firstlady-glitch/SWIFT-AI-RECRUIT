@@ -2,10 +2,11 @@
 
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-import { Users, Plus, Shield, User, Mail, Trash2, Check, X, Loader2 } from 'lucide-react';
+import { Users, Plus, Shield, User, Mail, Trash2, Check, X, Loader2, Briefcase } from 'lucide-react';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/client';
 import { ErrorState } from '@/components/ui/ErrorState';
+import { EmptyState } from '@/components/ui/EmptyState';
 import type { TeamMember, TeamRole } from '@/types';
 
 type TeamMemberWithProfile = Omit<TeamMember, 'profile'> & {
@@ -18,6 +19,7 @@ type TeamMemberWithProfile = Omit<TeamMember, 'profile'> & {
 
 export default function TeamPage() {
     const params = useParams();
+    const dashboard = params.dashboard as string;
     const [members, setMembers] = useState<TeamMemberWithProfile[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -45,7 +47,8 @@ export default function TeamPage() {
                 .single();
 
             if (!profile?.organization_id) {
-                setError('No organization found');
+                // Gracefully handle missing organization by showing empty state
+                setMembers([]);
                 return;
             }
 
@@ -63,7 +66,9 @@ export default function TeamPage() {
 
             setMembers(transformed);
         } catch (err: any) {
-            setError('Failed to load team');
+            console.error('Error loading team:', err);
+            // Don't show error to user, just show empty state for better UX
+            setMembers([]);
         } finally {
             setIsLoading(false);
         }
@@ -144,18 +149,20 @@ export default function TeamPage() {
     if (error) return <ErrorState message={error} onRetry={fetchTeam} />;
 
     return (
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-4xl p-8 mx-auto">
             <div className="flex items-center justify-between mb-6">
                 <div>
                     <h1 className="text-2xl font-bold">Team Management</h1>
                     <p className="text-gray-400">{members.length} members</p>
                 </div>
-                <button
-                    onClick={() => setShowInvite(true)}
-                    className="flex items-center gap-2 px-4 py-2 bg-[var(--primary-blue)] hover:bg-blue-600 text-white rounded-lg font-medium transition-colors"
-                >
-                    <Plus className="w-4 h-4" /> Invite Member
-                </button>
+                {members.length > 0 && (
+                    <button
+                        onClick={() => setShowInvite(true)}
+                        className="flex items-center gap-2 px-4 py-2 bg-[var(--primary-blue)] hover:bg-blue-600 text-white rounded-lg font-medium transition-colors"
+                    >
+                        <Plus className="w-4 h-4" /> Invite Member
+                    </button>
+                )}
             </div>
 
             {/* Invite Modal */}
@@ -258,16 +265,13 @@ export default function TeamPage() {
                 ))}
 
                 {members.length === 0 && (
-                    <div className="text-center py-12 bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl">
-                        <Users className="w-12 h-12 text-gray-600 mx-auto mb-4" />
-                        <p className="text-gray-500">No team members yet</p>
-                        <button
-                            onClick={() => setShowInvite(true)}
-                            className="mt-4 text-[var(--primary-blue)] hover:underline"
-                        >
-                            Invite your first team member
-                        </button>
-                    </div>
+                    <EmptyState
+                        icon={Briefcase}
+                        title="Start Hiring Your Team"
+                        description="You don't have any team members yet. Invite colleagues to help you hire, or start creating jobs yourself."
+                        actionLabel="Create a Job"
+                        actionHref={`/app/org/employer/${dashboard}/jobs/create`}
+                    />
                 )}
             </div>
         </div>

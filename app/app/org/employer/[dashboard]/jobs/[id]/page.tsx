@@ -27,6 +27,7 @@ export default function JobATSPage() {
     const params = useParams();
     const router = useRouter();
     const jobId = params.id as string;
+    const dashboard = params.dashboard as string;
 
     const [job, setJob] = useState<any>(null);
     const [applications, setApplications] = useState<Application[]>([]);
@@ -147,7 +148,7 @@ export default function JobATSPage() {
                 throw new Error(data.error || 'Failed to delete');
             }
             console.log('[JobATS] Deleted job:', jobId);
-            router.push('/app/org/employer/jobs');
+            router.push(`/app/org/employer/${dashboard}/jobs`);
         } catch (err: any) {
             console.error('[JobATS] Delete error:', err);
             alert(err.message || 'Failed to delete job');
@@ -170,7 +171,7 @@ export default function JobATSPage() {
         <div className="min-h-screen bg-[var(--background)] p-8">
             <div className="max-w-7xl mx-auto">
                 <Link
-                    href="/app/org/employer/jobs"
+                    href={`/app/org/employer/${dashboard}/jobs`}
                     className="inline-flex items-center text-[var(--foreground-secondary)] hover:text-[var(--foreground)] mb-6 transition-colors"
                 >
                     <ArrowLeft className="w-4 h-4 mr-2" />
@@ -193,7 +194,7 @@ export default function JobATSPage() {
 
                     <div className="flex items-center gap-2">
                         <Link
-                            href={`/app/org/employer/jobs/${jobId}/edit`}
+                            href={`/app/org/employer/${dashboard}/jobs/${jobId}/edit`}
                             className="btn border border-gray-700 hover:bg-gray-800 px-4 py-2 flex items-center gap-2"
                         >
                             <Edit className="w-4 h-4" />
@@ -245,7 +246,7 @@ export default function JobATSPage() {
                         const app = applications.find(a => a.id === item.id);
                         return (
                             <Link
-                                href={`/app/org/employer/candidates/${item.id}`}
+                                href={`/app/org/employer/${dashboard}/candidates/${item.id}`}
                                 className="block bg-[var(--background-secondary)] border border-[var(--border)] rounded-lg p-4 hover:border-[var(--primary-blue)] transition-colors"
                             >
                                 <div className="flex items-center gap-3 mb-2">

@@ -143,6 +143,7 @@ export async function notifyNewApplication(params: {
     applicantName: string;
     jobTitle: string;
     jobId: string;
+    dashboardId: string; /* The dashboard (or organization) ID for the route path */
 }): Promise<void> {
     // Create in-app notification
     await createNotification({
@@ -150,7 +151,7 @@ export async function notifyNewApplication(params: {
         type: 'application_received',
         title: 'New application received',
         message: `${params.applicantName} applied for ${params.jobTitle}`,
-        link: `/app/org/employer/jobs/${params.jobId}`,
+        link: `/app/org/employer/${params.dashboardId}/jobs/${params.jobId}`,
     });
 
     // Send email
@@ -161,7 +162,7 @@ export async function notifyNewApplication(params: {
             <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
                 <h2 style="color: #1a1a2e;">New Application Received</h2>
                 <p><strong>${params.applicantName}</strong> has applied for the <strong>${params.jobTitle}</strong> position.</p>
-                <a href="${process.env.NEXT_PUBLIC_APP_URL}/app/org/employer/jobs/${params.jobId}" 
+                <a href="${process.env.NEXT_PUBLIC_APP_URL}/app/org/employer/${params.dashboardId}/jobs/${params.jobId}" 
                    style="display: inline-block; background: #0066ff; color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; margin-top: 16px;">
                     Review Application
                 </a>
