@@ -36,6 +36,7 @@ export default function OutreachEmailTool() {
     const [isLoadingData, setIsLoadingData] = useState(true);
     const [isCopied, setIsCopied] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [recruiter, setRecruiter] = useState<{ full_name: string | null; job_title: string | null; organization_name: string } | null>(null);
 
     // Fetch profiles and jobs
     useEffect(() => {
@@ -51,6 +52,29 @@ export default function OutreachEmailTool() {
                     .limit(100);
 
                 setProfiles(profilesData || []);
+
+                // Fetch current user (recruiter) details
+                const { data: { user } } = await supabase.auth.getUser();
+                if (user) {
+                    const { data: profile } = await supabase
+                        .from('profiles')
+                        .select('full_name, job_title, organization_id')
+                        .eq('id', user.id)
+                        .single();
+
+                    if (profile) {
+                        let orgName = 'Our Company';
+                        if (profile.organization_id) {
+                            const { data: org } = await supabase
+                                .from('organizations')
+                                .select('name')
+                                .eq('id', profile.organization_id)
+                                .single();
+                            if (org) orgName = org.name;
+                        }
+                        setRecruiter({ ...profile, organization_name: orgName });
+                    }
+                }
 
                 // Fetch published jobs
                 const { data: jobsData } = await supabase
@@ -104,6 +128,11 @@ export default function OutreachEmailTool() {
 
         const prompt = `
             You are an expert recruiter writing a cold outreach email.
+            
+            SENDER INFO:
+            Name: ${recruiter?.full_name || 'Recruiter'}
+            Title: ${recruiter?.job_title || 'Talent Acquisition'}
+            Company: ${recruiter?.organization_name || 'Company'}
             
             CANDIDATE INFO:
             ${candidateInfo}
@@ -184,7 +213,7 @@ export default function OutreachEmailTool() {
                     <div className="space-y-6">
                         {/* Candidate Selection */}
                         <div className="card p-6 border border-[var(--border)] bg-[var(--background-secondary)]">
-                            <label className="block text-sm font-medium mb-2 text-gray-300">
+                            <label className="block text-sm font-medium mb-2 text-[var(--foreground-secondary)]">
                                 Select Candidate
                             </label>
                             {isLoadingData ? (
@@ -202,7 +231,7 @@ export default function OutreachEmailTool() {
                                                 onClick={() => setSelectedProfile(profile)}
                                                 className={`w-full text-left p-3 rounded-lg border transition-all ${selectedProfile?.id === profile.id
                                                     ? 'border-[var(--primary-blue)] bg-[var(--primary-blue)]/10'
-                                                    : 'border-gray-800 bg-[#0b0c0f] hover:border-gray-700'
+                                                    : 'border-[var(--border)] bg-[var(--background)] hover:border-[var(--border)]'
                                                     }`}
                                             >
                                                 <div className="flex items-center gap-2">
@@ -221,14 +250,14 @@ export default function OutreachEmailTool() {
 
                         {/* Selected Candidate Info */}
                         {selectedProfile && (
-                            <div className="p-4 bg-[#0b0c0f] border border-gray-800 rounded-lg">
+                            <div className="p-4 bg-[var(--background)] border border-[var(--border)] rounded-lg">
                                 <p className="text-sm text-gray-400 mb-2">Selected Candidate</p>
                                 <p className="font-medium text-white">{selectedProfile.full_name}</p>
                                 <p className="text-sm text-gray-400">{selectedProfile.job_title} • {selectedProfile.experience_years} yrs</p>
                                 {selectedProfile.skills && selectedProfile.skills.length > 0 && (
                                     <div className="flex flex-wrap gap-1 mt-2">
                                         {selectedProfile.skills.slice(0, 5).map((skill, i) => (
-                                            <span key={i} className="px-2 py-0.5 bg-gray-800 text-gray-400 rounded text-xs">
+                                            <span key={i} className="px-2 py-0.5 bg-[var(--background-secondary)] border border-[var(--border)] text-[var(--foreground-secondary)] rounded text-xs">
                                                 {skill}
                                             </span>
                                         ))}
@@ -239,7 +268,7 @@ export default function OutreachEmailTool() {
 
                         {/* Job Selection */}
                         <div className="card p-6 border border-[var(--border)] bg-[var(--background-secondary)]">
-                            <label className="block text-sm font-medium mb-2 text-gray-300">
+                            <label className="block text-sm font-medium mb-2 text-[var(--foreground-secondary)]">
                                 Target Job (Optional)
                             </label>
                             <select
@@ -248,7 +277,7 @@ export default function OutreachEmailTool() {
                                     const job = jobs.find(j => j.id === e.target.value);
                                     setSelectedJob(job || null);
                                 }}
-                                className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm focus:border-[var(--primary-blue)] focus:outline-none"
+                                className="w-full bg-[var(--background)] border border-[var(--border)] rounded-lg p-3 text-sm focus:border-[var(--primary-blue)] focus:outline-none"
                             >
                                 <option value="">-- Select a job --</option>
                                 {jobs.map((job) => (
@@ -267,7 +296,7 @@ export default function OutreachEmailTool() {
                             <textarea
                                 value={hook}
                                 onChange={(e) => setHook(e.target.value)}
-                                className="w-full h-24 bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm focus:border-[var(--primary-blue)] focus:outline-none resize-none"
+                                className="w-full h-24 bg-[var(--background)] border border-[var(--border)] rounded-lg p-3 text-sm focus:border-[var(--primary-blue)] focus:outline-none resize-none"
                                 placeholder="e.g., Saw their talk at ReactConf, their open-source project..."
                             />
                         </div>
@@ -298,7 +327,7 @@ export default function OutreachEmailTool() {
                                 <>
                                     <button
                                         onClick={copyToClipboard}
-                                        className="absolute top-4 right-4 p-2 bg-gray-800 hover:bg-gray-700 rounded-lg text-gray-400 hover:text-white transition-colors"
+                                        className="absolute top-4 right-4 p-2 bg-[var(--background)] hover:bg-[var(--background-secondary)] rounded-lg text-gray-400 hover:text-white transition-colors"
                                         title="Copy to clipboard"
                                     >
                                         {isCopied ? (

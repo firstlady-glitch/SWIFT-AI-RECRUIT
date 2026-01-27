@@ -110,8 +110,8 @@ export default function ApplicantApplicationsPage() {
                             className="w-10 h-10 rounded-lg object-cover"
                         />
                     ) : (
-                        <div className="w-10 h-10 rounded-lg bg-gray-800 flex items-center justify-center">
-                            <Building2 className="w-5 h-5 text-gray-500" />
+                        <div className="w-10 h-10 rounded-lg bg-[var(--background-secondary)] flex items-center justify-center">
+                            <Building2 className="w-5 h-5 text-[var(--foreground-secondary)]" />
                         </div>
                     )}
                     <div>
@@ -130,7 +130,7 @@ export default function ApplicantApplicationsPage() {
             key: 'updated_at',
             header: 'Last Activity',
             render: (row) => (
-                <div className="flex items-center gap-2 text-gray-400">
+                <div className="flex items-center gap-2 text-[var(--foreground-secondary)]">
                     <Activity className="w-3 h-3" />
                     {new Date(row.updated_at).toLocaleDateString()}
                 </div>
@@ -140,7 +140,7 @@ export default function ApplicantApplicationsPage() {
             key: 'job.location',
             header: 'Location',
             render: (row) => (
-                <div className="flex items-center gap-2 text-gray-400">
+                <div className="flex items-center gap-2 text-[var(--foreground-secondary)]">
                     <MapPin className="w-3 h-3" />
                     {row.job?.location || 'Remote'}
                 </div>
@@ -166,11 +166,11 @@ export default function ApplicantApplicationsPage() {
             <div className="max-w-6xl mx-auto">
                 <div className="mb-8">
                     <h1 className="text-3xl font-bold mb-2">My Applications</h1>
-                    <p className="text-gray-400">Track and manage your job applications.</p>
+                    <p className="text-[var(--foreground-secondary)]">Track and manage your job applications.</p>
                 </div>
 
                 {/* Filter Tabs */}
-                <div className="flex gap-2 overflow-x-auto pb-4 mb-6 border-b border-gray-800">
+                <div className="flex gap-2 overflow-x-auto pb-4 mb-6 border-b border-[var(--border)]">
                     {['all', 'applied', 'reviewed', 'interview', 'offer', 'rejected'].map((status) => (
                         <button
                             key={status}

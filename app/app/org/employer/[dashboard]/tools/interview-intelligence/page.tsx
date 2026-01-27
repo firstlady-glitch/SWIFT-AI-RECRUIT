@@ -300,7 +300,7 @@ export default function InterviewIntelligenceTool() {
                                         const int = interviews.find(i => i.id === e.target.value);
                                         setSelectedInterview(int || null);
                                     }}
-                                    className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm focus:border-[var(--primary-blue)] focus:outline-none"
+                                    className="w-full bg-[var(--background-secondary)] border border-[var(--border)] rounded-lg p-3 text-sm focus:border-[var(--primary-blue)] focus:outline-none"
                                 >
                                     <option value="">-- Select an interview --</option>
                                     {interviews.map((int) => (
@@ -323,7 +323,7 @@ export default function InterviewIntelligenceTool() {
                             <textarea
                                 value={transcriptText}
                                 onChange={(e) => setTranscriptText(e.target.value)}
-                                className="w-full h-64 bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm focus:border-[var(--primary-blue)] focus:outline-none resize-none font-mono"
+                                className="w-full h-64 bg-[var(--background-secondary)] border border-[var(--border)] rounded-lg p-3 text-sm focus:border-[var(--primary-blue)] focus:outline-none resize-none font-mono"
                                 placeholder="Interviewer: Can you tell me about your experience with React?
 
 Candidate: I've been working with React for about 4 years now. In my current role at TechCorp, I've built several large-scale applications...
@@ -376,7 +376,7 @@ Interviewer: What's the most challenging project you've worked on?"
                                 </div>
 
                                 {/* Scorecard */}
-                                <div className="p-4 bg-[#0b0c0f] rounded-lg border border-gray-800">
+                                <div className="p-4 bg-[var(--background-secondary)] rounded-lg border border-[var(--border)]">
                                     <p className="text-sm text-gray-400 mb-3">Scorecard</p>
                                     <div className="space-y-2">
                                         {Object.entries(feedbackDraft.scorecard_metrics).map(([metric, score]) => (
@@ -386,7 +386,7 @@ Interviewer: What's the most challenging project you've worked on?"
                                                     {[1, 2, 3, 4, 5].map((n) => (
                                                         <div
                                                             key={n}
-                                                            className={`w-4 h-4 rounded ${n <= score ? 'bg-[var(--primary-blue)]' : 'bg-gray-700'
+                                                            className={`w-4 h-4 rounded ${n <= score ? 'bg-[var(--primary-blue)]' : 'bg-[var(--background)]'
                                                                 }`}
                                                         />
                                                     ))}
@@ -397,7 +397,7 @@ Interviewer: What's the most challenging project you've worked on?"
                                 </div>
 
                                 {/* Pros */}
-                                <div className="p-4 bg-[#0b0c0f] rounded-lg border border-gray-800">
+                                <div className="p-4 bg-[var(--background-secondary)] rounded-lg border border-[var(--border)]">
                                     <p className="text-sm text-green-400 mb-2">Strengths</p>
                                     <ul className="space-y-1">
                                         {feedbackDraft.pros.map((pro, i) => (
@@ -410,7 +410,7 @@ Interviewer: What's the most challenging project you've worked on?"
                                 </div>
 
                                 {/* Cons */}
-                                <div className="p-4 bg-[#0b0c0f] rounded-lg border border-gray-800">
+                                <div className="p-4 bg-[var(--background-secondary)] rounded-lg border border-[var(--border)]">
                                     <p className="text-sm text-orange-400 mb-2">Areas for Concern</p>
                                     <ul className="space-y-1">
                                         {feedbackDraft.cons.map((con, i) => (
@@ -423,7 +423,7 @@ Interviewer: What's the most challenging project you've worked on?"
                                 </div>
 
                                 {/* Notes */}
-                                <div className="p-4 bg-[#0b0c0f] rounded-lg border border-gray-800">
+                                <div className="p-4 bg-[var(--background-secondary)] rounded-lg border border-[var(--border)]">
                                     <p className="text-sm text-gray-400 mb-2">Summary Notes</p>
                                     <p className="text-sm text-gray-300">{feedbackDraft.notes}</p>
                                 </div>

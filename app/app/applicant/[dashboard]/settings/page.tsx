@@ -162,10 +162,10 @@ export default function ApplicantSettings() {
     if (isLoading) {
         return (
             <div className="p-8 max-w-6xl mx-auto">
-                <div className="h-8 w-48 bg-gray-800 rounded animate-pulse mb-8" />
+                <div className="h-8 w-48 bg-[var(--background-secondary)] rounded animate-pulse mb-8" />
                 <div className="grid md:grid-cols-4 gap-8">
-                    <div className="h-48 bg-gray-800 rounded-xl animate-pulse" />
-                    <div className="md:col-span-3 h-96 bg-gray-800 rounded-xl animate-pulse" />
+                    <div className="h-48 bg-[var(--background-secondary)] rounded-xl animate-pulse" />
+                    <div className="md:col-span-3 h-96 bg-[var(--background-secondary)] rounded-xl animate-pulse" />
                 </div>
             </div>
         );
@@ -378,7 +378,7 @@ export default function ApplicantSettings() {
                                         disabled
                                         className="w-full bg-[var(--background)] border border-[var(--border)] rounded-lg p-3 text-sm opacity-50 text-[var(--foreground)]"
                                     />
-                                    <p className="text-xs text-gray-500 mt-1">Contact support to change your email</p>
+                                    <p className="text-xs text-[var(--foreground-secondary)] mt-1">Contact support to change your email</p>
                                 </div>
                                 <div className="pt-4 border-t border-[var(--border)]">
                                     <button className="text-[var(--primary-blue)] hover:underline text-sm">

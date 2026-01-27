@@ -162,7 +162,7 @@ export default function SourcingPage() {
             {/* Back */}
             <Link
                 href={`/app/org/recruiter/${dashboard}/marketplace`}
-                className="inline-flex items-center gap-2 text-gray-400 hover:text-white mb-6"
+                className="inline-flex items-center gap-2 text-[var(--foreground-secondary)] hover:text-[var(--foreground)] mb-6"
             >
                 <ArrowLeft className="w-4 h-4" /> Back to Marketplace
             </Link>
@@ -170,17 +170,17 @@ export default function SourcingPage() {
             {/* Job Header */}
             <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6 mb-6">
                 <div className="flex items-start gap-4">
-                    <div className="w-16 h-16 rounded-xl bg-gray-800 flex items-center justify-center overflow-hidden flex-shrink-0">
+                    <div className="w-16 h-16 rounded-xl bg-[var(--background)] border border-[var(--border)] flex items-center justify-center overflow-hidden flex-shrink-0">
                         {job.organization?.logo_url ? (
                             <img src={job.organization.logo_url} alt="" className="w-full h-full object-cover" />
                         ) : (
-                            <Building2 className="w-8 h-8 text-gray-500" />
+                            <Building2 className="w-8 h-8 text-[var(--foreground-secondary)]" />
                         )}
                     </div>
                     <div className="flex-1">
                         <h1 className="text-2xl font-bold mb-1">{job.title}</h1>
-                        <p className="text-gray-400">{job.organization?.name}</p>
-                        <div className="flex items-center gap-4 mt-2 text-sm text-gray-500">
+                        <p className="text-[var(--foreground-secondary)]">{job.organization?.name}</p>
+                        <div className="flex items-center gap-4 mt-2 text-sm text-[var(--foreground-secondary)]">
                             {job.location && (
                                 <span className="flex items-center gap-1">
                                     <MapPin className="w-4 h-4" /> {job.location}
@@ -195,7 +195,7 @@ export default function SourcingPage() {
                         </div>
                     </div>
                     <div className="text-right">
-                        <p className="text-sm text-gray-500">Submitted</p>
+                        <p className="text-sm text-[var(--foreground-secondary)]">Submitted</p>
                         <p className="text-2xl font-bold text-[var(--primary-blue)]">{submissions.length}</p>
                     </div>
                 </div>
@@ -220,25 +220,25 @@ export default function SourcingPage() {
                     <div key={candidate.id} className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-4">
                         <div className="flex items-center justify-between">
                             <div className="flex items-center gap-4">
-                                <div className="w-12 h-12 rounded-full bg-gray-800 flex items-center justify-center overflow-hidden">
+                                <div className="w-12 h-12 rounded-full bg-[var(--background)] border border-[var(--border)] flex items-center justify-center overflow-hidden">
                                     {candidate.profile_image_url ? (
                                         <img src={candidate.profile_image_url} alt="" className="w-full h-full object-cover" />
                                     ) : (
-                                        <User className="w-6 h-6 text-gray-500" />
+                                        <User className="w-6 h-6 text-[var(--foreground-secondary)]" />
                                     )}
                                 </div>
                                 <div>
-                                    <p className="font-medium text-white">{candidate.full_name || 'Anonymous'}</p>
-                                    <p className="text-sm text-gray-400">{candidate.job_title || 'No title'}</p>
+                                    <p className="font-medium text-[var(--foreground)]">{candidate.full_name || 'Anonymous'}</p>
+                                    <p className="text-sm text-[var(--foreground-secondary)]">{candidate.job_title || 'No title'}</p>
                                     {candidate.skills && candidate.skills.length > 0 && (
                                         <div className="flex gap-1 mt-1">
                                             {candidate.skills.slice(0, 3).map((skill, i) => (
-                                                <span key={i} className="px-2 py-0.5 bg-gray-800 text-gray-400 text-xs rounded">
+                                                <span key={i} className="px-2 py-0.5 bg-[var(--background)] border border-[var(--border)] text-[var(--foreground-secondary)] text-xs rounded">
                                                     {skill}
                                                 </span>
                                             ))}
                                             {candidate.skills.length > 3 && (
-                                                <span className="text-xs text-gray-500">+{candidate.skills.length - 3}</span>
+                                                <span className="text-xs text-[var(--foreground-secondary)]">+{candidate.skills.length - 3}</span>
                                             )}
                                         </div>
                                     )}
@@ -270,8 +270,8 @@ export default function SourcingPage() {
 
                 {filteredCandidates.length === 0 && (
                     <div className="text-center py-12 bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl">
-                        <User className="w-12 h-12 text-gray-600 mx-auto mb-4" />
-                        <p className="text-gray-500">No candidates found</p>
+                        <User className="w-12 h-12 text-[var(--foreground-secondary)] mx-auto mb-4" />
+                        <p className="text-[var(--foreground-secondary)]">No candidates found</p>
                     </div>
                 )}
             </div>

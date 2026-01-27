@@ -221,11 +221,11 @@ export default function RecruiterViewProfilePage() {
                         {/* Org Header */}
                         <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-8 mb-6">
                             <div className="flex flex-col md:flex-row gap-8 items-start">
-                                <div className="w-32 h-32 rounded-xl bg-gray-800 flex items-center justify-center overflow-hidden border border-[var(--border)] flex-shrink-0">
+                                <div className="w-32 h-32 rounded-xl bg-[var(--background)] flex items-center justify-center overflow-hidden border border-[var(--border)] flex-shrink-0">
                                     {org.logo_url ? (
                                         <img src={org.logo_url} alt={org.name} className="w-full h-full object-cover" />
                                     ) : (
-                                        <Building2 className="w-12 h-12 text-gray-500" />
+                                        <Building2 className="w-12 h-12 text-[var(--foreground-secondary)]" />
                                     )}
                                 </div>
 
@@ -233,7 +233,7 @@ export default function RecruiterViewProfilePage() {
                                     <div className="flex justify-between items-start mb-4">
                                         <div>
                                             <h1 className="text-3xl font-bold text-white mb-2">{org.name}</h1>
-                                            <div className="flex flex-wrap gap-4 text-sm text-gray-400">
+                                            <div className="flex flex-wrap gap-4 text-sm text-[var(--foreground-secondary)]">
                                                 {org.industry && (
                                                     <span className="flex items-center gap-1">
                                                         <Briefcase className="w-4 h-4" /> {org.industry}
@@ -266,16 +266,16 @@ export default function RecruiterViewProfilePage() {
                                         </button>
                                     </div>
 
-                                    <p className="text-gray-300 leading-relaxed whitespace-pre-wrap">
+                                    <p className="text-[var(--foreground-secondary)] leading-relaxed whitespace-pre-wrap">
                                         {org.description || 'No description available.'}
                                     </p>
 
                                     {org.specializations && org.specializations.length > 0 && (
                                         <div className="mt-6">
-                                            <h3 className="text-sm font-semibold text-gray-400 mb-2">Specializations</h3>
+                                            <h3 className="text-sm font-semibold text-[var(--foreground-secondary)] mb-2">Specializations</h3>
                                             <div className="flex flex-wrap gap-2">
                                                 {org.specializations.map((spec, i) => (
-                                                    <span key={i} className="px-3 py-1 bg-gray-800 rounded-full text-sm text-gray-300">
+                                                    <span key={i} className="px-3 py-1 bg-[var(--background)] border border-[var(--border)] rounded-full text-sm text-[var(--foreground-secondary)]">
                                                         {spec}
                                                     </span>
                                                 ))}
@@ -296,7 +296,7 @@ export default function RecruiterViewProfilePage() {
                                         className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6"
                                     >
                                         <h3 className="text-lg font-semibold text-white mb-1">{job.title}</h3>
-                                        <div className="flex flex-wrap gap-4 text-sm text-gray-400">
+                                        <div className="flex flex-wrap gap-4 text-sm text-[var(--foreground-secondary)]">
                                             {job.location && <span>{job.location}</span>}
                                             {job.type && <span className="capitalize">{job.type.replace('_', ' ')}</span>}
                                             {job.salary_range_min && (

@@ -122,7 +122,7 @@ export default function RecruiterCreateJobPage() {
                                     value={formData.title}
                                     onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
                                     placeholder="e.g. Senior Frontend Developer"
-                                    className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg px-4 py-2 focus:border-[var(--accent-orange)] focus:outline-none"
+                                    className="w-full bg-[var(--background-secondary)] border border-[var(--border)] rounded-lg px-4 py-2 focus:border-[var(--accent-orange)] focus:outline-none"
                                 />
                             </div>
 
@@ -134,7 +134,7 @@ export default function RecruiterCreateJobPage() {
                                         value={formData.location}
                                         onChange={(e) => setFormData(prev => ({ ...prev, location: e.target.value }))}
                                         placeholder="e.g. San Francisco, CA or Remote"
-                                        className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg px-4 py-2 focus:border-[var(--accent-orange)] focus:outline-none"
+                                        className="w-full bg-[var(--background-secondary)] border border-[var(--border)] rounded-lg px-4 py-2 focus:border-[var(--accent-orange)] focus:outline-none"
                                     />
                                 </div>
                                 <div>
@@ -143,7 +143,7 @@ export default function RecruiterCreateJobPage() {
                                         required
                                         value={formData.type}
                                         onChange={(e) => setFormData(prev => ({ ...prev, type: e.target.value }))}
-                                        className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg px-4 py-2 focus:border-[var(--accent-orange)] focus:outline-none"
+                                        className="w-full bg-[var(--background-secondary)] border border-[var(--border)] rounded-lg px-4 py-2 focus:border-[var(--accent-orange)] focus:outline-none"
                                     >
                                         <option>Full-time</option>
                                         <option>Part-time</option>
@@ -161,7 +161,7 @@ export default function RecruiterCreateJobPage() {
                                         value={formData.salary_range_min}
                                         onChange={(e) => setFormData(prev => ({ ...prev, salary_range_min: e.target.value }))}
                                         placeholder="80000"
-                                        className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg px-4 py-2 focus:border-[var(--accent-orange)] focus:outline-none"
+                                        className="w-full bg-[var(--background-secondary)] border border-[var(--border)] rounded-lg px-4 py-2 focus:border-[var(--accent-orange)] focus:outline-none"
                                     />
                                 </div>
                                 <div>
@@ -171,7 +171,7 @@ export default function RecruiterCreateJobPage() {
                                         value={formData.salary_range_max}
                                         onChange={(e) => setFormData(prev => ({ ...prev, salary_range_max: e.target.value }))}
                                         placeholder="120000"
-                                        className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg px-4 py-2 focus:border-[var(--accent-orange)] focus:outline-none"
+                                        className="w-full bg-[var(--background-secondary)] border border-[var(--border)] rounded-lg px-4 py-2 focus:border-[var(--accent-orange)] focus:outline-none"
                                     />
                                 </div>
                             </div>
@@ -184,7 +184,7 @@ export default function RecruiterCreateJobPage() {
                                     onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
                                     placeholder="Describe the role, responsibilities, and what you're looking for..."
                                     rows={8}
-                                    className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg px-4 py-2 focus:border-[var(--accent-orange)] focus:outline-none"
+                                    className="w-full bg-[var(--background-secondary)] border border-[var(--border)] rounded-lg px-4 py-2 focus:border-[var(--accent-orange)] focus:outline-none"
                                 />
                                 <div className="mt-2">
                                     <Link
@@ -212,7 +212,7 @@ export default function RecruiterCreateJobPage() {
                                 onClick={() => setFormData(prev => ({ ...prev, application_type: 'internal' }))}
                                 className={`p-4 border rounded-xl text-left transition-all ${formData.application_type === 'internal'
                                     ? 'border-[var(--accent-orange)] bg-orange-500/10'
-                                    : 'border-gray-800 hover:border-gray-600'
+                                    : 'border-[var(--border)] hover:border-[var(--border)]'
                                     }`}
                             >
                                 <div className="flex items-center gap-3 mb-2">
@@ -229,7 +229,7 @@ export default function RecruiterCreateJobPage() {
                                 onClick={() => setFormData(prev => ({ ...prev, application_type: 'external' }))}
                                 className={`p-4 border rounded-xl text-left transition-all ${formData.application_type === 'external'
                                     ? 'border-[var(--primary-blue)] bg-blue-500/10'
-                                    : 'border-gray-800 hover:border-gray-600'
+                                    : 'border-[var(--border)] hover:border-[var(--border)]'
                                     }`}
                             >
                                 <div className="flex items-center gap-3 mb-2">
@@ -251,7 +251,7 @@ export default function RecruiterCreateJobPage() {
                                     value={formData.external_apply_url}
                                     onChange={(e) => setFormData(prev => ({ ...prev, external_apply_url: e.target.value }))}
                                     placeholder="https://clientcompany.com/careers/job-123"
-                                    className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg px-4 py-2 focus:border-[var(--primary-blue)] focus:outline-none"
+                                    className="w-full bg-[var(--background-secondary)] border border-[var(--border)] rounded-lg px-4 py-2 focus:border-[var(--primary-blue)] focus:outline-none"
                                 />
                             </div>
                         )}
@@ -268,7 +268,7 @@ export default function RecruiterCreateJobPage() {
                                         value={req}
                                         onChange={(e) => updateRequirement(index, e.target.value)}
                                         placeholder="e.g. 5+ years of React experience"
-                                        className="flex-1 bg-[#0b0c0f] border border-gray-800 rounded-lg px-4 py-2 focus:border-[var(--accent-orange)] focus:outline-none"
+                                        className="flex-1 bg-[var(--background-secondary)] border border-[var(--border)] rounded-lg px-4 py-2 focus:border-[var(--accent-orange)] focus:outline-none"
                                     />
                                     {formData.requirements.length > 1 && (
                                         <button
@@ -296,7 +296,7 @@ export default function RecruiterCreateJobPage() {
                     <div className="flex justify-end gap-4">
                         <Link
                             href="/app/org/recruiter/marketplace"
-                            className="btn border border-gray-700 hover:bg-gray-800 px-6 py-3"
+                            className="btn border border-[var(--border)] hover:bg-[var(--background-secondary)] px-6 py-3"
                         >
                             Cancel
                         </Link>

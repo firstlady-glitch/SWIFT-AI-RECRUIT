@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
         }
 
         const genAI = new GoogleGenerativeAI(API_KEY);
-        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" }); // Use valid model
+        const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" }); // Use valid model
 
         const result = await model.generateContent(prompt);
         const response = await result.response;

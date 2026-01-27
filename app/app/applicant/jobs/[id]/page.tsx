@@ -228,20 +228,20 @@ export default function JobDetailsPage() {
                                 className="w-20 h-20 rounded-lg object-cover"
                             />
                         ) : (
-                            <div className="w-20 h-20 rounded-lg bg-gray-800 flex items-center justify-center">
-                                <Building2 className="w-10 h-10 text-gray-500" />
+                            <div className="w-20 h-20 rounded-lg bg-[var(--background)] border border-[var(--border)] flex items-center justify-center">
+                                <Building2 className="w-10 h-10 text-[var(--foreground-secondary)]" />
                             </div>
                         )}
                         <div className="flex-1">
                             <h1 className="text-3xl font-bold mb-2">{job.title}</h1>
                             <Link
                                 href={dashboardId ? `/app/applicant/${dashboardId}/profile/${job.organization?.id}` : '#'}
-                                className="text-xl text-gray-400 mb-4 hover:text-[var(--primary-blue)] transition-colors block w-fit"
+                                className="text-xl text-[var(--foreground-secondary)] mb-4 hover:text-[var(--primary-blue)] transition-colors block w-fit"
                             >
                                 {job.organization?.name}
                             </Link>
 
-                            <div className="flex flex-wrap gap-4 text-sm text-gray-400">
+                            <div className="flex flex-wrap gap-4 text-sm text-[var(--foreground-secondary)]">
                                 <div className="flex items-center gap-2">
                                     <MapPin className="w-4 h-4" />
                                     {job.location || 'Remote'}
@@ -279,14 +279,14 @@ export default function JobDetailsPage() {
                             <button
                                 onClick={() => setShowApplyModal(true)}
                                 disabled={hasApplied}
-                                className={`btn px-8 py-3 ${hasApplied ? 'bg-gray-800 text-gray-500 cursor-not-allowed' : 'btn-primary'}`}
+                                className={`btn px-8 py-3 ${hasApplied ? 'bg-[var(--background)] text-[var(--foreground-secondary)] border border-[var(--border)] cursor-not-allowed' : 'btn-primary'}`}
                             >
                                 {hasApplied ? 'Already Applied' : 'Apply Now'}
                             </button>
                         )}
                         <button
                             onClick={handleMessage}
-                            className="btn bg-[var(--background)] border border-[var(--border)] hover:bg-[var(--background-secondary)] px-4 py-3 text-gray-400 hover:text-white"
+                            className="btn bg-[var(--background)] border border-[var(--border)] hover:bg-[var(--background-secondary)] px-4 py-3 text-[var(--foreground-secondary)] hover:text-[var(--foreground)]"
                             title="Message Employer"
                         >
                             <MessageSquare className="w-5 h-5" />
@@ -296,7 +296,7 @@ export default function JobDetailsPage() {
 
                 <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-8 mb-6">
                     <h2 className="text-xl font-bold mb-4">Job Description</h2>
-                    <div className="text-gray-300 whitespace-pre-line leading-relaxed">
+                    <div className="text-[var(--foreground-secondary)] whitespace-pre-line leading-relaxed">
                         {job.description}
                     </div>
                 </div>
@@ -306,7 +306,7 @@ export default function JobDetailsPage() {
                         <h2 className="text-xl font-bold mb-4">Requirements</h2>
                         <ul className="space-y-2">
                             {job.requirements.map((req, idx) => (
-                                <li key={idx} className="flex items-start gap-3 text-gray-300">
+                                <li key={idx} className="flex items-start gap-3 text-[var(--foreground-secondary)]">
                                     <span className="text-[var(--primary-blue)] mt-1">•</span>
                                     {req}
                                 </li>
@@ -328,8 +328,8 @@ export default function JobDetailsPage() {
 
                             {!userResume ? (
                                 <div className="text-center py-8">
-                                    <FileText className="w-16 h-16 text-gray-700 mx-auto mb-4" />
-                                    <p className="text-gray-400 mb-4">You need to upload a resume before applying.</p>
+                                    <FileText className="w-16 h-16 text-[var(--foreground-secondary)] mx-auto mb-4" />
+                                    <p className="text-[var(--foreground-secondary)] mb-4">You need to upload a resume before applying.</p>
                                     <Link href="/app/applicant/dashboard" className="btn btn-primary">
                                         Go to Profile Settings
                                     </Link>
@@ -342,14 +342,14 @@ export default function JobDetailsPage() {
                                             value={coverLetter}
                                             onChange={(e) => setCoverLetter(e.target.value)}
                                             placeholder="Tell the employer why you're a great fit..."
-                                            className="w-full h-40 bg-[#0b0c0f] border border-gray-800 rounded-lg p-4 focus:border-[var(--primary-blue)] focus:outline-none"
+                                            className="w-full h-40 bg-[var(--background-secondary)] border border-[var(--border)] rounded-lg p-4 focus:border-[var(--primary-blue)] focus:outline-none"
                                         />
                                     </div>
 
                                     <div className="flex justify-end gap-4">
                                         <button
                                             onClick={() => setShowApplyModal(false)}
-                                            className="btn border border-gray-700 hover:bg-gray-800 px-6 py-3"
+                                            className="btn border border-[var(--border)] hover:bg-[var(--background-secondary)] px-6 py-3"
                                         >
                                             Cancel
                                         </button>

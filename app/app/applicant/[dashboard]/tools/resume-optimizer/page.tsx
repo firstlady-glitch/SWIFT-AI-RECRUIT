@@ -103,6 +103,13 @@ Skills: ${profile.skills?.join(', ') || 'Not specified'}
         setUseProfileData(true);
     };
 
+    // Auto-fill with profile data when loaded
+    useEffect(() => {
+        if (profile && !resumeContent && (profile.job_title || profile.skills)) {
+            handleUseProfile();
+        }
+    }, [profile]);
+
     const handleGenerate = async () => {
         if (!resumeContent) {
             setError('Please enter your resume content or use your profile data.');
@@ -193,7 +200,7 @@ Skills: ${profile.skills?.join(', ') || 'Not specified'}
                 </Link>
 
                 <div className="flex items-center gap-4 mb-8">
-                    <div className="p-3 bg-purple-500/10 rounded-xl text-purple-500">
+                    <div className="p-3 bg-[var(--primary-purple)]/10 rounded-xl text-[var(--primary-purple)]">
                         <Sparkles className="w-8 h-8" />
                     </div>
                     <div>
@@ -221,7 +228,7 @@ Skills: ${profile.skills?.join(', ') || 'Not specified'}
                                     <RefreshCw className="w-4 h-4" />
                                     Use My Profile Data
                                 </button>
-                                <p className="text-xs text-gray-500 text-center mt-2">
+                                <p className="text-xs text-[var(--foreground-secondary)] text-center mt-2">
                                     Quickly analyze based on your current profile information
                                 </p>
                             </div>
@@ -229,7 +236,7 @@ Skills: ${profile.skills?.join(', ') || 'Not specified'}
 
                         {/* Target Job Selection */}
                         <div className="card p-6 border border-[var(--border)] bg-[var(--background-secondary)]">
-                            <label className="block text-sm font-medium mb-2 text-gray-300">Target Job (Optional)</label>
+                            <label className="block text-sm font-medium mb-2 text-[var(--foreground-secondary)]">Target Job (Optional)</label>
                             {isLoadingData ? (
                                 <div className="flex items-center justify-center py-3">
                                     <div className="animate-spin rounded-full h-5 w-5 border-2 border-[var(--primary-blue)] border-t-transparent" />
@@ -242,7 +249,7 @@ Skills: ${profile.skills?.join(', ') || 'Not specified'}
                                         setSelectedJob(job || null);
                                         if (job) setTargetRole('');
                                     }}
-                                    className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm focus:border-[var(--primary-blue)] focus:outline-none"
+                                    className="w-full bg-[var(--background-secondary)] border border-[var(--border)] rounded-lg p-3 text-sm focus:border-[var(--primary-blue)] focus:outline-none"
                                 >
                                     <option value="">-- Select a published job --</option>
                                     {jobs.map((job) => (
@@ -256,26 +263,26 @@ Skills: ${profile.skills?.join(', ') || 'Not specified'}
 
                         {!selectedJob && (
                             <div className="card p-6 border border-[var(--border)] bg-[var(--background-secondary)]">
-                                <label className="block text-sm font-medium mb-2 text-gray-300">Or Enter Target Role</label>
+                                <label className="block text-sm font-medium mb-2 text-[var(--foreground-secondary)]">Or Enter Target Role</label>
                                 <input
                                     type="text"
                                     value={targetRole}
                                     onChange={(e) => setTargetRole(e.target.value)}
-                                    className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm focus:border-[var(--primary-blue)] focus:outline-none"
+                                    className="w-full bg-[var(--background-secondary)] border border-[var(--border)] rounded-lg p-3 text-sm focus:border-[var(--primary-blue)] focus:outline-none"
                                     placeholder="e.g. Senior Product Manager"
                                 />
                             </div>
                         )}
 
                         <div className="card p-6 border border-[var(--border)] bg-[var(--background-secondary)]">
-                            <label className="block text-sm font-medium mb-2 text-gray-300">
+                            <label className="block text-sm font-medium mb-2 text-[var(--foreground-secondary)]">
                                 Your Resume Content
                                 {useProfileData && <span className="text-[var(--primary-blue)] ml-2">(Using profile data)</span>}
                             </label>
                             <textarea
                                 value={resumeContent}
                                 onChange={(e) => { setResumeContent(e.target.value); setUseProfileData(false); }}
-                                className="w-full h-64 bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm focus:border-[var(--primary-blue)] focus:outline-none resize-none font-mono"
+                                className="w-full h-64 bg-[var(--background-secondary)] border border-[var(--border)] rounded-lg p-3 text-sm focus:border-[var(--primary-blue)] focus:outline-none resize-none font-mono"
                                 placeholder="Paste the text from your resume here..."
                             />
                         </div>
@@ -306,7 +313,7 @@ Skills: ${profile.skills?.join(', ') || 'Not specified'}
                                 <>
                                     <button
                                         onClick={copyToClipboard}
-                                        className="absolute top-4 right-4 p-2 bg-gray-800 hover:bg-gray-700 rounded-lg text-gray-400 hover:text-white transition-colors"
+                                        className="absolute top-4 right-4 p-2 bg-[var(--background)] hover:bg-[var(--background-secondary)] rounded-lg text-gray-400 hover:text-white transition-colors"
                                         title="Copy to clipboard"
                                     >
                                         {isCopied ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}

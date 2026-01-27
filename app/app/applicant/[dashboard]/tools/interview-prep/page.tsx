@@ -244,7 +244,7 @@ export default function InterviewPrepTool() {
                                                 onClick={() => { setSelectedJob(job); setManualJobTitle(''); }}
                                                 className={`w-full text-left p-3 rounded-lg border transition-all ${selectedJob?.id === job.id
                                                     ? 'border-[var(--primary-blue)] bg-[var(--primary-blue)]/10'
-                                                    : 'border-gray-800 bg-[#0b0c0f] hover:border-gray-700'
+                                                    : 'border-[var(--border)] bg-[var(--background-secondary)] hover:border-[var(--border)]'
                                                     }`}
                                             >
                                                 <div className="flex items-center gap-2">
@@ -269,7 +269,7 @@ export default function InterviewPrepTool() {
                                     type="text"
                                     value={manualJobTitle}
                                     onChange={(e) => { setManualJobTitle(e.target.value); setSelectedJob(null); }}
-                                    className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm focus:border-[var(--primary-blue)] focus:outline-none"
+                                    className="w-full bg-[var(--background-secondary)] border border-[var(--border)] rounded-lg p-3 text-sm focus:border-[var(--primary-blue)] focus:outline-none"
                                     placeholder="e.g. Senior Frontend Engineer"
                                 />
                             </div>
@@ -280,7 +280,7 @@ export default function InterviewPrepTool() {
                                     value={manualJobDescription}
                                     onChange={(e) => setManualJobDescription(e.target.value)}
                                     disabled={!!selectedJob}
-                                    className="w-full h-32 bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm focus:border-[var(--primary-blue)] focus:outline-none resize-none disabled:opacity-50"
+                                    className="w-full h-32 bg-[var(--background-secondary)] border border-[var(--border)] rounded-lg p-3 text-sm focus:border-[var(--primary-blue)] focus:outline-none resize-none disabled:opacity-50"
                                     placeholder="Paste job description for more targeted questions..."
                                 />
                             </div>
@@ -332,7 +332,7 @@ export default function InterviewPrepTool() {
                                 </span>
                                 <button
                                     onClick={copyAllQuestions}
-                                    className="p-2 bg-gray-800 hover:bg-gray-700 rounded-lg text-gray-400 hover:text-white transition-colors"
+                                    className="p-2 bg-[var(--background)] hover:bg-[var(--background-secondary)] rounded-lg text-gray-400 hover:text-white transition-colors"
                                     title="Copy all questions"
                                 >
                                     {isCopied ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
@@ -341,7 +341,7 @@ export default function InterviewPrepTool() {
                         </div>
 
                         {/* Progress Bar */}
-                        <div className="w-full h-2 bg-gray-800 rounded-full overflow-hidden">
+                        <div className="w-full h-2 bg-[var(--border)] rounded-full overflow-hidden">
                             <div
                                 className="h-full bg-[var(--primary-blue)] transition-all"
                                 style={{ width: `${((currentQuestionIndex + 1) / questions.length) * 100}%` }}
@@ -401,7 +401,7 @@ export default function InterviewPrepTool() {
                                         ? 'bg-[var(--primary-blue)] text-white'
                                         : idx < currentQuestionIndex
                                             ? 'bg-green-500/20 text-green-400 border border-green-500/30'
-                                            : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
+                                            : 'bg-[var(--background-secondary)] text-gray-400 hover:bg-[var(--background)]'
                                         }`}
                                 >
                                     {idx + 1}

@@ -1,5 +1,7 @@
 'use client';
 
+// over here add a badge of applicants count for each listed job 
+
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
@@ -106,10 +108,10 @@ export default function EmployerJobsPage() {
             width: '40%',
             render: (row) => (
                 <Link href={`/app/org/employer/${dashboard}/jobs/${row.id}`} className="block">
-                    <div className="font-medium text-white hover:text-[var(--primary-blue)] transition-colors">
+                    <div className="font-medium text-[var(--foreground)] hover:text-[var(--primary-blue)] transition-colors">
                         {row.title}
                     </div>
-                    <div className="text-xs text-gray-500 mt-0.5 flex gap-2">
+                    <div className="text-xs text-[var(--foreground-secondary)] mt-0.5 flex gap-2">
                         <span>{row.location || 'Remote'}</span>
                         <span>•</span>
                         <span>{row.type || 'Full-time'}</span>
@@ -126,8 +128,8 @@ export default function EmployerJobsPage() {
             key: 'applicant_count',
             header: 'Candidates',
             render: (row) => (
-                <div className="flex items-center gap-1.5 text-gray-300">
-                    <Users className="w-4 h-4 text-gray-500" />
+                <div className="flex items-center gap-1.5 text-[var(--foreground-secondary)]">
+                    <Users className="w-4 h-4 text-[var(--foreground-secondary)]" />
                     {row.applicant_count}
                 </div>
             )
@@ -136,7 +138,7 @@ export default function EmployerJobsPage() {
             key: 'created_at',
             header: 'Posted',
             render: (row) => (
-                <span className="text-gray-400 text-sm">
+                <span className="text-[var(--foreground-secondary)] text-sm">
                     {new Date(row.created_at).toLocaleDateString()}
                 </span>
             )
@@ -148,7 +150,7 @@ export default function EmployerJobsPage() {
             render: (row) => (
                 <Link
                     href={`/app/org/employer/${dashboard}/jobs/${row.id}`}
-                    className="p-2 hover:bg-gray-800 rounded-lg text-gray-400 hover:text-white inline-flex"
+                    className="p-2 hover:bg-[var(--background-secondary)] rounded-lg text-[var(--foreground-secondary)] hover:text-[var(--foreground)] inline-flex"
                     title="View Pipeline"
                 >
                     <Eye className="w-4 h-4" />
@@ -163,7 +165,7 @@ export default function EmployerJobsPage() {
                 <div className="flex flex-col gap-4 md:flex-row md:justify-between md:items-center mb-8">
                     <div>
                         <h1 className="text-3xl font-bold mb-2">My Jobs</h1>
-                        <p className="text-gray-400">Manage your job postings and applicants.</p>
+                        <p className="text-[var(--foreground-secondary)]">Manage your job postings and applicants.</p>
                     </div>
                     <Link
                         href={`/app/org/employer/${dashboard}/jobs/create`}
@@ -174,14 +176,14 @@ export default function EmployerJobsPage() {
                     </Link>
                 </div>
 
-                <div className="flex gap-2 mb-6 border-b border-gray-800 pb-4">
+                <div className="flex gap-2 mb-6 border-b border-[var(--border)] pb-4">
                     {['all', 'published', 'draft', 'closed'].map((status) => (
                         <button
                             key={status}
                             onClick={() => setStatusFilter(status)}
                             className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${statusFilter === status
-                                ? 'bg-gray-800 text-white'
-                                : 'text-gray-400 hover:text-white hover:bg-gray-900'
+                                ? 'bg-[var(--background-secondary)] text-[var(--foreground)]'
+                                : 'text-[var(--foreground-secondary)] hover:text-[var(--foreground)] hover:bg-[var(--background-secondary)]'
                                 }`}
                         >
                             {status.charAt(0).toUpperCase() + status.slice(1)}

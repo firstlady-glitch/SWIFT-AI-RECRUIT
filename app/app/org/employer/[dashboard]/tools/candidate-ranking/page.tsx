@@ -311,7 +311,7 @@ export default function CandidateRankingTool() {
                                             onClick={() => handleJobSelect(job)}
                                             className={`w-full text-left p-3 rounded-lg border transition-all ${selectedJob?.id === job.id
                                                 ? 'border-[var(--primary-blue)] bg-[var(--primary-blue)]/10'
-                                                : 'border-gray-800 bg-[#0b0c0f] hover:border-gray-700'
+                                                : 'border-[var(--border)] bg-[var(--background-secondary)] hover:border-[var(--border)]'
                                                 }`}
                                         >
                                             <p className="font-medium text-white text-sm truncate">{job.title}</p>
@@ -371,7 +371,7 @@ export default function CandidateRankingTool() {
                                     {rankedCandidates.map((candidate, idx) => (
                                         <div
                                             key={candidate.id}
-                                            className="border border-gray-800 rounded-lg bg-[#0b0c0f] overflow-hidden"
+                                            className="border border-[var(--border)] rounded-lg bg-[var(--background-secondary)] overflow-hidden"
                                         >
                                             <div
                                                 className="p-4 cursor-pointer"
@@ -379,7 +379,7 @@ export default function CandidateRankingTool() {
                                             >
                                                 <div className="flex items-center justify-between">
                                                     <div className="flex items-center gap-4">
-                                                        <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-800 text-gray-400 font-bold text-sm">
+                                                        <div className="flex items-center justify-center w-8 h-8 rounded-full bg-[var(--background)] text-gray-400 font-bold text-sm">
                                                             {idx + 1}
                                                         </div>
                                                         <div>
@@ -408,7 +408,7 @@ export default function CandidateRankingTool() {
                                             </div>
 
                                             {candidate.isExpanded && (
-                                                <div className="px-4 pb-4 border-t border-gray-800 pt-4">
+                                                <div className="px-4 pb-4 border-t border-[var(--border)] pt-4">
                                                     {/* Match Reasons */}
                                                     {candidate.aiMatchReasons.length > 0 && (
                                                         <div className="mb-4">
@@ -430,7 +430,7 @@ export default function CandidateRankingTool() {
                                                             <p className="text-xs text-gray-400 mb-2">Skills:</p>
                                                             <div className="flex flex-wrap gap-1">
                                                                 {(candidate.applicant?.skills || []).slice(0, 8).map((skill, i) => (
-                                                                    <span key={i} className="px-2 py-0.5 bg-gray-800 text-gray-400 rounded text-xs">
+                                                                    <span key={i} className="px-2 py-0.5 bg-[var(--background)] text-gray-400 rounded text-xs">
                                                                         {skill}
                                                                     </span>
                                                                 ))}
@@ -473,7 +473,7 @@ export default function CandidateRankingTool() {
                             ) : (
                                 <div className="space-y-3">
                                     {applications.map((app) => (
-                                        <div key={app.id} className="p-4 border border-gray-800 rounded-lg bg-[#0b0c0f]">
+                                        <div key={app.id} className="p-4 border border-[var(--border)] rounded-lg bg-[var(--background-secondary)]">
                                             <div className="flex items-center justify-between">
                                                 <div>
                                                     <p className="font-medium text-white">
@@ -483,7 +483,7 @@ export default function CandidateRankingTool() {
                                                         {app.applicant?.job_title || 'No title'}
                                                     </p>
                                                 </div>
-                                                <span className="px-2 py-1 bg-gray-800 text-gray-400 rounded text-xs capitalize">
+                                                <span className="px-2 py-1 bg-[var(--background)] text-gray-400 rounded text-xs capitalize">
                                                     {app.status}
                                                 </span>
                                             </div>

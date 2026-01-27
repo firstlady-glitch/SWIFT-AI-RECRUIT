@@ -133,14 +133,14 @@ export default function ApplicantInterviewsPage() {
                             >
                                 <div className="flex flex-col md:flex-row gap-6">
                                     {/* Date Box */}
-                                    <div className="flex-shrink-0 bg-[#0b0c0f] border border-gray-800 rounded-lg p-4 text-center min-w-[100px] flex flex-col justify-center items-center">
+                                    <div className="flex-shrink-0 bg-[var(--background)] border border-[var(--border)] rounded-lg p-4 text-center min-w-[100px] flex flex-col justify-center items-center">
                                         <div className="text-sm text-[var(--primary-blue)] font-bold uppercase">
                                             {new Date(interview.scheduled_at).toLocaleString('default', { month: 'short' })}
                                         </div>
-                                        <div className="text-3xl font-bold text-white mb-1">
+                                        <div className="text-3xl font-bold text-[var(--foreground)] mb-1">
                                             {new Date(interview.scheduled_at).getDate()}
                                         </div>
-                                        <div className="text-xs text-gray-500">
+                                        <div className="text-xs text-[var(--foreground-secondary)]">
                                             {new Date(interview.scheduled_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                         </div>
                                     </div>
@@ -178,7 +178,7 @@ export default function ApplicantInterviewsPage() {
                                         </div>
 
                                         {/* Interviewer & Action */}
-                                        <div className="flex items-center justify-between pt-4 border-t border-gray-800">
+                                        <div className="flex items-center justify-between pt-4 border-t border-[var(--border)]">
                                             {interview.interviewer ? (
                                                 <div className="flex items-center gap-3">
                                                     {interview.interviewer.profile_image_url ? (
@@ -188,7 +188,7 @@ export default function ApplicantInterviewsPage() {
                                                             alt={interview.interviewer.full_name}
                                                         />
                                                     ) : (
-                                                        <div className="w-8 h-8 rounded-full bg-gray-700" />
+                                                        <div className="w-8 h-8 rounded-full bg-[var(--background)] border border-[var(--border)]" />
                                                     )}
                                                     <div className="text-sm">
                                                         <div className="font-medium">{interview.interviewer.full_name}</div>

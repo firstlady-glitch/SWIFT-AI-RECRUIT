@@ -157,12 +157,12 @@ export default function RecruiterSourcingPage() {
             render: (row) => (
                 <div className="flex flex-wrap gap-1">
                     {row.skills?.slice(0, 3).map((skill, idx) => (
-                        <span key={idx} className="px-2 py-1 bg-gray-800 rounded text-xs">
+                        <span key={idx} className="px-2 py-1 bg-[var(--background-secondary)] border border-[var(--border)] rounded text-xs">
                             {skill}
                         </span>
                     ))}
                     {row.skills && row.skills.length > 3 && (
-                        <span className="px-2 py-1 text-xs text-gray-500">
+                        <span className="px-2 py-1 text-xs text-[var(--foreground-secondary)]">
                             +{row.skills.length - 3}
                         </span>
                     )}
@@ -181,13 +181,13 @@ export default function RecruiterSourcingPage() {
                 <div className="flex items-center gap-2">
                     <button
                         onClick={() => viewCandidateDetails(row.id)}
-                        className="btn btn-sm border border-gray-700 hover:bg-gray-800"
+                        className="btn btn-sm border border-[var(--border)] hover:bg-[var(--background-secondary)]"
                     >
                         View
                     </button>
                     <button
                         onClick={() => handleMessage(row.id)}
-                        className="btn btn-sm bg-[var(--background-secondary)] border border-[var(--border)] hover:bg-gray-800 text-gray-300"
+                        className="btn btn-sm bg-[var(--background-secondary)] border border-[var(--border)] hover:bg-[var(--border)] text-[var(--foreground-secondary)]"
                         title="Send Message"
                     >
                         <MessageSquare className="w-4 h-4" />
@@ -275,9 +275,9 @@ export default function RecruiterSourcingPage() {
                                     </div>
                                     <button
                                         onClick={closeModal}
-                                        className="p-2 hover:bg-gray-800 rounded-lg transition-colors"
+                                        className="p-2 hover:bg-[var(--background)] rounded-lg transition-colors border border-transparent hover:border-[var(--border)]"
                                     >
-                                        <X className="w-5 h-5 text-gray-400" />
+                                        <X className="w-5 h-5 text-[var(--foreground-secondary)]" />
                                     </button>
                                 </div>
 
@@ -385,7 +385,7 @@ export default function RecruiterSourcingPage() {
                                     {selectedCandidate.phone && (
                                         <a
                                             href={`tel:${selectedCandidate.phone}`}
-                                            className="btn border border-gray-700 hover:bg-gray-800 py-3 px-6"
+                                            className="btn border border-[var(--border)] hover:bg-[var(--background)] py-3 px-6"
                                         >
                                             <Phone className="w-4 h-4" />
                                         </a>
@@ -395,7 +395,7 @@ export default function RecruiterSourcingPage() {
                                             href={selectedCandidate.linkedin_url}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="btn border border-gray-700 hover:bg-gray-800 py-3 px-6"
+                                            className="btn border border-[var(--border)] hover:bg-[var(--background)] py-3 px-6"
                                         >
                                             <Linkedin className="w-4 h-4" />
                                         </a>

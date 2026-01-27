@@ -247,8 +247,8 @@ export default function RecruiterSettings() {
     if (isLoading) {
         return (
             <div className="p-8 max-w-6xl mx-auto">
-                <div className="h-8 w-48 bg-gray-800 rounded animate-pulse mb-8" />
-                <div className="h-96 bg-gray-800 rounded-xl animate-pulse" />
+                <div className="h-8 w-48 bg-[var(--background-secondary)] rounded animate-pulse mb-8" />
+                <div className="h-96 bg-[var(--background-secondary)] rounded-xl animate-pulse" />
             </div>
         );
     }
@@ -380,7 +380,7 @@ export default function RecruiterSettings() {
                                             {logoPreview ? (
                                                 <img src={logoPreview} alt="Agency Logo" className="w-full h-full object-cover" />
                                             ) : (
-                                                <Building2 className="w-10 h-10 text-gray-600" />
+                                                <Building2 className="w-10 h-10 text-[var(--foreground-secondary)]" />
                                             )}
                                         </div>
                                         <div>
@@ -403,7 +403,7 @@ export default function RecruiterSettings() {
                                             >
                                                 Change Logo
                                             </label>
-                                            <p className="text-xs text-gray-500 mt-2">PNG, JPG up to 2MB</p>
+                                            <p className="text-xs text-[var(--foreground-secondary)] mt-2">PNG, JPG up to 2MB</p>
                                         </div>
                                     </div>
                                 </div>

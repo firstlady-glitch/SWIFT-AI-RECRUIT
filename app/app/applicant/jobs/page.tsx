@@ -142,13 +142,13 @@ export default function ApplicantJobsPage() {
                                 <>
                                     <Link
                                         href={`/app/applicant/${dashboardId}/applications`}
-                                        className="text-gray-400 hover:text-white transition-colors"
+                                        className="text-[var(--foreground-secondary)] hover:text-[var(--foreground)] transition-colors"
                                     >
                                         My Applications
                                     </Link>
                                     <Link
                                         href={`/app/applicant/${dashboardId}/interviews`}
-                                        className="text-gray-400 hover:text-white transition-colors"
+                                        className="text-[var(--foreground-secondary)] hover:text-[var(--foreground)] transition-colors"
                                     >
                                         Interviews
                                     </Link>
@@ -172,12 +172,12 @@ export default function ApplicantJobsPage() {
                                 <div className="relative">
                                     <button
                                         onClick={() => setShowUserMenu(!showUserMenu)}
-                                        className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-800 transition-all"
+                                        className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-[var(--background-secondary)] transition-all"
                                     >
-                                        <div className="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center">
-                                            <User className="w-4 h-4 text-gray-300" />
+                                        <div className="w-8 h-8 rounded-full bg-[var(--background)] flex items-center justify-center">
+                                            <User className="w-4 h-4 text-[var(--foreground-secondary)]" />
                                         </div>
-                                        <ChevronDown className="w-4 h-4 text-gray-400" />
+                                        <ChevronDown className="w-4 h-4 text-[var(--foreground-secondary)]" />
                                     </button>
 
                                     {showUserMenu && (
@@ -187,13 +187,13 @@ export default function ApplicantJobsPage() {
                                                 onClick={() => setShowUserMenu(false)}
                                             />
                                             <div className="absolute right-0 top-full mt-2 w-48 bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl shadow-xl z-50 overflow-hidden">
-                                                <div className="p-3 border-b border-gray-800">
-                                                    <p className="text-sm font-medium text-white truncate">{user.email}</p>
+                                                <div className="p-3 border-b border-[var(--border)]">
+                                                    <p className="text-sm font-medium text-[var(--foreground)] truncate">{user.email}</p>
                                                 </div>
                                                 {dashboardId && (
                                                     <Link
                                                         href={`/app/applicant/${dashboardId}/settings`}
-                                                        className="flex items-center gap-3 px-4 py-3 text-gray-400 hover:bg-gray-800 hover:text-white transition-all"
+                                                        className="flex items-center gap-3 px-4 py-3 text-[var(--foreground-secondary)] hover:bg-[var(--background)] hover:text-[var(--foreground)] transition-all"
                                                         onClick={() => setShowUserMenu(false)}
                                                     >
                                                         <User className="w-4 h-4" />
@@ -202,7 +202,7 @@ export default function ApplicantJobsPage() {
                                                 )}
                                                 <button
                                                     onClick={handleLogout}
-                                                    className="flex items-center gap-3 px-4 py-3 text-gray-400 hover:bg-red-500/10 hover:text-red-400 transition-all w-full"
+                                                    className="flex items-center gap-3 px-4 py-3 text-[var(--foreground-secondary)] hover:bg-red-500/10 hover:text-red-400 transition-all w-full"
                                                 >
                                                     <LogOut className="w-4 h-4" />
                                                     Sign Out
@@ -222,7 +222,7 @@ export default function ApplicantJobsPage() {
                 <div className="max-w-7xl mx-auto">
                     <div className="mb-8">
                         <h1 className="text-3xl font-bold mb-2">Find Your Next Role</h1>
-                        <p className="text-gray-400">Browse open positions and apply with one click.</p>
+                        <p className="text-[var(--foreground-secondary)]">Browse open positions and apply with one click.</p>
                     </div>
 
                     {/* Search & Filters */}
@@ -231,7 +231,7 @@ export default function ApplicantJobsPage() {
                             <div className="md:col-span-2">
                                 <label className="block text-sm font-medium mb-2">Search</label>
                                 <div className="relative">
-                                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
+                                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--foreground-secondary)]" />
                                     <input
                                         type="text"
                                         value={searchQuery}
@@ -291,28 +291,28 @@ export default function ApplicantJobsPage() {
                                                 />
                                             ) : (
                                                 <div className="w-12 h-12 rounded-lg bg-[var(--background)] border border-[var(--border)] flex items-center justify-center">
-                                                    <Building2 className="w-6 h-6 text-gray-500" />
+                                                    <Building2 className="w-6 h-6 text-[var(--foreground-secondary)]" />
                                                 </div>
                                             )}
                                             <div className="flex-1">
-                                                <h3 className="font-bold text-white group-hover:text-[var(--primary-blue)] transition-colors mb-1">
+                                                <h3 className="font-bold text-[var(--foreground)] group-hover:text-[var(--primary-blue)] transition-colors mb-1">
                                                     {job.title}
                                                 </h3>
-                                                <p className="text-sm text-gray-400">{job.organization?.name}</p>
+                                                <p className="text-sm text-[var(--foreground-secondary)]">{job.organization?.name}</p>
                                             </div>
                                         </div>
 
                                         <div className="space-y-2 mb-4">
-                                            <div className="flex items-center gap-2 text-sm text-gray-400">
+                                            <div className="flex items-center gap-2 text-sm text-[var(--foreground-secondary)]">
                                                 <MapPin className="w-4 h-4" />
                                                 {job.location || 'Remote'}
                                             </div>
-                                            <div className="flex items-center gap-2 text-sm text-gray-400">
+                                            <div className="flex items-center gap-2 text-sm text-[var(--foreground-secondary)]">
                                                 <Briefcase className="w-4 h-4" />
                                                 {job.type || 'Full-time'}
                                             </div>
                                             {(job.salary_range_min || job.salary_range_max) && (
-                                                <div className="flex items-center gap-2 text-sm text-gray-400">
+                                                <div className="flex items-center gap-2 text-sm text-[var(--foreground-secondary)]">
                                                     <DollarSign className="w-4 h-4" />
                                                     {job.salary_range_min && `${(job.salary_range_min / 1000).toFixed(0)}k`}
                                                     {job.salary_range_max && ` - ${(job.salary_range_max / 1000).toFixed(0)}k`}
@@ -320,7 +320,7 @@ export default function ApplicantJobsPage() {
                                             )}
                                         </div>
 
-                                        <div className="pt-4 border-t border-gray-800">
+                                        <div className="pt-4 border-t border-[var(--border)]">
                                             <span className="text-[var(--primary-blue)] text-sm font-medium group-hover:underline flex items-center gap-1">
                                                 View Details <ArrowRight className="w-4 h-4" />
                                             </span>

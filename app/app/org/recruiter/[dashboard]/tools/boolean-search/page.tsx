@@ -236,7 +236,7 @@ export default function BooleanSearchTool() {
                                                 onClick={() => handleSelectJob(job)}
                                                 className={`w-full text-left p-3 rounded-lg border transition-all ${selectedJob?.id === job.id
                                                     ? 'border-indigo-500 bg-indigo-500/10'
-                                                    : 'border-gray-800 bg-[#0b0c0f] hover:border-gray-700'
+                                                    : 'border-[var(--border)] bg-[var(--background-secondary)] hover:border-[var(--border)]'
                                                     }`}
                                             >
                                                 <div className="flex items-center gap-2">
@@ -256,7 +256,7 @@ export default function BooleanSearchTool() {
                                 type="text"
                                 value={role}
                                 onChange={(e) => { setRole(e.target.value); setSelectedJob(null); }}
-                                className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm focus:border-[var(--primary-blue)] focus:outline-none"
+                                className="w-full bg-[var(--background-secondary)] border border-[var(--border)] rounded-lg p-3 text-sm focus:border-[var(--primary-blue)] focus:outline-none"
                                 placeholder="e.g. Java Architect"
                             />
                         </div>
@@ -266,7 +266,7 @@ export default function BooleanSearchTool() {
                             <textarea
                                 value={requirements}
                                 onChange={(e) => setRequirements(e.target.value)}
-                                className="w-full h-24 bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm focus:border-[var(--primary-blue)] focus:outline-none resize-none"
+                                className="w-full h-24 bg-[var(--background-secondary)] border border-[var(--border)] rounded-lg p-3 text-sm focus:border-[var(--primary-blue)] focus:outline-none resize-none"
                                 placeholder="e.g. Spring Boot, Microservices, 10+ years, Kubernetes"
                             />
                         </div>
@@ -278,7 +278,7 @@ export default function BooleanSearchTool() {
                                     type="text"
                                     value={location}
                                     onChange={(e) => setLocation(e.target.value)}
-                                    className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm focus:border-[var(--primary-blue)] focus:outline-none"
+                                    className="w-full bg-[var(--background-secondary)] border border-[var(--border)] rounded-lg p-3 text-sm focus:border-[var(--primary-blue)] focus:outline-none"
                                     placeholder="e.g. San Francisco"
                                 />
                             </div>
@@ -288,14 +288,14 @@ export default function BooleanSearchTool() {
                                 <div className="flex gap-2">
                                     <button
                                         onClick={() => setPlatform('linkedin')}
-                                        className={`flex-1 p-2 rounded-lg border transition-all ${platform === 'linkedin' ? 'border-blue-500 bg-blue-500/10' : 'border-gray-800 bg-[#0b0c0f]'
+                                        className={`flex-1 p-2 rounded-lg border transition-all ${platform === 'linkedin' ? 'border-blue-500 bg-blue-500/10' : 'border-[var(--border)] bg-[var(--background-secondary)]'
                                             }`}
                                     >
                                         <Linkedin className="w-5 h-5 mx-auto text-blue-400" />
                                     </button>
                                     <button
                                         onClick={() => setPlatform('google')}
-                                        className={`flex-1 p-2 rounded-lg border transition-all ${platform === 'google' ? 'border-green-500 bg-green-500/10' : 'border-gray-800 bg-[#0b0c0f]'
+                                        className={`flex-1 p-2 rounded-lg border transition-all ${platform === 'google' ? 'border-green-500 bg-green-500/10' : 'border-[var(--border)] bg-[var(--background-secondary)]'
                                             }`}
                                     >
                                         <Globe className="w-5 h-5 mx-auto text-green-400" />

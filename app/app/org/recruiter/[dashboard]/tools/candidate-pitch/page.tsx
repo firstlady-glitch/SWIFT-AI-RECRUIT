@@ -37,6 +37,7 @@ export default function CandidatePitchTool() {
     const [isLoading, setIsLoading] = useState(false);
     const [isCopied, setIsCopied] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [recruiter, setRecruiter] = useState<{ full_name: string | null; job_title: string | null } | null>(null);
 
     // Fetch candidates and jobs
     useEffect(() => {
@@ -52,6 +53,17 @@ export default function CandidatePitchTool() {
                     .limit(100);
 
                 setProfiles(profilesData || []);
+
+                // Fetch current user (recruiter) details
+                const { data: { user } } = await supabase.auth.getUser();
+                if (user) {
+                    const { data: profile } = await supabase
+                        .from('profiles')
+                        .select('full_name, job_title')
+                        .eq('id', user.id)
+                        .single();
+                    if (profile) setRecruiter(profile);
+                }
 
                 // Fetch jobs
                 const { data: jobsData } = await supabase
@@ -143,6 +155,8 @@ Skills: ${profile.skills?.join(', ') || 'Various'}
             ` : ''}
             
             Make the hiring manager want to meet this candidate TODAY.
+            
+            Sender: ${recruiter?.full_name || 'Recruiter'}, ${recruiter?.job_title || ''}
         `;
 
         try {
@@ -204,7 +218,7 @@ Skills: ${profile.skills?.join(', ') || 'Various'}
                     <div className="space-y-6">
                         {/* Candidate Selection */}
                         <div className="card p-6 border border-[var(--border)] bg-[var(--background-secondary)]">
-                            <label className="block text-sm font-medium mb-2 text-gray-300">Select Candidate</label>
+                            <label className="block text-sm font-medium mb-2 text-[var(--foreground-secondary)]">Select Candidate</label>
                             {isLoadingData ? (
                                 <div className="flex items-center justify-center py-3">
                                     <div className="animate-spin rounded-full h-5 w-5 border-2 border-[var(--primary-blue)] border-t-transparent" />
@@ -219,7 +233,7 @@ Skills: ${profile.skills?.join(', ') || 'Various'}
                                             onClick={() => handleSelectProfile(profile)}
                                             className={`w-full text-left p-3 rounded-lg border transition-all ${selectedProfile?.id === profile.id
                                                 ? 'border-orange-500 bg-orange-500/10'
-                                                : 'border-gray-800 bg-[#0b0c0f] hover:border-gray-700'
+                                                : 'border-[var(--border)] bg-[var(--background-secondary)] hover:border-[var(--border)]'
                                                 }`}
                                         >
                                             <div className="flex items-center gap-2">
@@ -237,14 +251,14 @@ Skills: ${profile.skills?.join(', ') || 'Various'}
 
                         {/* Target Job */}
                         <div className="card p-6 border border-[var(--border)] bg-[var(--background-secondary)]">
-                            <label className="block text-sm font-medium mb-2 text-gray-300">Target Job (Optional)</label>
+                            <label className="block text-sm font-medium mb-2 text-[var(--foreground-secondary)]">Target Job (Optional)</label>
                             <select
                                 value={selectedJob?.id || ''}
                                 onChange={(e) => {
                                     const job = jobs.find(j => j.id === e.target.value);
                                     setSelectedJob(job || null);
                                 }}
-                                className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm focus:border-[var(--primary-blue)] focus:outline-none"
+                                className="w-full bg-[var(--background)] border border-[var(--border)] rounded-lg p-3 text-sm focus:border-[var(--primary-blue)] focus:outline-none"
                             >
                                 <option value="">-- General pitch --</option>
                                 {jobs.map((job) => (
@@ -256,22 +270,22 @@ Skills: ${profile.skills?.join(', ') || 'Various'}
                         </div>
 
                         <div className="card p-6 border border-[var(--border)] bg-[var(--background-secondary)]">
-                            <label className="block text-sm font-medium mb-2 text-gray-300">Candidate Name</label>
+                            <label className="block text-sm font-medium mb-2 text-[var(--foreground-secondary)]">Candidate Name</label>
                             <input
                                 type="text"
                                 value={candidateName}
                                 onChange={(e) => { setCandidateName(e.target.value); setSelectedProfile(null); }}
-                                className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm focus:border-[var(--primary-blue)] focus:outline-none"
+                                className="w-full bg-[var(--background)] border border-[var(--border)] rounded-lg p-3 text-sm focus:border-[var(--primary-blue)] focus:outline-none"
                                 placeholder="Sam Taylor"
                             />
                         </div>
 
                         <div className="card p-6 border border-[var(--border)] bg-[var(--background-secondary)]">
-                            <label className="block text-sm font-medium mb-2 text-gray-300">Key Skills & Experience</label>
+                            <label className="block text-sm font-medium mb-2 text-[var(--foreground-secondary)]">Key Skills & Experience</label>
                             <textarea
                                 value={keySkills}
                                 onChange={(e) => setKeySkills(e.target.value)}
-                                className="w-full h-28 bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm focus:border-[var(--primary-blue)] focus:outline-none resize-none"
+                                className="w-full h-28 bg-[var(--background)] border border-[var(--border)] rounded-lg p-3 text-sm focus:border-[var(--primary-blue)] focus:outline-none resize-none"
                                 placeholder="e.g. 5 yrs in React, led team of 10, built SaaS from 0 to 1M ARR."
                             />
                         </div>
@@ -282,7 +296,7 @@ Skills: ${profile.skills?.join(', ') || 'Various'}
                             <div className="grid grid-cols-3 gap-2">
                                 <button
                                     onClick={() => setPitchStyle('email')}
-                                    className={`p-3 rounded-lg border text-center transition-all ${pitchStyle === 'email' ? 'border-orange-500 bg-orange-500/10' : 'border-gray-800 bg-[#0b0c0f]'
+                                    className={`p-3 rounded-lg border text-center transition-all ${pitchStyle === 'email' ? 'border-orange-500 bg-orange-500/10' : 'border-[var(--border)] bg-[var(--background-secondary)]'
                                         }`}
                                 >
                                     <p className="text-sm font-medium text-white">Email</p>
@@ -290,7 +304,7 @@ Skills: ${profile.skills?.join(', ') || 'Various'}
                                 </button>
                                 <button
                                     onClick={() => setPitchStyle('slack')}
-                                    className={`p-3 rounded-lg border text-center transition-all ${pitchStyle === 'slack' ? 'border-orange-500 bg-orange-500/10' : 'border-gray-800 bg-[#0b0c0f]'
+                                    className={`p-3 rounded-lg border text-center transition-all ${pitchStyle === 'slack' ? 'border-orange-500 bg-orange-500/10' : 'border-[var(--border)] bg-[var(--background-secondary)]'
                                         }`}
                                 >
                                     <p className="text-sm font-medium text-white">Slack</p>
@@ -298,7 +312,7 @@ Skills: ${profile.skills?.join(', ') || 'Various'}
                                 </button>
                                 <button
                                     onClick={() => setPitchStyle('presentation')}
-                                    className={`p-3 rounded-lg border text-center transition-all ${pitchStyle === 'presentation' ? 'border-orange-500 bg-orange-500/10' : 'border-gray-800 bg-[#0b0c0f]'
+                                    className={`p-3 rounded-lg border text-center transition-all ${pitchStyle === 'presentation' ? 'border-orange-500 bg-orange-500/10' : 'border-[var(--border)] bg-[var(--background-secondary)]'
                                         }`}
                                 >
                                     <p className="text-sm font-medium text-white">Deck</p>
@@ -332,7 +346,7 @@ Skills: ${profile.skills?.join(', ') || 'Various'}
                                 <>
                                     <button
                                         onClick={copyToClipboard}
-                                        className="absolute top-4 right-4 p-2 bg-gray-800 hover:bg-gray-700 rounded-lg text-gray-400 hover:text-white transition-colors z-10"
+                                        className="absolute top-4 right-4 p-2 bg-[var(--background)] hover:bg-[var(--background-secondary)] rounded-lg text-gray-400 hover:text-white transition-colors z-10"
                                         title="Copy to clipboard"
                                     >
                                         {isCopied ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}

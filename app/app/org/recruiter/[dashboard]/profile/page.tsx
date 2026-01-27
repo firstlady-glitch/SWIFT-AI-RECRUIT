@@ -64,36 +64,36 @@ export default function RecruiterProfilePage() {
                     <div className="p-8 relative">
                         {/* Avatar */}
                         <div className="absolute -top-16 left-8">
-                            <div className="w-32 h-32 rounded-full bg-gray-800 border-4 border-[var(--background-secondary)] flex items-center justify-center overflow-hidden">
+                            <div className="w-32 h-32 rounded-full bg-[var(--background)] border-4 border-[var(--background-secondary)] flex items-center justify-center overflow-hidden">
                                 {profile.profile_image_url ? (
                                     <img src={profile.profile_image_url} alt="" className="w-full h-full object-cover" />
                                 ) : (
-                                    <User className="w-16 h-16 text-gray-500" />
+                                    <User className="w-16 h-16 text-[var(--foreground-secondary)]" />
                                 )}
                             </div>
                         </div>
 
                         <div className="mt-16">
                             <h1 className="text-3xl font-bold text-white mb-1">{profile.full_name}</h1>
-                            <p className="text-xl text-gray-400 mb-6">{profile.job_title || 'Recruiter'}</p>
+                            <p className="text-xl text-[var(--foreground-secondary)] mb-6">{profile.job_title || 'Recruiter'}</p>
 
                             <div className="grid md:grid-cols-2 gap-8">
                                 <div className="space-y-4">
-                                    <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider">Contact Info</h3>
+                                    <h3 className="text-sm font-semibold text-[var(--foreground-secondary)] uppercase tracking-wider">Contact Info</h3>
                                     <div className="space-y-3">
-                                        <div className="flex items-center gap-3 text-gray-300">
-                                            <Mail className="w-4 h-4 text-gray-500" />
+                                        <div className="flex items-center gap-3 text-[var(--foreground-secondary)]">
+                                            <Mail className="w-4 h-4 text-[var(--foreground-secondary)]" />
                                             {profile.email}
                                         </div>
                                         {profile.phone && (
-                                            <div className="flex items-center gap-3 text-gray-300">
-                                                <Phone className="w-4 h-4 text-gray-500" />
+                                            <div className="flex items-center gap-3 text-[var(--foreground-secondary)]">
+                                                <Phone className="w-4 h-4 text-[var(--foreground-secondary)]" />
                                                 {profile.phone}
                                             </div>
                                         )}
                                         {profile.location && (
-                                            <div className="flex items-center gap-3 text-gray-300">
-                                                <MapPin className="w-4 h-4 text-gray-500" />
+                                            <div className="flex items-center gap-3 text-[var(--foreground-secondary)]">
+                                                <MapPin className="w-4 h-4 text-[var(--foreground-secondary)]" />
                                                 {profile.location}
                                             </div>
                                         )}
@@ -113,17 +113,17 @@ export default function RecruiterProfilePage() {
                                 </div>
 
                                 <div className="space-y-4">
-                                    <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider">Professional Info</h3>
+                                    <h3 className="text-sm font-semibold text-[var(--foreground-secondary)] uppercase tracking-wider">Professional Info</h3>
                                     <div>
-                                        <p className="text-sm text-gray-400 mb-1">Experience</p>
+                                        <p className="text-sm text-[var(--foreground-secondary)] mb-1">Experience</p>
                                         <p className="text-white">{profile.experience_years} years</p>
                                     </div>
                                     {profile.skills && profile.skills.length > 0 && (
                                         <div>
-                                            <p className="text-sm text-gray-400 mb-2">Specializations</p>
+                                            <p className="text-sm text-[var(--foreground-secondary)] mb-2">Specializations</p>
                                             <div className="flex flex-wrap gap-2">
                                                 {profile.skills.map((skill: string, i: number) => (
-                                                    <span key={i} className="px-3 py-1 bg-gray-800 rounded-full text-sm text-gray-300">
+                                                    <span key={i} className="px-3 py-1 bg-[var(--background)] border border-[var(--border)] rounded-full text-sm text-[var(--foreground-secondary)]">
                                                         {skill}
                                                     </span>
                                                 ))}

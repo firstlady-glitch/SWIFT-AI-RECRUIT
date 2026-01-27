@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import { ArrowLeft, Sparkles, Send, Copy, Check, Save, DollarSign } from 'lucide-react';
 import Link from 'next/link';
@@ -27,6 +27,37 @@ export default function JobDescriptionTool() {
     const [isCopied, setIsCopied] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [saveSuccess, setSaveSuccess] = useState(false);
+    const [organization, setOrganization] = useState<any>(null);
+
+    useEffect(() => {
+        const fetchOrg = async () => {
+            const supabase = createClient();
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) return;
+
+            const { data: profile } = await supabase
+                .from('profiles')
+                .select('organization_id')
+                .eq('id', user.id)
+                .single();
+
+            if (profile?.organization_id) {
+                const { data: org } = await supabase
+                    .from('organizations')
+                    .select('*')
+                    .eq('id', profile.organization_id)
+                    .single();
+
+                if (org) {
+                    setOrganization(org);
+                    if (org.location) {
+                        setLocation(org.location);
+                    }
+                }
+            }
+        };
+        fetchOrg();
+    }, []);
 
     const handleGenerate = async () => {
         if (!title) return;
@@ -40,6 +71,10 @@ export default function JobDescriptionTool() {
             You are an expert HR specialist and compensation analyst.
             Generate a comprehensive Job Description for a ${title}.
             
+            Organization: ${organization?.name || 'Unknown Company'}
+            ${organization?.description ? `About the Company: ${organization.description}` : ''}
+            ${organization?.industry ? `Industry: ${organization.industry}` : ''}
+
             Keywords/Requirements to include: ${keywords || 'Not specified'}
             Location: ${location || 'Remote'}
             Job Type: ${jobType}
@@ -182,7 +217,7 @@ export default function JobDescriptionTool() {
                                 type="text"
                                 value={title}
                                 onChange={(e) => setTitle(e.target.value)}
-                                className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm focus:border-[var(--primary-blue)] focus:outline-none"
+                                className="w-full bg-[var(--background-secondary)] border border-[var(--border)] rounded-lg p-3 text-sm focus:border-[var(--primary-blue)] focus:outline-none"
                                 placeholder="e.g. Senior React Developer"
                             />
                         </div>
@@ -193,7 +228,7 @@ export default function JobDescriptionTool() {
                                 type="text"
                                 value={location}
                                 onChange={(e) => setLocation(e.target.value)}
-                                className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm focus:border-[var(--primary-blue)] focus:outline-none"
+                                className="w-full bg-[var(--background-secondary)] border border-[var(--border)] rounded-lg p-3 text-sm focus:border-[var(--primary-blue)] focus:outline-none"
                                 placeholder="e.g. New York, NY or Remote"
                             />
                         </div>
@@ -203,7 +238,7 @@ export default function JobDescriptionTool() {
                             <select
                                 value={jobType}
                                 onChange={(e) => setJobType(e.target.value)}
-                                className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm focus:border-[var(--primary-blue)] focus:outline-none"
+                                className="w-full bg-[var(--background-secondary)] border border-[var(--border)] rounded-lg p-3 text-sm focus:border-[var(--primary-blue)] focus:outline-none"
                             >
                                 <option>Full-time</option>
                                 <option>Part-time</option>
@@ -218,7 +253,7 @@ export default function JobDescriptionTool() {
                             <textarea
                                 value={keywords}
                                 onChange={(e) => setKeywords(e.target.value)}
-                                className="w-full h-24 bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm focus:border-[var(--primary-blue)] focus:outline-none resize-none"
+                                className="w-full h-24 bg-[var(--background-secondary)] border border-[var(--border)] rounded-lg p-3 text-sm focus:border-[var(--primary-blue)] focus:outline-none resize-none"
                                 placeholder="e.g. TypeScript, Node.js, 5+ years experience, remote..."
                             />
                         </div>
@@ -276,7 +311,7 @@ export default function JobDescriptionTool() {
                                 <div className="relative bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6">
                                     <button
                                         onClick={copyToClipboard}
-                                        className="absolute top-4 right-4 p-2 bg-gray-800 hover:bg-gray-700 rounded-lg text-gray-400 hover:text-white transition-colors"
+                                        className="absolute top-4 right-4 p-2 bg-[var(--background)] hover:bg-[var(--background-secondary)] rounded-lg text-gray-400 hover:text-white transition-colors"
                                     >
                                         {isCopied ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
                                     </button>

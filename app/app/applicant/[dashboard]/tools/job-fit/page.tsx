@@ -246,7 +246,7 @@ export default function JobFitPredictorTool() {
                                             onClick={() => setSelectedJob(job)}
                                             className={`w-full text-left p-4 rounded-lg border transition-all ${selectedJob?.id === job.id
                                                 ? 'border-[var(--primary-blue)] bg-[var(--primary-blue)]/10'
-                                                : 'border-gray-800 bg-[#0b0c0f] hover:border-gray-700'
+                                                : 'border-[var(--border)] bg-[var(--background-secondary)] hover:border-[var(--border)]'
                                                 }`}
                                         >
                                             <div className="flex items-start gap-3">
@@ -300,7 +300,7 @@ export default function JobFitPredictorTool() {
 
                                 {/* Match Reasons */}
                                 {analysis.matchReasons.length > 0 && (
-                                    <div className="p-4 bg-[#0b0c0f] rounded-lg border border-gray-800">
+                                    <div className="p-4 bg-[var(--background-secondary)] rounded-lg border border-[var(--border)]">
                                         <div className="flex items-center gap-2 text-sm text-green-400 mb-2">
                                             <CheckCircle className="w-4 h-4" />
                                             Why You&apos;re a Good Fit
@@ -315,7 +315,7 @@ export default function JobFitPredictorTool() {
 
                                 {/* Strength Areas */}
                                 {analysis.strengthAreas.length > 0 && (
-                                    <div className="p-4 bg-[#0b0c0f] rounded-lg border border-gray-800">
+                                    <div className="p-4 bg-[var(--background-secondary)] rounded-lg border border-[var(--border)]">
                                         <div className="text-sm text-[var(--primary-blue)] mb-2">Your Strengths</div>
                                         <div className="flex flex-wrap gap-2">
                                             {analysis.strengthAreas.map((area, idx) => (
@@ -329,7 +329,7 @@ export default function JobFitPredictorTool() {
 
                                 {/* Missing Skills */}
                                 {analysis.missingSkills.length > 0 && (
-                                    <div className="p-4 bg-[#0b0c0f] rounded-lg border border-gray-800">
+                                    <div className="p-4 bg-[var(--background-secondary)] rounded-lg border border-[var(--border)]">
                                         <div className="flex items-center gap-2 text-sm text-orange-400 mb-2">
                                             <XCircle className="w-4 h-4" />
                                             Skills to Develop
@@ -345,7 +345,7 @@ export default function JobFitPredictorTool() {
                                 )}
 
                                 {/* Salary Fit */}
-                                <div className="p-4 bg-[#0b0c0f] rounded-lg border border-gray-800">
+                                <div className="p-4 bg-[var(--background-secondary)] rounded-lg border border-[var(--border)]">
                                     <div className="text-sm text-gray-400 mb-1">Salary Fit</div>
                                     <p className="text-gray-300 text-sm">{analysis.salaryFit}</p>
                                 </div>

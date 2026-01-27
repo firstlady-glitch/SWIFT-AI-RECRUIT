@@ -123,17 +123,17 @@ export default function RecruiterMarketplacePage() {
                 <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-4 text-center">
                     <Briefcase className="w-6 h-6 mx-auto mb-2 text-blue-500" />
                     <p className="text-2xl font-bold">{jobs.length}</p>
-                    <p className="text-sm text-gray-500">Available Jobs</p>
+                    <p className="text-sm text-[var(--foreground-secondary)]">Available Jobs</p>
                 </div>
                 <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-4 text-center">
                     <Target className="w-6 h-6 mx-auto mb-2 text-orange-500" />
                     <p className="text-2xl font-bold">{sourcingJobs.length}</p>
-                    <p className="text-sm text-gray-500">Jobs Sourcing</p>
+                    <p className="text-sm text-[var(--foreground-secondary)]">Jobs Sourcing</p>
                 </div>
                 <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-4 text-center">
                     <Star className="w-6 h-6 mx-auto mb-2 text-yellow-500" />
                     <p className="text-2xl font-bold">0</p>
-                    <p className="text-sm text-gray-500">Placements</p>
+                    <p className="text-sm text-[var(--foreground-secondary)]">Placements</p>
                 </div>
             </div>
 
@@ -166,22 +166,22 @@ export default function RecruiterMarketplacePage() {
                 {filteredJobs.map((job) => {
                     const isSourcing = sourcingJobs.includes(job.id);
                     return (
-                        <div key={job.id} className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6 hover:border-gray-700 transition-colors">
+                        <div key={job.id} className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6 hover:border-[var(--primary-blue)] transition-colors">
                             <div className="flex items-start gap-4 mb-4">
-                                <div className="w-12 h-12 rounded-xl bg-gray-800 flex items-center justify-center overflow-hidden flex-shrink-0">
+                                <div className="w-12 h-12 rounded-xl bg-[var(--background)] border border-[var(--border)] flex items-center justify-center overflow-hidden flex-shrink-0">
                                     {job.organization?.logo_url ? (
                                         <img src={job.organization.logo_url} alt="" className="w-full h-full object-cover" />
                                     ) : (
-                                        <Building2 className="w-6 h-6 text-gray-500" />
+                                        <Building2 className="w-6 h-6 text-[var(--foreground-secondary)]" />
                                     )}
                                 </div>
                                 <div className="flex-1 min-w-0">
-                                    <h3 className="font-medium text-white truncate">{job.title}</h3>
-                                    <p className="text-sm text-gray-400">{job.organization?.name}</p>
+                                    <h3 className="font-medium text-[var(--foreground)] truncate">{job.title}</h3>
+                                    <p className="text-sm text-[var(--foreground-secondary)]">{job.organization?.name}</p>
                                 </div>
                             </div>
 
-                            <div className="space-y-2 text-sm text-gray-400 mb-4">
+                            <div className="space-y-2 text-sm text-[var(--foreground-secondary)] mb-4">
                                 {job.location && (
                                     <p className="flex items-center gap-2">
                                         <MapPin className="w-4 h-4" /> {job.location}
@@ -194,7 +194,7 @@ export default function RecruiterMarketplacePage() {
                                     </p>
                                 )}
                                 {job.type && (
-                                    <span className="inline-block px-2 py-0.5 bg-gray-800 rounded text-xs">{job.type}</span>
+                                    <span className="inline-block px-2 py-0.5 bg-[var(--background)] border border-[var(--border)] rounded text-xs">{job.type}</span>
                                 )}
                             </div>
 

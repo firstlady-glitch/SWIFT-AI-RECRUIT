@@ -204,7 +204,7 @@ export default function EmployerInterviewTool() {
                                         setSelectedJob(job || null);
                                         if (job) setTitle('');
                                     }}
-                                    className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm focus:border-[var(--primary-blue)] focus:outline-none"
+                                    className="w-full bg-[var(--background-secondary)] border border-[var(--border)] rounded-lg p-3 text-sm focus:border-[var(--primary-blue)] focus:outline-none"
                                 >
                                     <option value="">-- Select from your jobs --</option>
                                     {jobs.map((job) => (
@@ -223,7 +223,7 @@ export default function EmployerInterviewTool() {
                                     type="text"
                                     value={title}
                                     onChange={(e) => setTitle(e.target.value)}
-                                    className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm focus:border-[var(--primary-blue)] focus:outline-none"
+                                    className="w-full bg-[var(--background-secondary)] border border-[var(--border)] rounded-lg p-3 text-sm focus:border-[var(--primary-blue)] focus:outline-none"
                                     placeholder="e.g. Backend Engineer"
                                 />
                             </div>
@@ -235,7 +235,7 @@ export default function EmployerInterviewTool() {
                                 <select
                                     value={level}
                                     onChange={(e) => setLevel(e.target.value)}
-                                    className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm focus:border-[var(--primary-blue)] focus:outline-none"
+                                    className="w-full bg-[var(--background-secondary)] border border-[var(--border)] rounded-lg p-3 text-sm focus:border-[var(--primary-blue)] focus:outline-none"
                                 >
                                     <option>Junior / Entry Level</option>
                                     <option>Mid-Level</option>
@@ -250,7 +250,7 @@ export default function EmployerInterviewTool() {
                                 <select
                                     value={interviewRound}
                                     onChange={(e) => setInterviewRound(e.target.value)}
-                                    className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm focus:border-[var(--primary-blue)] focus:outline-none"
+                                    className="w-full bg-[var(--background-secondary)] border border-[var(--border)] rounded-lg p-3 text-sm focus:border-[var(--primary-blue)] focus:outline-none"
                                 >
                                     <option value="1">Round 1 - Initial Screen</option>
                                     <option value="2">Round 2 - Technical Deep Dive</option>
@@ -284,7 +284,7 @@ export default function EmployerInterviewTool() {
                                 <>
                                     <button
                                         onClick={copyToClipboard}
-                                        className="absolute top-4 right-4 p-2 bg-gray-800 hover:bg-gray-700 rounded-lg text-gray-400 hover:text-white transition-colors z-10"
+                                        className="absolute top-4 right-4 p-2 bg-[var(--background)] hover:bg-[var(--background-secondary)] rounded-lg text-gray-400 hover:text-white transition-colors z-10"
                                         title="Copy to clipboard"
                                     >
                                         {isCopied ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}

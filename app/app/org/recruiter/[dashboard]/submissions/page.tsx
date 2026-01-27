@@ -88,10 +88,10 @@ export default function RecruiterSubmissionsPage() {
     if (isLoading) {
         return (
             <div className="max-w-6xl mx-auto p-6">
-                <div className="h-8 w-48 bg-gray-800 rounded animate-pulse mb-6" />
+                <div className="h-8 w-48 bg-[var(--background-secondary)] rounded animate-pulse mb-6" />
                 <div className="grid grid-cols-4 gap-4 mb-8">
                     {[...Array(4)].map((_, i) => (
-                        <div key={i} className="h-24 bg-gray-800 rounded-xl animate-pulse" />
+                        <div key={i} className="h-24 bg-[var(--background-secondary)] rounded-xl animate-pulse" />
                     ))}
                 </div>
             </div>
@@ -131,37 +131,37 @@ export default function RecruiterSubmissionsPage() {
                 <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-4 text-center">
                     <Eye className="w-6 h-6 mx-auto mb-2 text-blue-500" />
                     <p className="text-2xl font-bold">{stats.clicks}</p>
-                    <p className="text-sm text-gray-500">Link Clicks</p>
+                    <p className="text-sm text-[var(--foreground-secondary)]">Link Clicks</p>
                 </div>
                 <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-4 text-center">
                     <Users className="w-6 h-6 mx-auto mb-2 text-green-500" />
                     <p className="text-2xl font-bold">{stats.signups}</p>
-                    <p className="text-sm text-gray-500">Sign Ups</p>
+                    <p className="text-sm text-[var(--foreground-secondary)]">Sign Ups</p>
                 </div>
                 <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-4 text-center">
                     <Briefcase className="w-6 h-6 mx-auto mb-2 text-orange-500" />
                     <p className="text-2xl font-bold">{stats.applications}</p>
-                    <p className="text-sm text-gray-500">Submissions</p>
+                    <p className="text-sm text-[var(--foreground-secondary)]">Submissions</p>
                 </div>
                 <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-4 text-center">
                     <Award className="w-6 h-6 mx-auto mb-2 text-yellow-500" />
                     <p className="text-2xl font-bold">{stats.hires}</p>
-                    <p className="text-sm text-gray-500">Placements</p>
+                    <p className="text-sm text-[var(--foreground-secondary)]">Placements</p>
                 </div>
             </div>
 
             {/* Submissions Table */}
             <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl overflow-hidden">
-                <div className="p-4 border-b border-gray-800">
+                <div className="p-4 border-b border-[var(--border)]">
                     <h3 className="font-semibold">Recent Submissions</h3>
                 </div>
                 {submissions.length > 0 ? (
-                    <div className="divide-y divide-gray-800">
+                    <div className="divide-y divide-[var(--border)]">
                         {submissions.map((sub) => (
-                            <div key={sub.id} className="p-4 flex items-center justify-between hover:bg-gray-800/50">
+                            <div key={sub.id} className="p-4 flex items-center justify-between hover:bg-[var(--background)]">
                                 <div>
                                     <p className="font-medium">{sub.candidate?.full_name || 'Unknown'}</p>
-                                    <p className="text-sm text-gray-400">
+                                    <p className="text-sm text-[var(--foreground-secondary)]">
                                         {sub.job?.title} at {sub.job?.organization?.name || 'Unknown'}
                                     </p>
                                 </div>
@@ -174,7 +174,7 @@ export default function RecruiterSubmissionsPage() {
                                             ${sub.commission_amount.toLocaleString()}
                                         </span>
                                     )}
-                                    <span className="text-sm text-gray-500">
+                                    <span className="text-sm text-[var(--foreground-secondary)]">
                                         {new Date(sub.created_at).toLocaleDateString()}
                                     </span>
                                 </div>

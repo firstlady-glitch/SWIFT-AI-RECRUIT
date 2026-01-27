@@ -159,7 +159,7 @@ export default function SemanticSearchTool() {
         if (score >= 80) return 'text-green-400 bg-green-500/20';
         if (score >= 60) return 'text-yellow-400 bg-yellow-500/20';
         if (score >= 40) return 'text-orange-400 bg-orange-500/20';
-        return 'text-gray-400 bg-gray-500/20';
+        return 'text-[var(--foreground-secondary)] bg-[var(--background-secondary)] border border-[var(--border)]';
     };
 
     return (
@@ -242,7 +242,7 @@ export default function SemanticSearchTool() {
                                 <button
                                     key={i}
                                     onClick={() => setSearchQuery(example)}
-                                    className="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-gray-400 hover:text-white rounded-lg text-sm transition-colors"
+                                    className="px-3 py-1.5 bg-[var(--background)] hover:bg-[var(--background-secondary)] border border-[var(--border)] text-[var(--foreground-secondary)] hover:text-[var(--foreground)] rounded-lg text-sm transition-colors"
                                 >
                                     {example}
                                 </button>
@@ -261,11 +261,11 @@ export default function SemanticSearchTool() {
                         {results.map((candidate) => (
                             <div
                                 key={candidate.id}
-                                className="p-5 bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl hover:border-gray-700 transition-colors"
+                                className="p-5 bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl hover:border-[var(--primary-blue)] transition-colors"
                             >
                                 <div className="flex items-start justify-between">
                                     <div className="flex items-start gap-4">
-                                        <div className="w-12 h-12 rounded-full bg-gray-800 flex items-center justify-center text-gray-400">
+                                        <div className="w-12 h-12 rounded-full bg-[var(--background)] border border-[var(--border)] flex items-center justify-center text-[var(--foreground-secondary)]">
                                             <User className="w-6 h-6" />
                                         </div>
                                         <div>
@@ -294,12 +294,12 @@ export default function SemanticSearchTool() {
                                             {candidate.skills && candidate.skills.length > 0 && (
                                                 <div className="flex flex-wrap gap-1 mt-3">
                                                     {candidate.skills.slice(0, 6).map((skill, i) => (
-                                                        <span key={i} className="px-2 py-0.5 bg-gray-800 text-gray-400 rounded text-xs">
+                                                        <span key={i} className="px-2 py-0.5 bg-[var(--background)] border border-[var(--border)] text-[var(--foreground-secondary)] rounded text-xs">
                                                             {skill}
                                                         </span>
                                                     ))}
                                                     {candidate.skills.length > 6 && (
-                                                        <span className="text-xs text-gray-500">+{candidate.skills.length - 6}</span>
+                                                        <span className="text-xs text-[var(--foreground-secondary)]">+{candidate.skills.length - 6}</span>
                                                     )}
                                                 </div>
                                             )}

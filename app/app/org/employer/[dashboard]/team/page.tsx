@@ -128,7 +128,7 @@ export default function TeamPage() {
             case 'owner': return 'bg-yellow-500/10 text-yellow-400';
             case 'admin': return 'bg-purple-500/10 text-purple-400';
             case 'member': return 'bg-blue-500/10 text-blue-400';
-            case 'viewer': return 'bg-gray-500/10 text-gray-400';
+            case 'viewer': return 'bg-[var(--background-secondary)] text-[var(--foreground-secondary)]';
         }
     };
 
@@ -153,7 +153,7 @@ export default function TeamPage() {
             <div className="flex items-center justify-between mb-6">
                 <div>
                     <h1 className="text-2xl font-bold">Team Management</h1>
-                    <p className="text-gray-400">{members.length} members</p>
+                    <p className="text-[var(--foreground-secondary)]">{members.length} members</p>
                 </div>
                 {members.length > 0 && (
                     <button
@@ -171,31 +171,31 @@ export default function TeamPage() {
                     <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6 w-full max-w-md">
                         <div className="flex justify-between mb-4">
                             <h3 className="text-lg font-semibold">Invite Team Member</h3>
-                            <button onClick={() => setShowInvite(false)} className="text-gray-400 hover:text-white">
+                            <button onClick={() => setShowInvite(false)} className="text-[var(--foreground-secondary)] hover:text-[var(--foreground)]">
                                 <X className="w-5 h-5" />
                             </button>
                         </div>
                         <form onSubmit={handleInvite} className="space-y-4">
                             <div>
-                                <label className="block text-sm text-gray-400 mb-2">Email Address</label>
+                                <label className="block text-sm text-[var(--foreground-secondary)] mb-2">Email Address</label>
                                 <div className="relative">
-                                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
+                                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--foreground-secondary)]" />
                                     <input
                                         type="email"
                                         value={inviteEmail}
                                         onChange={(e) => setInviteEmail(e.target.value)}
                                         placeholder="colleague@company.com"
-                                        className="w-full pl-10 pr-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:border-[var(--primary-blue)] focus:outline-none"
+                                        className="w-full pl-10 pr-4 py-3 bg-[var(--background)] border border-[var(--border)] rounded-lg focus:border-[var(--primary-blue)] focus:outline-none"
                                         required
                                     />
                                 </div>
                             </div>
                             <div>
-                                <label className="block text-sm text-gray-400 mb-2">Role</label>
+                                <label className="block text-sm text-[var(--foreground-secondary)] mb-2">Role</label>
                                 <select
                                     value={inviteRole}
                                     onChange={(e) => setInviteRole(e.target.value as TeamRole)}
-                                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg"
+                                    className="w-full px-4 py-3 bg-[var(--background)] border border-[var(--border)] rounded-lg"
                                 >
                                     <option value="admin">Admin</option>
                                     <option value="member">Member</option>
@@ -206,7 +206,7 @@ export default function TeamPage() {
                                 <button
                                     type="button"
                                     onClick={() => setShowInvite(false)}
-                                    className="flex-1 py-3 border border-gray-700 rounded-lg"
+                                    className="flex-1 py-3 border border-[var(--border)] rounded-lg"
                                 >
                                     Cancel
                                 </button>
@@ -230,21 +230,21 @@ export default function TeamPage() {
                     <div key={member.id} className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-4">
                         <div className="flex items-center justify-between">
                             <div className="flex items-center gap-4">
-                                <div className="w-12 h-12 rounded-full bg-gray-800 flex items-center justify-center overflow-hidden">
+                                <div className="w-12 h-12 rounded-full bg-[var(--background)] flex items-center justify-center overflow-hidden">
                                     {member.profile?.profile_image_url ? (
                                         <img src={member.profile.profile_image_url} alt="" className="w-full h-full object-cover" />
                                     ) : (
-                                        <User className="w-6 h-6 text-gray-500" />
+                                        <User className="w-6 h-6 text-[var(--foreground-secondary)]" />
                                     )}
                                 </div>
                                 <div>
                                     <div className="flex items-center gap-2">
-                                        <p className="font-medium text-white">{member.profile?.full_name || 'Invited User'}</p>
+                                        <p className="font-medium text-[var(--foreground)]">{member.profile?.full_name || 'Invited User'}</p>
                                         {!member.accepted_at && (
                                             <span className="px-2 py-0.5 text-xs bg-yellow-500/10 text-yellow-400 rounded">Pending</span>
                                         )}
                                     </div>
-                                    <p className="text-sm text-gray-400">{member.profile?.email || member.invite_email}</p>
+                                    <p className="text-sm text-[var(--foreground-secondary)]">{member.profile?.email || member.invite_email}</p>
                                 </div>
                             </div>
                             <div className="flex items-center gap-3">
@@ -254,7 +254,7 @@ export default function TeamPage() {
                                 {member.role !== 'owner' && (
                                     <button
                                         onClick={() => handleRemove(member.id)}
-                                        className="p-2 text-gray-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg"
+                                        className="p-2 text-[var(--foreground-secondary)] hover:text-red-400 hover:bg-red-500/10 rounded-lg"
                                     >
                                         <Trash2 className="w-4 h-4" />
                                     </button>

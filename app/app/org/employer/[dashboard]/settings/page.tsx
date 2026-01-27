@@ -178,10 +178,10 @@ export default function EmployerSettings() {
     if (isLoading) {
         return (
             <div className="p-8 max-w-6xl mx-auto">
-                <div className="h-8 w-48 bg-gray-800 rounded animate-pulse mb-8" />
+                <div className="h-8 w-48 bg-[var(--background-secondary)] rounded animate-pulse mb-8" />
                 <div className="grid md:grid-cols-4 gap-8">
-                    <div className="h-48 bg-gray-800 rounded-xl animate-pulse" />
-                    <div className="md:col-span-3 h-96 bg-gray-800 rounded-xl animate-pulse" />
+                    <div className="h-48 bg-[var(--background-secondary)] rounded-xl animate-pulse" />
+                    <div className="md:col-span-3 h-96 bg-[var(--background-secondary)] rounded-xl animate-pulse" />
                 </div>
             </div>
         );
@@ -264,7 +264,7 @@ export default function EmployerSettings() {
                                             >
                                                 Change Logo
                                             </label>
-                                            <p className="text-xs text-gray-500 mt-2">PNG, JPG up to 2MB</p>
+                                            <p className="text-xs text-[var(--foreground-secondary)] mt-2">PNG, JPG up to 2MB</p>
                                         </div>
                                     </div>
                                 </div>
@@ -359,7 +359,7 @@ export default function EmployerSettings() {
                                             placeholder="Engineering, Marketing, Sales, HR"
                                             className="w-full bg-[var(--background)] border border-[var(--border)] rounded-lg p-3 text-sm text-[var(--foreground)]"
                                         />
-                                        <p className="text-xs text-gray-500 mt-1">Separate departments with commas</p>
+                                        <p className="text-xs text-[var(--foreground-secondary)] mt-1">Separate departments with commas</p>
                                     </div>
                                     <div className="md:col-span-2">
                                         <label className="block text-sm font-medium mb-2 text-[var(--foreground-secondary)]">
@@ -406,7 +406,7 @@ export default function EmployerSettings() {
                     {activeTab === 'billing' && (
                         <div className="card p-6 border border-[var(--border)] bg-[var(--background-secondary)]">
                             <h3 className="text-xl font-bold mb-4">Subscription</h3>
-                            <p className="text-gray-400 mb-6">Manage your subscription and billing through Stripe.</p>
+                            <p className="text-[var(--foreground-secondary)] mb-6">Manage your subscription and billing through Stripe.</p>
 
                             <button
                                 onClick={openStripePortal}

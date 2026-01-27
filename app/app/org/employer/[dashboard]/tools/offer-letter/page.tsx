@@ -41,6 +41,7 @@ export default function OfferLetterTool() {
     const [isLoading, setIsLoading] = useState(false);
     const [isCopied, setIsCopied] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [sender, setSender] = useState<{ full_name: string | null; job_title: string | null } | null>(null);
 
     // Fetch applications with offer status or interviews completed
     useEffect(() => {
@@ -73,6 +74,16 @@ export default function OfferLetterTool() {
                     .single();
 
                 setOrganization(orgData);
+
+                // Fetch current user (sender) details
+                if (user) {
+                    const { data: profile } = await supabase
+                        .from('profiles')
+                        .select('full_name, job_title')
+                        .eq('id', user.id)
+                        .single();
+                    if (profile) setSender(profile);
+                }
 
                 // Get applications that are at offer stage or shortlisted
                 const { data: appsData } = await supabase
@@ -149,7 +160,7 @@ export default function OfferLetterTool() {
             6. **Acceptance Instructions** - How to accept (sign and return)
             7. **Response Deadline** - 5 business days to respond
             8. **Closing** - Enthusiasm about them joining
-            9. **Signature Block** - [Hiring Manager Name, Title]
+            9. **Signature Block** - ${sender?.full_name || '[Hiring Manager Name]'}, ${sender?.job_title || '[Title]'}
             
             Tone: Professional, welcoming, and enthusiastic.
             Format as a proper letter with today's date.
@@ -231,7 +242,7 @@ export default function OfferLetterTool() {
                                                 onClick={() => handleSelectApplication(app)}
                                                 className={`w-full text-left p-3 rounded-lg border transition-all ${selectedApplication?.id === app.id
                                                     ? 'border-green-500 bg-green-500/10'
-                                                    : 'border-gray-800 bg-[#0b0c0f] hover:border-gray-700'
+                                                    : 'border-[var(--border)] bg-[var(--background-secondary)] hover:border-[var(--border)]'
                                                     }`}
                                             >
                                                 <div className="flex items-center justify-between">
@@ -264,7 +275,7 @@ export default function OfferLetterTool() {
                                     type="text"
                                     value={candidateName}
                                     onChange={(e) => setCandidateName(e.target.value)}
-                                    className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm focus:border-[var(--primary-blue)] focus:outline-none"
+                                    className="w-full bg-[var(--background-secondary)] border border-[var(--border)] rounded-lg p-3 text-sm focus:border-[var(--primary-blue)] focus:outline-none"
                                     placeholder="Jane Doe"
                                 />
                             </div>
@@ -275,7 +286,7 @@ export default function OfferLetterTool() {
                                     type="text"
                                     value={role}
                                     onChange={(e) => setRole(e.target.value)}
-                                    className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm focus:border-[var(--primary-blue)] focus:outline-none"
+                                    className="w-full bg-[var(--background-secondary)] border border-[var(--border)] rounded-lg p-3 text-sm focus:border-[var(--primary-blue)] focus:outline-none"
                                     placeholder="Marketing Manager"
                                 />
                             </div>
@@ -292,7 +303,7 @@ export default function OfferLetterTool() {
                                         type="text"
                                         value={salary}
                                         onChange={(e) => setSalary(e.target.value)}
-                                        className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm focus:border-[var(--primary-blue)] focus:outline-none"
+                                        className="w-full bg-[var(--background-secondary)] border border-[var(--border)] rounded-lg p-3 text-sm focus:border-[var(--primary-blue)] focus:outline-none"
                                         placeholder="$120,000/year"
                                     />
                                 </div>
@@ -305,7 +316,7 @@ export default function OfferLetterTool() {
                                         type="text"
                                         value={startDate}
                                         onChange={(e) => setStartDate(e.target.value)}
-                                        className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm focus:border-[var(--primary-blue)] focus:outline-none"
+                                        className="w-full bg-[var(--background-secondary)] border border-[var(--border)] rounded-lg p-3 text-sm focus:border-[var(--primary-blue)] focus:outline-none"
                                         placeholder="January 15, 2026"
                                     />
                                 </div>
@@ -317,7 +328,7 @@ export default function OfferLetterTool() {
                                     type="text"
                                     value={benefits}
                                     onChange={(e) => setBenefits(e.target.value)}
-                                    className="w-full bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm focus:border-[var(--primary-blue)] focus:outline-none"
+                                    className="w-full bg-[var(--background-secondary)] border border-[var(--border)] rounded-lg p-3 text-sm focus:border-[var(--primary-blue)] focus:outline-none"
                                     placeholder="Health, dental, 401k, PTO..."
                                 />
                             </div>
@@ -348,7 +359,7 @@ export default function OfferLetterTool() {
                                 <>
                                     <button
                                         onClick={copyToClipboard}
-                                        className="absolute top-4 right-4 p-2 bg-gray-800 hover:bg-gray-700 rounded-lg text-gray-400 hover:text-white transition-colors z-10"
+                                        className="absolute top-4 right-4 p-2 bg-[var(--background)] hover:bg-[var(--background-secondary)] rounded-lg text-gray-400 hover:text-white transition-colors z-10"
                                         title="Copy to clipboard"
                                     >
                                         {isCopied ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}

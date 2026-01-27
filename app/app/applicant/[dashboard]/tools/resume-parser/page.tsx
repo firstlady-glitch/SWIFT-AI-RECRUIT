@@ -239,7 +239,7 @@ export default function ResumeParserTool() {
                             disabled={!hasExistingData}
                             className={`p-8 border rounded-xl text-left transition-all ${hasExistingData
                                 ? 'border-[var(--border)] bg-[var(--background-secondary)] hover:border-[var(--primary-blue)] cursor-pointer'
-                                : 'border-gray-800 bg-[#0b0c0f] opacity-50 cursor-not-allowed'
+                                : 'border-[var(--border)] bg-[var(--background-secondary)] opacity-50 cursor-not-allowed'
                                 }`}
                         >
                             <div className="flex items-center gap-3 mb-4">
@@ -315,7 +315,7 @@ export default function ResumeParserTool() {
                                         <textarea
                                             value={resumeText}
                                             onChange={(e) => setResumeText(e.target.value)}
-                                            className="w-full h-80 bg-[#0b0c0f] border border-gray-800 rounded-lg p-4 text-sm focus:border-[var(--primary-blue)] focus:outline-none resize-none font-mono"
+                                            className="w-full h-80 bg-[var(--background-secondary)] border border-[var(--border)] rounded-lg p-4 text-sm focus:border-[var(--primary-blue)] focus:outline-none resize-none font-mono"
                                             placeholder="John Doe
 Senior Software Engineer
 john.doe@email.com | (555) 123-4567
@@ -370,7 +370,7 @@ JavaScript, TypeScript, React, Node.js, Python..."
 
                                 {parsedData ? (
                                     <div className="space-y-4">
-                                        <div className="p-4 bg-[#0b0c0f] rounded-lg border border-gray-800">
+                                        <div className="p-4 bg-[var(--background-secondary)] rounded-lg border border-[var(--border)]">
                                             <div className="flex items-center gap-2 text-sm text-gray-400 mb-1">
                                                 <Briefcase className="w-4 h-4" />
                                                 Job Title
@@ -378,12 +378,12 @@ JavaScript, TypeScript, React, Node.js, Python..."
                                             <p className="text-white font-medium">{parsedData.job_title}</p>
                                         </div>
 
-                                        <div className="p-4 bg-[#0b0c0f] rounded-lg border border-gray-800">
+                                        <div className="p-4 bg-[var(--background-secondary)] rounded-lg border border-[var(--border)]">
                                             <div className="text-sm text-gray-400 mb-1">Years of Experience</div>
                                             <p className="text-white font-medium text-2xl">{parsedData.experience_years}</p>
                                         </div>
 
-                                        <div className="p-4 bg-[#0b0c0f] rounded-lg border border-gray-800">
+                                        <div className="p-4 bg-[var(--background-secondary)] rounded-lg border border-[var(--border)]">
                                             <div className="flex items-center gap-2 text-sm text-gray-400 mb-2">
                                                 <Code className="w-4 h-4" />
                                                 Skills
@@ -400,7 +400,7 @@ JavaScript, TypeScript, React, Node.js, Python..."
                                             </div>
                                         </div>
 
-                                        <div className="p-4 bg-[#0b0c0f] rounded-lg border border-gray-800">
+                                        <div className="p-4 bg-[var(--background-secondary)] rounded-lg border border-[var(--border)]">
                                             <div className="text-sm text-gray-400 mb-1">Professional Summary</div>
                                             <p className="text-gray-300 text-sm">{parsedData.summary}</p>
                                         </div>

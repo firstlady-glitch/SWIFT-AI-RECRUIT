@@ -6,7 +6,7 @@ import { createClient } from '@/lib/supabase/client';
 import { LoadingState } from '@/components/ui/LoadingState';
 import { ErrorState } from '@/components/ui/ErrorState';
 import { KanbanBoard } from '@/components/ui/KanbanBoard';
-import { ArrowLeft, Edit, Trash2, Globe, EyeOff, MoreVertical } from 'lucide-react';
+import { ArrowLeft, Edit, Trash2, Globe, EyeOff, MoreVertical, Users } from 'lucide-react';
 import Link from 'next/link';
 
 interface Application {
@@ -184,7 +184,7 @@ export default function JobATSPage() {
                             <h1 className="text-3xl font-bold">{job.title}</h1>
                             <span className={`px-2 py-0.5 text-xs rounded-full font-medium ${job.status === 'published' ? 'bg-green-500/20 text-green-400' :
                                 job.status === 'draft' ? 'bg-yellow-500/20 text-yellow-400' :
-                                    'bg-gray-500/20 text-gray-400'
+                                    'bg-[var(--background-secondary)] text-[var(--foreground-secondary)]'
                                 }`}>
                                 {job.status.charAt(0).toUpperCase() + job.status.slice(1)}
                             </span>
@@ -195,7 +195,7 @@ export default function JobATSPage() {
                     <div className="flex items-center gap-2">
                         <Link
                             href={`/app/org/employer/${dashboard}/jobs/${jobId}/edit`}
-                            className="btn border border-gray-700 hover:bg-gray-800 px-4 py-2 flex items-center gap-2"
+                            className="btn border border-[var(--border)] hover:bg-[var(--background-secondary)] px-4 py-2 flex items-center gap-2"
                         >
                             <Edit className="w-4 h-4" />
                             Edit
@@ -205,7 +205,7 @@ export default function JobATSPage() {
                             onClick={handleTogglePublish}
                             disabled={isUpdating}
                             className={`btn px-4 py-2 flex items-center gap-2 ${job.status === 'published'
-                                ? 'border border-gray-700 hover:bg-gray-800'
+                                ? 'border border-[var(--border)] hover:bg-[var(--background-secondary)]'
                                 : 'btn-primary'
                                 }`}
                         >
@@ -216,10 +216,19 @@ export default function JobATSPage() {
                             )}
                         </button>
 
+                        <Link
+                            href={`/app/org/employer/${dashboard}/jobs/${jobId}/applicants`}
+                            className="btn border border-[var(--border)] hover:bg-[var(--background-secondary)] px-4 py-2 flex items-center gap-2"
+                            title="View List & AI Ranking"
+                        >
+                            <Users className="w-4 h-4" />
+                            Applicants List
+                        </Link>
+
                         <div className="relative">
                             <button
                                 onClick={() => setShowActions(!showActions)}
-                                className="p-2 border border-gray-700 hover:bg-gray-800 rounded-lg"
+                                className="p-2 border border-[var(--border)] hover:bg-[var(--background-secondary)] rounded-lg"
                             >
                                 <MoreVertical className="w-5 h-5" />
                             </button>
@@ -257,7 +266,7 @@ export default function JobATSPage() {
                                             className="w-10 h-10 rounded-full"
                                         />
                                     ) : (
-                                        <div className="w-10 h-10 rounded-full bg-gray-800" />
+                                        <div className="w-10 h-10 rounded-full bg-[var(--background)]" />
                                     )}
                                     <div className="flex-1 min-w-0">
                                         <div className="font-medium text-[var(--foreground)] truncate">
@@ -269,7 +278,7 @@ export default function JobATSPage() {
                                     </div>
                                 </div>
                                 {item.score !== undefined && (
-                                    <div className={`text-sm font-bold ${item.score >= 80 ? 'text-green-400' : 'text-gray-400'}`}>
+                                    <div className={`text-sm font-bold ${item.score >= 80 ? 'text-green-400' : 'text-[var(--foreground-secondary)]'}`}>
                                         Match: {item.score}%
                                     </div>
                                 )}

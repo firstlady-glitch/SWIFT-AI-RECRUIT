@@ -390,7 +390,7 @@ export default function PipelineAnalyticsTool() {
                                 </div>
                                 <div className="space-y-3">
                                     {stalledCandidates.map((candidate) => (
-                                        <div key={candidate.applicationId} className="flex items-center justify-between p-3 bg-[#0b0c0f] rounded-lg">
+                                        <div key={candidate.applicationId} className="flex items-center justify-between p-3 bg-[var(--background-secondary)] rounded-lg">
                                             <div className="flex items-center gap-3">
                                                 <Users className="w-5 h-5 text-gray-500" />
                                                 <div>

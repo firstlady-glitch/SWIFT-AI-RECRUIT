@@ -195,7 +195,7 @@ Skills: ${userProfile.skills?.join(', ') || 'Not specified'}`
                         {userProfile.skills?.length > 0 && (
                             <div className="flex flex-wrap gap-1 mt-2">
                                 {userProfile.skills.slice(0, 5).map((skill, idx) => (
-                                    <span key={idx} className="px-2 py-0.5 bg-gray-800 text-gray-400 rounded text-xs">
+                                    <span key={idx} className="px-2 py-0.5 bg-[var(--background)] border border-[var(--border)] text-[var(--foreground-secondary)] rounded text-xs">
                                         {skill}
                                     </span>
                                 ))}
@@ -218,7 +218,7 @@ Skills: ${userProfile.skills?.join(', ') || 'Not specified'}`
                                 onClick={() => setUseManualInput(false)}
                                 className={`flex-1 py-2 px-4 rounded-lg text-sm font-medium transition-colors ${!useManualInput
                                     ? 'bg-[var(--primary-blue)] text-white'
-                                    : 'bg-gray-800 text-gray-400 hover:text-white'
+                                    : 'bg-[var(--background)] border border-[var(--border)] text-[var(--foreground-secondary)] hover:text-[var(--foreground)]'
                                     }`}
                             >
                                 Select from Jobs
@@ -227,7 +227,7 @@ Skills: ${userProfile.skills?.join(', ') || 'Not specified'}`
                                 onClick={() => setUseManualInput(true)}
                                 className={`flex-1 py-2 px-4 rounded-lg text-sm font-medium transition-colors ${useManualInput
                                     ? 'bg-[var(--primary-blue)] text-white'
-                                    : 'bg-gray-800 text-gray-400 hover:text-white'
+                                    : 'bg-[var(--background)] border border-[var(--border)] text-[var(--foreground-secondary)] hover:text-[var(--foreground)]'
                                     }`}
                             >
                                 Paste Description
@@ -236,19 +236,19 @@ Skills: ${userProfile.skills?.join(', ') || 'Not specified'}`
 
                         {useManualInput ? (
                             <div className="card p-6 border border-[var(--border)] bg-[var(--background-secondary)]">
-                                <label className="block text-sm font-medium mb-2 text-gray-300">
+                                <label className="block text-sm font-medium mb-2 text-[var(--foreground-secondary)]">
                                     Job Description
                                 </label>
                                 <textarea
                                     value={manualJobDescription}
                                     onChange={(e) => setManualJobDescription(e.target.value)}
-                                    className="w-full h-64 bg-[#0b0c0f] border border-gray-800 rounded-lg p-3 text-sm focus:border-[var(--primary-blue)] focus:outline-none resize-none"
+                                    className="w-full h-64 bg-[var(--background)] border border-[var(--border)] rounded-lg p-3 text-sm focus:border-[var(--primary-blue)] focus:outline-none resize-none"
                                     placeholder="Paste the job description here..."
                                 />
                             </div>
                         ) : (
                             <div className="card p-6 border border-[var(--border)] bg-[var(--background-secondary)]">
-                                <label className="block text-sm font-medium mb-2 text-gray-300">
+                                <label className="block text-sm font-medium mb-2 text-[var(--foreground-secondary)]">
                                     Select a Job
                                 </label>
                                 {isLoadingData ? (
@@ -273,7 +273,7 @@ Skills: ${userProfile.skills?.join(', ') || 'Not specified'}`
                                                 onClick={() => setSelectedJob(job)}
                                                 className={`w-full text-left p-3 rounded-lg border transition-all ${selectedJob?.id === job.id
                                                     ? 'border-[var(--primary-blue)] bg-[var(--primary-blue)]/10'
-                                                    : 'border-gray-800 bg-[#0b0c0f] hover:border-gray-700'
+                                                    : 'border-[var(--border)] bg-[var(--background)] hover:border-[var(--border)]'
                                                     }`}
                                             >
                                                 <div className="flex items-center gap-2">
@@ -316,7 +316,7 @@ Skills: ${userProfile.skills?.join(', ') || 'Not specified'}`
                                 <>
                                     <button
                                         onClick={copyToClipboard}
-                                        className="absolute top-4 right-4 p-2 bg-gray-800 hover:bg-gray-700 rounded-lg text-gray-400 hover:text-white transition-colors"
+                                        className="absolute top-4 right-4 p-2 bg-[var(--background)] hover:bg-[var(--background-secondary)] rounded-lg text-gray-400 hover:text-white transition-colors"
                                         title="Copy to clipboard"
                                     >
                                         {isCopied ? (

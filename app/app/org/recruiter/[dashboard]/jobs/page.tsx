@@ -1,5 +1,7 @@
 'use client';
 
+// over here add a badge of applicants count for each listed job 
+
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
