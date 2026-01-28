@@ -154,12 +154,33 @@ swift-ai-recruit/
 
 ---
 
+### 🔐 Admin Flow
+```
+Entry → /admin/login (Secure Admin Auth)
+                ↓
+         /admin (Dashboard)
+                ↓
+         Site Settings → Toggle payments, registration, maintenance mode
+                ↓
+         User Management → View and manage all users
+                ↓
+         System Health → Monitor platform metrics
+```
+**Primary Goal:** Control platform-wide settings without code deployments.
+
+---
+
 ## Key Features
 
 - **AI-Driven Matching:** Semantic analysis of resumes and job descriptions for precise candidate ranking
+- **AI Cover Letter Generation:** Applicants can generate tailored cover letters with strict plain-text formatting
+- **AI Applicant Ranking:** Employers/Recruiters can analyze candidates with AI scoring (0-100) and match reasons
+- **Smart Auto-Fill:** AI tools automatically populate fields from user profiles and organization data
 - **Intelligent Automation:** Automated scheduling, email workflows, and candidate pipeline management
 - **ATS Kanban Board:** Visual drag-drop candidate pipeline management
 - **Role-Based Access Control:** Secure middleware protecting routes per user role
+- **Database-Driven Settings:** Admin control center for payments, registration, and maintenance mode
+- **Maintenance Mode:** Site-wide lockdown with custom messages and admin bypass
 - **Modern UX:** Responsive interface built with Next.js 16 and Tailwind CSS
 - **Real-time Updates:** Supabase backend with live data synchronization
 
@@ -167,10 +188,21 @@ swift-ai-recruit/
 
 ## Tech Stack
 
-- **Frontend:** Next.js 16 (App Router), React 19, Tailwind CSS, Lucide React
-- **Backend:** Supabase (PostgreSQL, Auth, Storage, Edge Functions)
-- **AI:** Google Gemini API
-- **Deployment:** Vercel
+| Category | Technology |
+|----------|------------|
+| **Framework** | Next.js 16 (App Router) |
+| **Language** | TypeScript |
+| **UI Library** | React 19 |
+| **Styling** | Tailwind CSS, CSS Variables |
+| **Icons** | Lucide React |
+| **Database** | PostgreSQL (via Supabase) |
+| **Authentication** | Supabase Auth |
+| **Storage** | Supabase Storage |
+| **AI/ML** | Google Gemini API |
+| **State Management** | React Hooks, Context API |
+| **Data Fetching** | Supabase Client SDK |
+| **Deployment** | Vercel |
+| **Package Manager** | pnpm |
 
 ---
 
@@ -181,9 +213,10 @@ swift-ai-recruit/
 profiles        → User accounts (applicant, employer, recruiter, admin)
 organizations   → Companies (employer or recruiter type)
 jobs            → Job postings (draft, published, closed, archived)
-applications    → Job applications with AI scores
+applications    → Job applications with cover_letter and AI score
 interviews      → Interview scheduling & outcomes
 interview_feedback → Structured interview ratings
+site_settings   → Database-driven platform configuration
 ```
 
 ---
