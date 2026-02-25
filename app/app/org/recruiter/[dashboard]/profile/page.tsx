@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import { LoadingState } from '@/components/ui/LoadingState';
 import { ErrorState } from '@/components/ui/ErrorState';
@@ -10,6 +10,7 @@ import Link from 'next/link';
 
 export default function RecruiterProfilePage() {
     const router = useRouter();
+    const params = useParams();
     const [profile, setProfile] = useState<any>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -52,7 +53,7 @@ export default function RecruiterProfilePage() {
                 <div className="flex justify-between items-center mb-6">
                     <h1 className="text-2xl font-bold">My Profile Preview</h1>
                     <Link
-                        href={`/app/org/recruiter/dashboard/settings`}
+                        href={`/app/org/recruiter/${params.dashboard}/settings`}
                         className="btn border border-[var(--border)] hover:bg-[var(--border)] flex items-center gap-2"
                     >
                         <Edit className="w-4 h-4" /> Edit Profile

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import { ErrorState } from '@/components/ui/ErrorState';
 import { Plus, X, ExternalLink, FileText, ArrowRight } from 'lucide-react';
@@ -9,6 +9,7 @@ import Link from 'next/link';
 
 export default function RecruiterCreateJobPage() {
     const router = useRouter();
+    const params = useParams();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -67,7 +68,7 @@ export default function RecruiterCreateJobPage() {
             if (error) throw error;
 
             console.log('[RecruiterCreateJob] Created job:', data.id);
-            router.push(`/app/org/recruiter/jobs/${data.id}`);
+            router.push(`/app/org/recruiter/${params.dashboard}/jobs/${data.id}`);
 
         } catch (err: any) {
             console.error('[RecruiterCreateJob] Error:', err);
@@ -188,7 +189,7 @@ export default function RecruiterCreateJobPage() {
                                 />
                                 <div className="mt-2">
                                     <Link
-                                        href="/app/org/recruiter/dashboard/tools/job-description"
+                                        href={`/app/org/recruiter/${params.dashboard}/tools/job-description`}
                                         className="text-sm text-[var(--accent-orange)] hover:underline flex items-center gap-1"
                                     >
                                         <ArrowRight className="w-4 h-4" />
@@ -295,7 +296,7 @@ export default function RecruiterCreateJobPage() {
 
                     <div className="flex justify-end gap-4">
                         <Link
-                            href="/app/org/recruiter/marketplace"
+                            href={`/app/org/recruiter/${params.dashboard}/marketplace`}
                             className="btn border border-[var(--border)] hover:bg-[var(--background-secondary)] px-6 py-3"
                         >
                             Cancel

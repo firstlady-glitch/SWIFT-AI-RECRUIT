@@ -3,6 +3,14 @@ import { ArrowLeft } from "lucide-react";
 
 const versions = [
     {
+        version: "v2.0.1",
+        date: "February 25, 2026",
+        tag: "Patch",
+        tagColor: "purple",
+        summary: "Fixed hardcoded routing bugs in the Recruiter dashboard leading to 404 errors (Job Creation and Profile navigation).",
+        href: "/dev/version/v2.0.1"
+    },
+    {
         version: "v2.0.0",
         date: "January 24, 2026",
         tag: "Major",
