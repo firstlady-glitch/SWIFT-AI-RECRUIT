@@ -19,8 +19,6 @@ yarn-error.log*
 .pnpm-debug.log*
 
 # Environment Variables
-.env
-.env.local
 .env.development.local
 .env.test.local
 .env.production.local
@@ -34,7 +32,6 @@ Desktop.ini
 
 # IDEs
 .idea/
-.vscode/
 *.swp
 *.swo
 
@@ -47,3 +44,7 @@ Desktop.ini
 
 # Supabase
 /supabase/.temp
+branch_structure.json
+temp_auto_push.bat
+temp_interactive_push.bat
+config.bat
