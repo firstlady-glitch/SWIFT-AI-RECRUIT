@@ -7,6 +7,7 @@ import Image from "next/image";
 import ReactMarkdown, { type Components } from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { whatsAppChatUrl } from "@/lib/whatsapp";
+import { createClient } from "@/lib/supabase/client";
 
 interface Message {
     role: "user" | "model";
@@ -83,6 +84,11 @@ const assistantMarkdownComponents: Components = {
     ),
 };
 
+type ChatViewerPayload = {
+    userId: string;
+    role: string | null;
+};
+
 export default function ChatWidget() {
     const [isOpen, setIsOpen] = useState(false);
     const [isChatOpen, setIsChatOpen] = useState(false);
@@ -94,6 +100,8 @@ export default function ChatWidget() {
     ]);
     const [input, setInput] = useState("");
     const [isLoading, setIsLoading] = useState(false);
+    const [filterRemoteOnly, setFilterRemoteOnly] = useState(false);
+    const [viewerForChat, setViewerForChat] = useState<ChatViewerPayload | null>(null);
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
     const toggleMenu = () => {
@@ -123,6 +131,35 @@ export default function ChatWidget() {
         scrollToBottom();
     }, [messages, isChatOpen]);
 
+    useEffect(() => {
+        if (!isChatOpen) return;
+        let cancelled = false;
+        (async () => {
+            const supabase = createClient();
+            const {
+                data: { user },
+            } = await supabase.auth.getUser();
+            if (cancelled) return;
+            if (!user) {
+                setViewerForChat(null);
+                return;
+            }
+            const { data: profile } = await supabase
+                .from("profiles")
+                .select("role")
+                .eq("id", user.id)
+                .maybeSingle();
+            if (cancelled) return;
+            setViewerForChat({
+                userId: user.id,
+                role: profile?.role ?? null,
+            });
+        })();
+        return () => {
+            cancelled = true;
+        };
+    }, [isChatOpen]);
+
     const sendMessage = async () => {
         if (!input.trim() || isLoading) return;
 
@@ -135,7 +172,14 @@ export default function ChatWidget() {
             const response = await fetch("/api/chat", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ message: userMessage }),
+                body: JSON.stringify({
+                    message: userMessage,
+                    ...(filterRemoteOnly ? { filters: { remoteOnly: true } } : {}),
+                    inferFiltersFromMessage: true,
+                    viewer: viewerForChat
+                        ? { userId: viewerForChat.userId, role: viewerForChat.role }
+                        : undefined,
+                }),
             });
 
             const data = await response.json();
@@ -232,7 +276,17 @@ export default function ChatWidget() {
                     </div>
 
                     {/* Input Area */}
-                    <div className="flex gap-2 border-t border-gray-200 bg-white p-4">
+                    <div className="border-t border-gray-200 bg-white p-4">
+                        <label className="mb-2 flex cursor-pointer items-center gap-2 text-xs text-gray-600">
+                            <input
+                                type="checkbox"
+                                checked={filterRemoteOnly}
+                                onChange={(e) => setFilterRemoteOnly(e.target.checked)}
+                                className="size-3.5 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                            />
+                            Remote-friendly listings only (you can also type “remote” in your message)
+                        </label>
+                        <div className="flex gap-2">
                         <input
                             type="text"
                             value={input}
@@ -248,6 +302,7 @@ export default function ChatWidget() {
                         >
                             <Send size={20} />
                         </button>
+                        </div>
                     </div>
                 </div>
             )}
