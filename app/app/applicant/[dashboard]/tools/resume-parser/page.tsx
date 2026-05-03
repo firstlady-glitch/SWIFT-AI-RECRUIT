@@ -74,34 +74,40 @@ export default function ResumeParserTool() {
         setError(null);
 
         try {
-            // Fetch the resume content from storage
-            const supabase = createClient();
-            const { data, error: downloadError } = await supabase.storage
-                .from('resumes')
-                .download(existingResume.resume_url);
+            const res = await fetch('/api/applicant/resume-text');
+            const payload = await res.json();
 
-            if (downloadError) throw downloadError;
+            if (payload.text && String(payload.text).trim().length > 0) {
+                const text = String(payload.text).trim();
+                setResumeText(text);
+                await parseResumeContent(text);
+                return;
+            }
 
-            // For text-based parsing, we'll read the file content
-            const text = await data.text();
-            setResumeText(text);
-
-            // Auto-parse
-            await parseResumeContent(text);
-        } catch (err: any) {
-            console.error('[ResumeParser] Error fetching resume:', err);
-            // If we can't download, show existing profile data if available
             if (existingResume?.job_title || existingResume?.skills) {
                 setParsedData({
                     job_title: existingResume.job_title || 'Not specified',
                     experience_years: existingResume.experience_years || 0,
                     skills: existingResume.skills || [],
-                    summary: 'Profile data from your existing registration.'
+                    summary:
+                        payload.message ||
+                        'We could not read text from your PDF. Your saved profile fields are shown below—paste resume text to re-parse.',
                 });
+                setError(
+                    payload.message ||
+                        'Could not extract text from your file. Paste the resume text manually on the next step.'
+                );
             } else {
-                setError('Could not load resume. Please paste your resume text manually.');
+                setError(
+                    payload.message ||
+                        'Could not load resume text. Paste your resume manually or re-upload a text-based PDF.'
+                );
                 setMode('new');
             }
+        } catch (err: unknown) {
+            console.error('[ResumeParser] Error fetching resume:', err);
+            setError('Could not load resume. Please paste your resume text manually.');
+            setMode('new');
         } finally {
             setIsLoading(false);
         }

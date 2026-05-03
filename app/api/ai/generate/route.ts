@@ -1,13 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { GoogleGenerativeAI } from '@google/generative-ai';
-import { createClient } from '@/lib/supabase/client'; // Use server based client in future, for now client passed works due to cookie? No, we need createServerClient but let's use standard API pattern.
-
-const API_KEY = process.env.GEMINI_API_KEY;
+import { getGroqApiKey, groqCompletion } from '@/lib/groq';
 
 export async function POST(req: NextRequest) {
-    if (!API_KEY) {
+    if (!getGroqApiKey()) {
         return NextResponse.json(
-            { error: 'Gemini API key not configured' },
+            { error: 'NEXT_PUBLIC_GROQ_API_KEY is not configured' },
             { status: 500 }
         );
     }
@@ -15,26 +12,27 @@ export async function POST(req: NextRequest) {
     try {
         const { prompt } = await req.json();
 
-        if (!prompt) {
-            return NextResponse.json(
-                { error: 'Prompt is required' },
-                { status: 400 }
-            );
+        if (!prompt || typeof prompt !== 'string') {
+            return NextResponse.json({ error: 'Prompt is required' }, { status: 400 });
         }
 
-        const genAI = new GoogleGenerativeAI(API_KEY);
-        const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" }); // Use valid model
-
-        const result = await model.generateContent(prompt);
-        const response = await result.response;
-        const text = response.text();
+        const text = await groqCompletion(
+            [
+                {
+                    role: 'system',
+                    content:
+                        'You are an expert recruiting and hiring assistant for SwiftAI Recruit. Give clear, practical output. Prefer bullet lists or structured text when helpful. Avoid filler disclaimers.',
+                },
+                { role: 'user', content: prompt },
+            ],
+            { temperature: 0.45, max_tokens: 4096 }
+        );
 
         return NextResponse.json({ result: text });
-    } catch (error: any) {
-        console.error('AI Generation Error:', error);
-        return NextResponse.json(
-            { error: error.message || 'Failed to generate content' },
-            { status: 500 }
-        );
+    } catch (error: unknown) {
+        console.error('[api/ai/generate]', error);
+        const message =
+            error instanceof Error ? error.message : 'Failed to generate content';
+        return NextResponse.json({ error: message }, { status: 500 });
     }
 }

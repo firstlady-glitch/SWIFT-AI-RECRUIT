@@ -128,7 +128,7 @@ export default function AdminSettingsPage() {
                         <div className="flex items-center justify-between">
                             <div>
                                 <p className="text-[var(--foreground)]">Accept Payments</p>
-                                <p className="text-sm text-[var(--foreground-secondary)]">Enable Stripe payment processing</p>
+                                <p className="text-sm text-[var(--foreground-secondary)]">Enable Paystack payment processing (requires keys in environment)</p>
                             </div>
                             <label className="relative inline-flex items-center cursor-pointer">
                                 <input

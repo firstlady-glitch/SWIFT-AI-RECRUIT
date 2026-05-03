@@ -16,7 +16,7 @@ const CURRENCY_CONFIG = {
 
 type Currency = keyof typeof CURRENCY_CONFIG;
 
-// Plan data matching lib/stripe.ts (prices in USD)
+// Plan data (display prices in USD; charged in NGN via Paystack — see lib/billing.ts)
 const APPLICANT_PLANS = [
     {
         key: 'starter',
@@ -202,21 +202,21 @@ function PricingContent() {
         setLoadingPlan(planKey);
 
         try {
-            const res = await fetch('/api/stripe/checkout', {
+            const res = await fetch('/api/paystack/initialize', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     planKey,
                     interval: isAnnual ? 'annual' : 'monthly',
                     role,
-                    currency,
                 }),
             });
 
             const data = await res.json();
 
-            if (data.url) {
-                window.location.href = data.url;
+            const payUrl = data.authorization_url || data.url;
+            if (payUrl) {
+                window.location.href = payUrl;
             } else if (data.redirect) {
                 window.location.href = `/auth/register?role=${role}&plan=${planKey}`;
             } else {

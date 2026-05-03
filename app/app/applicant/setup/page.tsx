@@ -3,7 +3,7 @@
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useState, useMemo, useRef, useEffect, Suspense } from 'react';
 import { createClient } from '@/lib/supabase/client';
-import { Upload, Check, X, ArrowRight, ArrowLeft, Search, Plus, Trash2, Lock } from 'lucide-react';
+import { Upload, Check, X, ArrowRight, ArrowLeft, Search, Plus, Trash2, Info } from 'lucide-react';
 import { SKILLS_DATA } from './skills-data';
 
 function ApplicantSetupContent() {
@@ -17,6 +17,7 @@ function ApplicantSetupContent() {
     const [selectedPlan, setSelectedPlan] = useState(searchParams.get('plan') || 'free');
     const [isLoading, setIsLoading] = useState(false);
     const [acceptPayments, setAcceptPayments] = useState(false);
+    const [billingNotice, setBillingNotice] = useState<string | null>(null);
 
     // Fetch payment config
     useEffect(() => {
@@ -121,10 +122,52 @@ function ApplicantSetupContent() {
         }
     };
 
-    const handlePlanSelect = (plan: string) => {
-        if (plan !== 'free') return; // Gate paid plans
-        setSelectedPlan(plan);
-        setStep('profile');
+    const handlePlanSelect = async (plan: string) => {
+        setBillingNotice(null);
+        if (plan === 'free') {
+            setSelectedPlan(plan);
+            setStep('profile');
+            return;
+        }
+
+        if (!acceptPayments) {
+            setBillingNotice(
+                'Paid Career+ checkout is available once an administrator enables billing. Continue with Basic for now.'
+            );
+            return;
+        }
+
+        setIsLoading(true);
+        try {
+            const res = await fetch('/api/paystack/initialize', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    planKey: 'career_plus',
+                    interval: 'monthly',
+                    role: 'applicant',
+                }),
+            });
+            const data = await res.json();
+            const payUrl = data.authorization_url || data.url;
+            if (payUrl) {
+                window.location.href = payUrl;
+                return;
+            }
+            if (data.redirect && data.url) {
+                window.location.href = data.url;
+                return;
+            }
+            setBillingNotice(
+                typeof data.error === 'string'
+                    ? data.error
+                    : 'Checkout could not start. Try Basic or contact support.'
+            );
+        } catch {
+            setBillingNotice('Checkout failed. Continue with Basic or try again later.');
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     // Skills Logic
@@ -269,9 +312,16 @@ function ApplicantSetupContent() {
                     <div className="text-center mb-12">
                         <h1 className="text-4xl font-bold mb-4">Choose Your Path</h1>
                         <p className="text-xl text-[var(--foreground-secondary)]">
-                            Select a plan to accelerate your job search
+                            Basic is always free. Career+ unlocks when billing is enabled for your workspace.
                         </p>
                     </div>
+
+                    {billingNotice && (
+                        <div className="max-w-2xl mx-auto mb-8 flex gap-3 rounded-xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-[var(--foreground)]">
+                            <Info className="w-5 h-5 shrink-0 text-amber-600" />
+                            <p>{billingNotice}</p>
+                        </div>
+                    )}
 
                     <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
                         {/* Free Plan */}
@@ -290,13 +340,14 @@ function ApplicantSetupContent() {
                             </ul>
                         </div>
 
-                        {/* Starter Plan */}
-                        <div className={`card p-8 border border-[var(--border)] relative overflow-hidden ${!acceptPayments ? 'opacity-75 group' : ''}`}>
+                        {/* Starter → Career+ checkout */}
+                        <div
+                            className={`card p-8 border border-[var(--border)] relative overflow-hidden ${!acceptPayments ? 'opacity-90' : ''}`}
+                        >
                             {!acceptPayments && (
-                                <div className="absolute inset-0 bg-black/60 z-10 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm">
-                                    <Lock className="w-12 h-12 text-white mb-2" />
-                                    <span className="text-white font-bold text-lg">Coming Soon</span>
-                                </div>
+                                <p className="text-xs text-amber-600 dark:text-amber-400 font-medium mb-2">
+                                    Needs billing enabled
+                                </p>
                             )}
 
                             <h3 className="text-xl font-bold mb-2">Starter</h3>
@@ -304,11 +355,12 @@ function ApplicantSetupContent() {
                             <div className="text-4xl font-bold mb-6">$15<span className="text-lg text-[var(--foreground-secondary)] font-normal">/mo</span></div>
 
                             <button
-                                onClick={() => acceptPayments && handlePlanSelect('starter')}
-                                disabled={!acceptPayments}
-                                className={`btn w-full mb-8 ${acceptPayments ? 'btn-primary' : 'btn-secondary opacity-50 cursor-not-allowed'}`}
+                                type="button"
+                                onClick={() => handlePlanSelect('starter')}
+                                disabled={isLoading}
+                                className="btn btn-primary w-full mb-8"
                             >
-                                {acceptPayments ? 'Select Plan' : 'Coming Soon'}
+                                {acceptPayments ? 'Continue to checkout' : 'See notice above'}
                             </button>
 
                             <ul className="space-y-4 text-left text-sm">
@@ -319,14 +371,15 @@ function ApplicantSetupContent() {
                             </ul>
                         </div>
 
-                        {/* Professional Plan */}
-                        <div className={`card p-8 border-2 border-[var(--primary-blue)]/30 relative transform md:-translate-y-4 shadow-xl overflow-hidden ${!acceptPayments ? 'opacity-75 group' : ''}`}>
+                        {/* Professional → same Career+ Paystack plan */}
+                        <div
+                            className={`card p-8 border-2 border-[var(--primary-blue)]/30 relative transform md:-translate-y-4 shadow-xl overflow-hidden ${!acceptPayments ? 'opacity-90' : ''}`}
+                        >
                             <div className="absolute top-0 right-0 left-0 bg-[var(--primary-blue)] text-white text-xs font-bold py-1 rounded-t-lg text-center">MOST POPULAR</div>
                             {!acceptPayments && (
-                                <div className="absolute inset-0 bg-black/60 z-10 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm">
-                                    <Lock className="w-12 h-12 text-white mb-2" />
-                                    <span className="text-white font-bold text-lg">Coming Soon</span>
-                                </div>
+                                <p className="text-xs text-amber-600 dark:text-amber-400 font-medium mb-2 mt-6 relative z-10">
+                                    Needs billing enabled
+                                </p>
                             )}
 
                             <h3 className="text-xl font-bold mb-2 mt-2">Professional</h3>
@@ -334,11 +387,12 @@ function ApplicantSetupContent() {
                             <div className="text-4xl font-bold mb-6">$30<span className="text-lg text-[var(--foreground-secondary)] font-normal">/mo</span></div>
 
                             <button
-                                onClick={() => acceptPayments && handlePlanSelect('pro')}
-                                disabled={!acceptPayments}
-                                className={`btn w-full mb-8 ${acceptPayments ? 'btn-primary' : 'btn-secondary opacity-50 cursor-not-allowed'}`}
+                                type="button"
+                                onClick={() => handlePlanSelect('pro')}
+                                disabled={isLoading}
+                                className="btn btn-primary w-full mb-8"
                             >
-                                {acceptPayments ? 'Select Plan' : 'Coming Soon'}
+                                {acceptPayments ? 'Continue to checkout' : 'See notice above'}
                             </button>
 
                             <ul className="space-y-4 text-left text-sm">

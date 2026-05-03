@@ -1,69 +1,51 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
-import { NextResponse } from "next/server";
-import fs from "fs";
-import path from "path";
+import fs from 'fs';
+import path from 'path';
+
+import { NextResponse } from 'next/server';
+
+import { getGroqApiKey, groqCompletion } from '@/lib/groq';
 
 export async function POST(req: Request) {
     try {
-        const { message } = await req.json();
-        const apiKey = process.env.GEMINI_API_KEY;
-
-        if (!apiKey) {
+        if (!getGroqApiKey()) {
             return NextResponse.json(
-                { error: "GEMINI_API_KEY is not set" },
+                { error: 'NEXT_PUBLIC_GROQ_API_KEY is not set' },
                 { status: 500 }
             );
         }
 
-        // Add this inside the POST function to see available models in your console
-        try {
-            const listModelsResponse = await fetch(
-                `https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`
+        const { message } = await req.json();
+        if (!message || typeof message !== 'string') {
+            return NextResponse.json(
+                { error: 'Message is required' },
+                { status: 400 }
             );
-            const models = await listModelsResponse.json();
-            console.log("Available Models:", JSON.stringify(models, null, 2));
-        } catch (e) {
-            console.error("Failed to list models", e);
         }
 
-        const genAI = new GoogleGenerativeAI(apiKey);
-
-        // FIX: Use the specific version 'gemini-1.5-flash-001'
-        const model = genAI.getGenerativeModel({
-            model: "gemini-2.5-flash",
-            systemInstruction: {
-                parts: [{ text: "You are a helpful AI assistant for SwiftAI Recruit. Answer based on the context provided. Keep answers concise. If asked who created you, say 'I was created by King Jethro Oluwaseun'." }],
-                role: "system"
-            }
-        });
-
-        // Load context
-        const planPath = path.join(process.cwd(), "plan", "SwiftAI Recruit.md");
-        let context = "";
+        const planPath = path.join(process.cwd(), 'plan', 'SwiftAI Recruit.md');
+        let context = '';
         try {
-            context = fs.readFileSync(planPath, "utf-8");
-        } catch (error) {
-            console.error("Error reading context file:", error);
-            context = "Information about SwiftAI Recruit is currently unavailable.";
+            context = fs.readFileSync(planPath, 'utf-8');
+        } catch {
+            context = 'SwiftAI Recruit helps employers and recruiters hire with AI-assisted workflows.';
         }
 
-        // Pass the context in the user message or as a preamble
-        const prompt = `Context: ${context}\n\nUser Question: ${message}`;
-
-        const chat = model.startChat({
-            history: [],
-        });
-
-        const result = await chat.sendMessage(prompt);
-        const response = await result.response;
-        const text = response.text();
-
-        return NextResponse.json({ reply: text });
-    } catch (error) {
-        console.error("Error generating response:", error);
-        return NextResponse.json(
-            { error: "Failed to generate response" },
-            { status: 500 }
+        const reply = await groqCompletion(
+            [
+                {
+                    role: 'system',
+                    content: `You are the SwiftAI Recruit assistant. Answer briefly and helpfully.\nAttribution: if asked who created you, reply that you run on SwiftAI Recruit Groq tooling.\n\nProduct context:\n${context}`,
+                },
+                { role: 'user', content: message },
+            ],
+            { temperature: 0.4, max_tokens: 1536 }
         );
+
+        return NextResponse.json({ reply });
+    } catch (error: unknown) {
+        console.error('[api/chat]', error);
+        const message =
+            error instanceof Error ? error.message : 'Failed to generate response';
+        return NextResponse.json({ error: message }, { status: 500 });
     }
 }

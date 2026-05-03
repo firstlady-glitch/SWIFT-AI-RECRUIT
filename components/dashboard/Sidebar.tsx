@@ -17,7 +17,8 @@ import {
     PanelLeft,
     Menu,
     X,
-    CalendarDays
+    CalendarDays,
+    MessageCircle,
 } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 import { useSidebar } from './SidebarContext';
@@ -62,6 +63,11 @@ export default function Sidebar({ role, dashboardId }: SidebarProps) {
                 href: `${basePath}/interviews`,
                 icon: <CalendarDays className="w-5 h-5 shrink-0" />
             },
+            {
+                label: 'Messages',
+                href: `${basePath}/messages`,
+                icon: <MessageCircle className="w-5 h-5 shrink-0" />
+            },
         ] : []),
         ...(role === 'recruiter' ? [
             {
@@ -84,6 +90,11 @@ export default function Sidebar({ role, dashboardId }: SidebarProps) {
                 href: `${basePath}/submissions`,
                 icon: <Send className="w-5 h-5 shrink-0" />
             },
+            {
+                label: 'Messages',
+                href: `${basePath}/messages`,
+                icon: <MessageCircle className="w-5 h-5 shrink-0" />
+            },
         ] : []),
         ...(role === 'employer' ? [
             {
@@ -92,9 +103,19 @@ export default function Sidebar({ role, dashboardId }: SidebarProps) {
                 icon: <Briefcase className="w-5 h-5 shrink-0" />
             },
             {
+                label: 'Sourcing',
+                href: `${basePath}/sourcing`,
+                icon: <Search className="w-5 h-5 shrink-0" />
+            },
+            {
                 label: 'Team',
                 href: `${basePath}/team`,
                 icon: <Users className="w-5 h-5 shrink-0" />
+            },
+            {
+                label: 'Messages',
+                href: `${basePath}/messages`,
+                icon: <MessageCircle className="w-5 h-5 shrink-0" />
             },
         ] : []),
         {

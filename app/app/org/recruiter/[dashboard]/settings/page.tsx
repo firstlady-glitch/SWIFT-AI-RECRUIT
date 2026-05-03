@@ -224,24 +224,8 @@ export default function RecruiterSettings() {
         }
     };
 
-    const openStripePortal = async () => {
-        try {
-            const res = await fetch('/api/stripe/portal', { method: 'POST' });
-            const data = await res.json();
-
-            if (!res.ok) {
-                throw new Error(data.error || 'Failed to create portal session');
-            }
-
-            if (data.url) {
-                window.location.href = data.url;
-            } else {
-                throw new Error('No portal URL returned');
-            }
-        } catch (err: any) {
-            console.error('[Settings] Failed to open billing portal:', err);
-            setError(err.message || 'Failed to open billing portal');
-        }
+    const goToPaystackPlans = () => {
+        router.push('/pricing?role=recruiter');
     };
 
     if (isLoading) {
@@ -513,9 +497,11 @@ export default function RecruiterSettings() {
                     {activeTab === 'billing' && (
                         <div className="card p-6 border border-[var(--border)] bg-[var(--background-secondary)]">
                             <h3 className="text-xl font-bold mb-4">Subscription</h3>
-                            <p className="text-[var(--foreground-secondary)] mb-6">Manage your subscription and billing through Stripe.</p>
-                            <button onClick={openStripePortal} className="btn btn-primary flex items-center gap-2">
-                                <CreditCard className="w-4 h-4" /> Manage Billing
+                            <p className="text-[var(--foreground-secondary)] mb-6">
+                                Plans and checkout use Paystack. Open pricing to upgrade or start a subscription.
+                            </p>
+                            <button onClick={goToPaystackPlans} className="btn btn-primary flex items-center gap-2">
+                                <CreditCard className="w-4 h-4" /> View plans &amp; pay
                             </button>
                         </div>
                     )}

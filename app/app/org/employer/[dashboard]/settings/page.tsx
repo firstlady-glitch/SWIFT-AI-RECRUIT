@@ -163,16 +163,8 @@ export default function EmployerSettings() {
         }
     };
 
-    const openStripePortal = async () => {
-        try {
-            const res = await fetch('/api/stripe/portal', { method: 'POST' });
-            const data = await res.json();
-            if (data.url) {
-                window.location.href = data.url;
-            }
-        } catch (err) {
-            console.error('Failed to open billing portal');
-        }
+    const goToPaystackPlans = () => {
+        router.push('/pricing?role=employer');
     };
 
     if (isLoading) {
@@ -406,18 +398,20 @@ export default function EmployerSettings() {
                     {activeTab === 'billing' && (
                         <div className="card p-6 border border-[var(--border)] bg-[var(--background-secondary)]">
                             <h3 className="text-xl font-bold mb-4">Subscription</h3>
-                            <p className="text-[var(--foreground-secondary)] mb-6">Manage your subscription and billing through Stripe.</p>
+                            <p className="text-[var(--foreground-secondary)] mb-6">
+                                Plans and checkout use Paystack. Open pricing to upgrade; for receipts or issues, email support.
+                            </p>
 
                             <button
-                                onClick={openStripePortal}
+                                onClick={goToPaystackPlans}
                                 className="btn btn-primary flex items-center gap-2"
                             >
-                                <CreditCard className="w-4 h-4" /> Manage Billing
+                                <CreditCard className="w-4 h-4" /> View plans &amp; pay
                             </button>
 
                             <div className="mt-6 p-4 bg-blue-500/10 border border-blue-500/30 rounded-lg">
                                 <p className="text-sm text-blue-400">
-                                    Use the billing portal to update payment methods, view invoices, and manage your subscription.
+                                    Paystack handles cards and bank transfer. After payment, your plan updates automatically when you return to the app.
                                 </p>
                             </div>
                         </div>

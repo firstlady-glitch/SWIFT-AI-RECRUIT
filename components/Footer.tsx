@@ -51,7 +51,7 @@ export default function Footer() {
                             <li><Link href="/resources" className="hover:text-[var(--primary-blue)] transition-colors">Resources</Link></li>
                             <li><Link href="/contact" className="hover:text-[var(--primary-blue)] transition-colors">Contact</Link></li>
                             <li><Link href="/faq" className="hover:text-[var(--primary-blue)] transition-colors">FAQ</Link></li>
-                            <li><Link href="/api" className="hover:text-[var(--primary-blue)] transition-colors">API</Link></li>
+                            <li><Link href="/dev/version" className="hover:text-[var(--primary-blue)] transition-colors">Release notes</Link></li>
                         </ul>
                     </div>
 
@@ -70,7 +70,7 @@ export default function Footer() {
                 {/* Bottom Footer */}
                 <div className="pt-8 border-t border-[var(--border)] flex flex-col md:flex-row justify-between items-center gap-4">
                     <p className="text-sm text-[var(--foreground-secondary)]">
-                        © 2024 SwiftAI Recruit. All rights reserved.
+                        © {new Date().getFullYear()} SwiftAI Recruit. All rights reserved.
                     </p>
 
                 </div>

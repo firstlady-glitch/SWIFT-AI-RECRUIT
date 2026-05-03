@@ -145,18 +145,8 @@ export default function ApplicantSettings() {
         }
     };
 
-    const openStripePortal = async () => {
-        try {
-            const res = await fetch('/api/stripe/portal', { method: 'POST' });
-            const data = await res.json();
-            if (data.url) {
-                window.location.href = data.url;
-            } else if (data.redirect) {
-                router.push('/pricing?role=applicant');
-            }
-        } catch (err) {
-            router.push('/pricing?role=applicant');
-        }
+    const goToPaystackPlans = () => {
+        router.push('/pricing?role=applicant');
     };
 
     if (isLoading) {
@@ -393,18 +383,18 @@ export default function ApplicantSettings() {
                         <div className="card p-6 border border-[var(--border)] bg-[var(--background-secondary)]">
                             <h3 className="text-xl font-bold mb-4">Subscription</h3>
                             <p className="text-[var(--foreground-secondary)] mb-6">
-                                Manage your subscription and billing through our secure payment portal.
+                                Billing runs on Paystack. Choose a plan to pay securely; your profile plan updates when you complete checkout.
                             </p>
 
-                            <div className="flex gap-4">
+                            <div className="flex gap-4 flex-wrap">
                                 <button
-                                    onClick={openStripePortal}
+                                    onClick={goToPaystackPlans}
                                     className="btn btn-primary flex items-center gap-2"
                                 >
-                                    <CreditCard className="w-4 h-4" /> Manage Billing
+                                    <CreditCard className="w-4 h-4" /> View plans &amp; pay
                                 </button>
-                                <Link href="/pricing?role=applicant" className="btn btn-secondary flex items-center gap-2">
-                                    View Plans
+                                <Link href="/contact" className="btn btn-secondary flex items-center gap-2">
+                                    Billing help
                                 </Link>
                             </div>
 

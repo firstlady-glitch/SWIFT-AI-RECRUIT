@@ -1,9 +1,10 @@
 import { NextResponse } from 'next/server';
-import { ACCEPT_PAYMENTS } from '@/lib/stripe';
 
-// Expose payment status to client
+import { acceptPaymentsServer } from '@/lib/billing';
+
 export async function GET() {
     return NextResponse.json({
-        acceptPayments: ACCEPT_PAYMENTS,
+        acceptPayments: acceptPaymentsServer(),
+        paystackPublicKey: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY || null,
     });
 }

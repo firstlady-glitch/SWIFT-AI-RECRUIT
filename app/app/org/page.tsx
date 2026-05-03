@@ -1,9 +1,16 @@
 'use client';
 
 import Link from 'next/link';
-import { Briefcase, Users, Check, X, Lock, Loader2 } from 'lucide-react';
+import { Briefcase, Users, Check, X, Loader2, Info } from 'lucide-react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { Suspense, useState, useEffect } from 'react';
+
+/** UI plan cards use friendly keys; billing uses starter / growth / scale for employers. */
+function employerStripePlanKey(uiKey: string): string {
+    if (uiKey === 'pro') return 'growth';
+    if (uiKey === 'team') return 'scale';
+    return uiKey;
+}
 
 function OrgSetupContent() {
     const searchParams = useSearchParams();
@@ -12,6 +19,7 @@ function OrgSetupContent() {
     const [selectedPlan, setSelectedPlan] = useState(urlPlan || 'free');
     const [acceptPayments, setAcceptPayments] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
+    const [billingHint, setBillingHint] = useState<string | null>(null);
 
     useEffect(() => {
         fetch('/api/config')
@@ -41,29 +49,38 @@ function OrgSetupContent() {
         }
 
         if (!acceptPayments) {
-            // When payments disabled, all paid plans just select free
+            setBillingHint(
+                'Paid subscriptions are turned off in admin settings. You can still onboard on the Free tier.'
+            );
             setSelectedPlan('free');
             return;
         }
 
-        // Payments enabled - go to checkout
+        setBillingHint(null);
         setSelectedPlan(planKey);
+        const billingKey = employerStripePlanKey(planKey);
         try {
-            const res = await fetch('/api/stripe/checkout', {
+            const res = await fetch('/api/paystack/initialize', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    planKey,
+                    planKey: billingKey,
                     interval: 'monthly',
                     role: 'employer',
                 }),
             });
             const data = await res.json();
-            if (data.url) {
-                window.location.href = data.url;
+            const payUrl = data.authorization_url || data.url;
+            if (payUrl) {
+                window.location.href = payUrl;
+                return;
+            }
+            if (data.error) {
+                setBillingHint(data.error);
             }
         } catch (err) {
             console.error('Checkout error:', err);
+            setBillingHint('Could not start checkout. Try again or contact support.');
         }
     };
 
@@ -134,9 +151,18 @@ function OrgSetupContent() {
                 <div className="text-center mb-12">
                     <h2 className="text-3xl font-bold mb-4">Select a Plan</h2>
                     <p className="text-[var(--foreground-secondary)]">
-                        {acceptPayments ? 'Choose the plan that fits your needs' : 'All features are currently free during beta!'}
+                        {acceptPayments
+                            ? 'Choose the plan that fits your needs. Checkout runs securely through Paystack.'
+                            : 'Billing is disabled — new organizations start on Free until an admin enables payments.'}
                     </p>
                 </div>
+
+                {billingHint && (
+                    <div className="max-w-3xl mx-auto mb-8 flex gap-3 rounded-xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-[var(--foreground)]">
+                        <Info className="w-5 h-5 shrink-0 text-amber-600" />
+                        <p>{billingHint}</p>
+                    </div>
+                )}
 
                 {isLoading ? (
                     <div className="flex justify-center py-12">
@@ -165,14 +191,13 @@ function OrgSetupContent() {
                             onClick={() => handlePlanSelect('starter')}
                             className={`card p-6 border relative overflow-hidden transition-all ${acceptPayments
                                 ? `cursor-pointer ${selectedPlan === 'starter' ? 'border-[var(--primary-blue)] ring-2 ring-[var(--primary-blue)]/20' : 'border-[var(--border)] hover:border-[var(--primary-blue)]'}`
-                                : 'opacity-75 cursor-not-allowed group border-[var(--border)]'
+                                : 'opacity-90 cursor-pointer border-[var(--border)] hover:border-amber-500/40'
                                 }`}
                         >
                             {!acceptPayments && (
-                                <div className="absolute inset-0 bg-black/60 z-10 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm">
-                                    <Lock className="w-8 h-8 text-white mb-2" />
-                                    <span className="text-white font-bold text-sm">Coming Soon</span>
-                                </div>
+                                <p className="text-xs text-amber-600 dark:text-amber-400 mb-2 font-medium">
+                                    Needs billing enabled
+                                </p>
                             )}
                             <h3 className="text-xl font-bold mb-2">Starter</h3>
                             <p className="text-[var(--foreground-secondary)] text-sm mb-4">For growing teams</p>
@@ -190,15 +215,14 @@ function OrgSetupContent() {
                             onClick={() => handlePlanSelect('pro')}
                             className={`card p-6 border-2 relative overflow-hidden transition-all ${acceptPayments
                                 ? `cursor-pointer ${selectedPlan === 'pro' ? 'border-[var(--primary-blue)] ring-2 ring-[var(--primary-blue)]/20' : 'border-[var(--primary-blue)]/30 hover:border-[var(--primary-blue)]'}`
-                                : 'opacity-75 cursor-not-allowed group border-[var(--primary-blue)]/30'
+                                : 'opacity-90 cursor-pointer border-[var(--primary-blue)]/30 hover:border-amber-500/40'
                                 }`}
                         >
                             <div className="absolute top-0 right-0 left-0 bg-[var(--primary-blue)]/50 text-white text-xs font-bold py-1 rounded-t-lg text-center">MOST POPULAR</div>
                             {!acceptPayments && (
-                                <div className="absolute inset-0 bg-black/60 z-10 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm">
-                                    <Lock className="w-8 h-8 text-white mb-2" />
-                                    <span className="text-white font-bold text-sm">Coming Soon</span>
-                                </div>
+                                <p className="text-xs text-amber-600 dark:text-amber-400 mb-2 mt-6 font-medium relative z-10">
+                                    Needs billing enabled
+                                </p>
                             )}
                             <h3 className="text-xl font-bold mb-2 mt-2">Professional</h3>
                             <p className="text-[var(--foreground-secondary)] text-sm mb-4">For active hiring</p>
@@ -216,14 +240,13 @@ function OrgSetupContent() {
                             onClick={() => handlePlanSelect('team')}
                             className={`card p-6 border relative overflow-hidden transition-all ${acceptPayments
                                 ? `cursor-pointer ${selectedPlan === 'team' ? 'border-[var(--primary-blue)] ring-2 ring-[var(--primary-blue)]/20' : 'border-[var(--border)] hover:border-[var(--primary-blue)]'}`
-                                : 'opacity-75 cursor-not-allowed group border-[var(--border)]'
+                                : 'opacity-90 cursor-pointer border-[var(--border)] hover:border-amber-500/40'
                                 }`}
                         >
                             {!acceptPayments && (
-                                <div className="absolute inset-0 bg-black/60 z-10 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm">
-                                    <Lock className="w-8 h-8 text-white mb-2" />
-                                    <span className="text-white font-bold text-sm">Coming Soon</span>
-                                </div>
+                                <p className="text-xs text-amber-600 dark:text-amber-400 mb-2 font-medium">
+                                    Needs billing enabled
+                                </p>
                             )}
                             <h3 className="text-xl font-bold mb-2">Team</h3>
                             <p className="text-[var(--foreground-secondary)] text-sm mb-4">For agencies</p>

@@ -56,6 +56,7 @@ export async function sendEmailNotification(params: {
     subject: string;
     html: string;
     text?: string;
+    replyTo?: string;
 }): Promise<boolean> {
     if (!EMAIL_ENABLED) {
         console.log('[Email] Email not enabled, skipping send to:', params.to);
@@ -66,6 +67,7 @@ export async function sendEmailNotification(params: {
         await transporter.sendMail({
             from: `"SwiftAI Recruit" <${process.env.GMAIL_USER}>`,
             to: params.to,
+            replyTo: params.replyTo,
             subject: params.subject,
             html: params.html,
             text: params.text,

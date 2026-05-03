@@ -1,6 +1,6 @@
 {
   "name": "swift-ai-recruit",
-  "version": "2.0.2",
+  "version": "2.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -9,18 +9,18 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@google/generative-ai": "^0.24.1",
     "@supabase/ssr": "^0.8.0",
     "@supabase/supabase-js": "^2.87.1",
     "cloudinary": "^2.8.0",
+    "groq-sdk": "^1.1.2",
     "lucide-react": "^0.559.0",
     "napi-postinstall": "^0.3.4",
     "next": "^16.2.2",
     "nextjs-toploader": "^3.9.17",
     "nodemailer": "^7.0.12",
+    "pdf-parse": "1.1.1",
     "react": "19.2.1",
-    "react-dom": "19.2.1",
-    "stripe": "^20.1.1"
+    "react-dom": "19.2.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

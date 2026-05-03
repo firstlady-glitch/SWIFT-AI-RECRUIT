@@ -6,45 +6,10 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Calendar, User, ArrowRight } from 'lucide-react';
 
+import { getBlogListItems } from '@/lib/blog-posts';
+
 export default function BlogPage() {
-    const posts = [
-        {
-            title: "The Future of AI in Recruitment: Trends to Watch in 2025",
-            excerpt: "How Artificial Intelligence is reshaping the hiring landscape, from automated sourcing to emotional intelligence analysis in interviews.",
-            author: "Sarah Johnson",
-            date: "Dec 12, 2024",
-            category: "Industry Trends",
-            image: "bg-blue-100",
-            slug: "future-of-ai-recruitment"
-        },
-        {
-            title: "5 Tips to Beat the ATS and Get Hired",
-            excerpt: "Learn how Applicant Tracking Systems work and how to optimize your resume to ensure it gets seen by human eyes.",
-            author: "Mike Chen",
-            date: "Dec 10, 2024",
-            category: "Job Seeker Tips",
-            image: "bg-orange-100",
-            slug: "beat-the-ats"
-        },
-        {
-            title: "Why Soft Skills Matter More Than Ever in the AI Era",
-            excerpt: "As technical tasks become automated, human-centric skills like empathy, leadership, and creativity are becoming the new gold standard.",
-            author: "Jessica Williams",
-            date: "Dec 05, 2024",
-            category: "Career Advice",
-            image: "bg-green-100",
-            slug: "soft-skills-matter"
-        },
-        {
-            title: "Case Study: How TechCorp Reduced Hiring Time by 60%",
-            excerpt: "A deep dive into how a leading tech giant utilized SwiftAI Recruit to streamline their engineering hiring pipeline.",
-            author: "David Miller",
-            date: "Nov 28, 2024",
-            category: "Case Studies",
-            image: "bg-purple-100",
-            slug: "techcorp-case-study"
-        }
-    ];
+    const posts = getBlogListItems();
 
     return (
         <div className="min-h-screen bg-[var(--background)]">
@@ -54,7 +19,7 @@ export default function BlogPage() {
                 <div className="absolute inset-0 z-0 opacity-15">
                     <Image
                         src="/announcement.png"
-                        alt="Blog Background"
+                        alt=""
                         fill
                         className="object-cover object-center"
                         priority
@@ -70,45 +35,46 @@ export default function BlogPage() {
 
             <section className="py-20 section">
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {posts.map((post, idx) => (
-                        <div key={idx} className="card overflow-hidden group hover:border-[var(--primary-blue)] transition-all">
-                            <div className={`h-48 ${post.image} w-full flex items-center justify-center text-[var(--primary-blue)] opacity-15`}>
-                                {/* Placeholder for actual blog image */}
-                                <span className="font-bold text-lg">Blog Image</span>
+                    {posts.map((post) => (
+                        <Link
+                            key={post.slug}
+                            href={`/blog/${post.slug}`}
+                            className="card overflow-hidden group hover:border-[var(--primary-blue)] transition-all flex flex-col"
+                        >
+                            <div
+                                className={`h-48 w-full flex items-end justify-start p-6 ${post.imageClass}`}
+                            >
+                                <span className="text-white/90 font-semibold text-sm tracking-wide uppercase">
+                                    {post.category}
+                                </span>
                             </div>
-                            <div className="p-6">
+                            <div className="p-6 flex flex-col flex-1">
                                 <div className="flex items-center gap-4 text-xs text-[var(--foreground-secondary)] mb-4">
-                                    <span className="bg-blue-50 text-[var(--primary-blue)] px-2 py-1 rounded-md font-medium">
-                                        {post.category}
-                                    </span>
                                     <span className="flex items-center gap-1">
                                         <Calendar className="w-3 h-3" /> {post.date}
                                     </span>
+                                    <span>{post.readTime}</span>
                                 </div>
                                 <h3 className="text-xl font-bold mb-3 group-hover:text-[var(--primary-blue)] transition-colors">
                                     {post.title}
                                 </h3>
-                                <p className="text-[var(--foreground-secondary)] text-sm mb-6 line-clamp-3">
+                                <p className="text-[var(--foreground-secondary)] text-sm mb-6 line-clamp-3 flex-1">
                                     {post.excerpt}
                                 </p>
                                 <div className="flex items-center justify-between mt-auto">
-                                    <div className="flex items-center gap-2 text-sm font-medium">
-                                        <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">
-                                            <User className="w-4 h-4 text-gray-500" />
+                                    <div className="flex items-center gap-2 text-sm font-medium text-[var(--foreground-secondary)]">
+                                        <div className="w-8 h-8 bg-[var(--border)] rounded-full flex items-center justify-center">
+                                            <User className="w-4 h-4" />
                                         </div>
                                         {post.author}
                                     </div>
-                                    <Link href={`/blog/${post.slug}`} className="text-[var(--primary-blue)] hover:translate-x-1 transition-transform">
+                                    <span className="text-[var(--primary-blue)] group-hover:translate-x-1 transition-transform inline-flex">
                                         <ArrowRight className="w-5 h-5" />
-                                    </Link>
+                                    </span>
                                 </div>
                             </div>
-                        </div>
+                        </Link>
                     ))}
-                </div>
-
-                <div className="mt-16 text-center">
-                    <button className="btn btn-outline">Load More Articles</button>
                 </div>
             </section>
 

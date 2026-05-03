@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { MessageCircle, X, Send, Mail, Phone } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import { whatsAppChatUrl } from "@/lib/whatsapp";
 
 interface Message {
     role: "user" | "model";
@@ -37,8 +38,9 @@ export default function ChatWidget() {
         setIsChatOpen(false);
     };
 
-    const handleWhatsApp = () => {
-        alert("WhatsApp integration Coming Soon!");
+    const openWhatsApp = () => {
+        window.open(whatsAppChatUrl(), "_blank", "noopener,noreferrer");
+        setIsOpen(false);
     };
 
     const scrollToBottom = () => {
@@ -181,9 +183,10 @@ export default function ChatWidget() {
                         </div>
                     </Link>
 
-                    {/* WhatsApp Button */}
+                    {/* WhatsApp */}
                     <button
-                        onClick={handleWhatsApp}
+                        type="button"
+                        onClick={openWhatsApp}
                         className="flex items-center gap-3 bg-white text-gray-800 px-4 py-2 rounded-full shadow-lg border border-gray-100 hover:bg-gray-50 transition-all hover:scale-105 group"
                     >
                         <span className="font-medium text-sm">WhatsApp</span>
